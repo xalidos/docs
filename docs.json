@@ -16,7 +16,14 @@
           {
             "group": "AZ-204",
             "pages": [
-              "index"
+             {
+                "page": "az-204/index",
+                "children": [
+                  "az-204/azure-basics",
+                  "az-204/compute",
+                  "az-204/storage"
+                ]
+              }
             ]
           },
           {
