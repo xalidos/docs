@@ -16,12 +16,7 @@
           {
             "group": "AZ-204",
             "pages": [
-             {
-                "page": "az-204/index",
-                "children": [
-                  "az-204/quickstart"
-                ]
-              }
+                "az-204/index"
             ]
           },
           {
