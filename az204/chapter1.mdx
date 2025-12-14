@@ -3,4 +3,382 @@ title: "Azure və Bulud Əsasları"
 description: "Description of your new file."
 ---
 
-Azure və Bulud Əsasları
+Bu gün bulud texnologiyalarının və DevOps yanaşmasının geniş yayılması ilə sənaye sahəsi bulud üzərində tətbiqlər hazırlaya, onları yerləşdirə və bütün həyat dövrü boyunca izləyə bilən proqramçılara ehtiyac duyur. Microsoft tərəfindən sertifikatlaşdırılmış Azure developer olmaq sizi digər mütəxəssislərdən fərqləndirə bilər. Ancaq mövzu ilə bağlı məlumatların çoxluğu bəzən öyrənmə prosesini düzgün şəkildə planlamağı çətinləşdirir. Bu kitabın əsas məqsədi **AZ-204: _Developing Solutions for Microsoft Azure_** imtahanına hazırlaşmaq üçün lazım olan bilikləri daha anlaşılan və sistemli formada təqdim etməkdir.
+
+Bəlkə də bunu artıq bilirsiniz, amma yenə də qeyd etmək lazımdır: “bulud” dediyimiz anlayış əslində havada üzən sehrli bir sistem deyil. Bu, bulud provayderlərinin data mərkəzlərində yerləşən çox güclü fiziki serverlərdir. Siz bu resurslardan əsasən web portal vasitəsilə (və ya digər üsullarla) istifadə edir və ehtiyaclarınıza uyğun şəkildə konfiqurasiya edirsiniz.
+
+Bulud hesablama sayəsində bir neçə saniyə ərzində serverlər, web tətbiqlər, storage xidmətləri və virtual maşınlar yarada bilərsiniz. Resurslara ehtiyac artdıqda onları asanlıqla genişləndirə, ehtiyac azaldıqda isə miqyasını kiçildə bilərsiniz. Ən önəmlisi isə odur ki, yalnız istifadə etdiyiniz qədər ödəniş edirsiniz. Avadanlıq, texniki xidmət və infrastrukturun idarə olunması isə bulud provayderinin üzərinə düşür.
+
+Bu fəsildə əvvəlcə buludun yerləşdirmə (deployment) modellərini, xidmət modellərini, üstünlüklərini və nəzərə alınmalı məqamları qısa şəkildə xatırlayacağıq. Daha sonra isə Azure-a xas olan əsas anlayışlara keçəcəyik. Fəsilin sonunda kitab boyunca tez-tez rastlaşacağınız fundamental konseptlər formalaşmış olacaq və növbəti mövzulara daha rahat keçid edə biləcəksiniz.
+
+Bu fəsildə aşağıdakı əsas mövzular izah olunur:
+
+- Bulud hesablamağın üstünlükləri
+- Bulud yerləşdirmə modelləri
+- Bulud xidmət modelləri
+- Azure-un əsas anlayışları
+
+## **Texniki tələblər**
+
+Bu fəsildəki nümunələri praktik olaraq yerinə yetirmək istəyirsinizsə, aşağıdakılar sizə lazım olacaq (sonrakı fəsillərdə də bu tələblər keçərlidir):
+
+- **Microsoft Azure subscription** – Əgər hazırda subscription-ınız yoxdursa, onu pulsuz olaraq bu linkdən yarada bilərsiniz:
+
+  https://azure.microsoft.com/free/
+- **Az PowerShell modulu** – Quraşdırma təlimatları burada verilib:
+
+  https://docs.microsoft.com/powershell/azure/install-az-ps
+- **Azure CLI** – Quraşdırma qaydaları bu linkdə mövcuddur:
+
+  https://docs.microsoft.com/cli/azure/install-azure-cli
+- **Windows, macOS və ya Linux əməliyyat sistemli kompüter** – Üzərində PowerShell-in ən son versiyası quraşdırılmış olmalıdır. Quraşdırma məlumatları:
+
+  https://docs.microsoft.com/powershell/scripting/install/installing-powershell
+- **Dəstəklənən web brauzer** – Azure portal üçün dəstəklənən brauzerlərin siyahısı:
+
+  https://docs.microsoft.com/azure/azure-portal/azure-portal-supported-browsers-devices
+
+\<aside\> 💡
+
+> **Vacib qeyd**
+
+\</aside\>
+
+İstər pulsuz Azure kreditindən istifadə edin, istərsə də etməyin, hesabınıza nəzarət etmək və onu idarə etmək sizin məsuliyyətinizdir. Bu kitab boyunca praktik tapşırıqları yerinə yetirməyi planlaşdırırsınızsa, yarana biləcək xərcləri əvvəlcədən başa düşməli, istifadəni və büdcəni diqqətlə izləməlisiniz. İstifadəyə əsaslanan ödəniş modeli çox rahatdır, amma məsələn resursları yaradıb 24/7 açıq saxlasanız, xərclər qısa zamanda arta bilər. Buna görə də bu kitabdakı tapşırıqlar zamanı yarana biləcək xərclərə mütləq nəzarət edin.
+
+## **Bulud hesablamağın üstünlüklərinin başa düşülməsi**
+
+Bulud hesablama ortaya çıxmazdan əvvəl şirkətlər istifadəçi idarəetməsi, storage, verilənlər bazası və web tətbiqləri kimi sistemləri işlətmək üçün fiziki şəbəkə avadanlıqları və serverlərdən istifadə edirdilər. Bu sistemlərin qurulması, sazlanması, saxlanılması, yenilənməsi və vaxtında təkmilləşdirilməsi həm xüsusi bilik, həm də yüksək xərc tələb edirdi.
+
+Məsələn, web serverlərinizdən birinə qəfil çoxlu sorğu gəlsəydi, avadanlığınız kifayət qədər güclü olmadığı üçün xidmət əlçatanlığında problemlər yarana bilərdi. Əgər bu artımı əvvəlcədən təxmin etmisinizsə, məsələn mövsümi artım səbəbindən, böyük ehtimalla əlavə avadanlıq almaq üçün **CapEx** prosesi başlamalı olardınız. Lazımi təsdiqlər alınıb sistem qurulduqdan sonra isə real trafik gözlənildiyi kimi olmazsa və ya bir müddət sonra azalsa, bahalı avadanlıqdan tam istifadə olunmazdı. Buna baxmayaraq, həmin avadanlığın işlək qalması və saxlanması üçün yenə də xərclər davam edərdi (üstəlik maliyyə şöbəsinin narazılığı da qaçılmaz olardı). Bu özü artıq ciddi bir problemdir, hələ fəlakət bərpası və yüksək əlçatanlıq tələblərini demirik.
+
+Bu nöqtədə bulud hesablama ortaya çıxır.
+
+Şirkət bulud əsaslı infrastruktura keçdikdə ən çox hiss olunan dəyişikliklərdən biri fiziki avadanlıqlara olan ehtiyacın xeyli azalmasıdır. Məsələn, istifadəçi və identifikasiya idarəetməsi üçün artıq fiziki server saxlamağa ehtiyac yoxdur – sadəcə web portal vasitəsilə daxil olub hər şeyi oradan idarə edirsiniz. İstifadəçilərin təhlükəsiz şəkildə qoşulması üçün də artıq daxili şəbəkəyə birbaşa bağlı olmaları tələb edilmir.
+
+Bulud provayderinizlə olan **xidmət səviyyəsi razılaşmasına (SLA)** əsasən, hər hansı problem yarandıqda belə, bulud infrastrukturu tətbiqlərin yüksək əlçatan qalmasına kömək edə bilər və istifadəçi bunu demək olar ki, hiss etməz. Əvvəlki ssenaridə olduğu kimi, web sorğularında qəfil artım olduqda, tətbiqi vertikal şəkildə miqyaslamaq (yəni resursları artırmaq və ya azaltmaq) qərarı verə bilərsiniz. Lakin bu yanaşma adətən tətbiqin yenilənməsi zamanı müəyyən fasilələrin yaranmasına səbəb olurdu.
+
+Alternativ olaraq avtomatik **horizontal miqyaslama** (yəni _scaling in/out_) qura bilərdiniz. Bu halda tətbiq müəyyən bir metrikə çatdıqda avtomatik olaraq əlavə instansiyalar yaradılır və yük artımını qarşılayır. Tələb azaldıqda isə instansiyaların sayı yenidən avtomatik şəkildə azaldılır. Bu yanaşma həm fasiləsiz işləməni təmin edir, həm də xərclərin effektiv idarə olunmasına kömək edir.
+
+Bunu nümayiş etdirmək üçün **Microsoft Azure**-da bir web tətbiq yaratdım. Tətbiqin qurulması və işlək vəziyyətə gəlməsi cəmi 30 saniyə çəkdi və daha sonra autoscaling konfiqurasiya olundu. Tətbiqin instansiyalarını izlədikdə müəyyən müddət ərzində sorğuların sayında artım müşahidə olundu (aşağı xətt). Bu zaman instansiyaların sayı (yuxarı xətt) 2-yə yüksəldi. Yük azaldıqdan sonra isə instansiyaların sayı avtomatik olaraq yenidən 1-ə endirildi.
+
+Bulud hesablamağın gətirdiyi elastiklik sayəsində tətbiqimə lazım olan resurslar heç bir fasilə olmadan təmin olundu və artıq ehtiyac qalmadıqda resurslar avtomatik olaraq azaldıldı. Qeyd etdiyim kimi, web tətbiqimi cəmi 30 saniyə ərzində qurub internet üzərindən əlçatan vəziyyətə gətirə bildim – nə CapEx xərcləri oldu, nə fiziki avadanlıq, nə də vaxt itkisi və mürəkkəb proseslər.
+
+Bulud provayderinin data mərkəzlərinin qlobal şəkildə paylanması sayəsində tətbiqi dünyanın istənilən bölgəsində yerləşdirmək imkanım var idi.
+
+Bulud hesablama ilə burada sadalanan üstünlüklərlə yanaşı daha bir vacib məqam ortaya çıxır: xidmətlər adətən istifadəyə əsaslanan model üzrə işləyir. Yəni yalnız istifadə etdiyiniz resurslara görə ödəniş edirsiniz. İlkin xərclər yoxdur, yalnız istifadə səviyyəsinə uyğun əməliyyat xərcləri **(OpEx)** mövcuddur. Bir çoxları üçün bulud hesablamağın ən böyük üstünlüklərindən biri də əvvəlki kimi mürəkkəb fiziki şəbəkə infrastrukturu ilə məşğul olmağa ehtiyac qalmamasıdır.
+
+Bu fəsil əsas anlayışları xatırlatmaq məqsədi daşıdığı üçün mövzunu burada daha dərinə aparmırıq.
+
+Sadalanan üstünlüklər və digər səbəblər nəticəsində buluda köçürülən iş yüklərinin sayı sürətlə artır. İş yüklərini buluda daşımağı planlaşdırarkən, mövcud hostinq seçimlərini başa düşmək vacibdir. Ən çox istifadə olunan bu seçimləri növbəti bölmədə nəzərdən keçirəcəyik.
+
+## **Bulud yerləşdirmə modellərinin nəzərdən keçirilməsi**
+
+Bulud provayderləri əsasən üç növ bulud yerləşdirmə modeli təklif edir: **public cloud**, **private cloud** və **hybrid cloud** (məsələn, Community Cloud kimi başqa modellər də var, amma burada onlara toxunulmur). Aşağıda bu modellərin qısa və sadə izahı verilib.
+
+- **Public cloud**
+  - Bu, ən çox istifadə olunan modeldir. Xidmətlər və resurslar internet üzərindən istənilən istifadəçiyə təqdim olunur. Bütün resurslar bulud provayderinə məxsusdur və onlar tərəfindən idarə olunur. Yəni resursları almaq yox, icarəyə götürmüş olursunuz.
+  - İstifadəyə əsaslanan modeldir – yalnız istifadə etdiyiniz qədər ödəniş edirsiniz.
+  - Avadanlığın saxlanması və yenilənməsi isə bulud provayderinin öhdəsindədir.
+- **Private cloud**
+  - Bu modeldə xidmətlər və resurslar yalnız bir təşkilat üçün nəzərdə tutulur. Adətən yüksək təhlükəsizlik və izolyasiya tələbi olduqda seçilir.
+  - Avadanlıq, proqram təminatı, konfiqurasiya, texniki xidmət, yenilənmə və təhlükəsizlik tamamilə təşkilatın özü tərəfindən idarə olunur.
+  - Avadanlıq əvvəlcədən alınmalıdır və istifadə olunmasa belə, işlək vəziyyətdə olduğu müddətdə bütün xərclər təşkilata aiddir.
+- **Hybrid cloud**
+  - Bu model public və private cloud-un birlikdə istifadəsini nəzərdə tutur və hər ikisinin üstünlüklərindən yararlanmağa imkan verir.
+  - Məsələn, həssas məlumatlar private cloud-da saxlanıla, tətbiqin digər hissələri isə public cloud-da işləyə bilər.
+  - Tələblərə uyğun olaraq iş yüklərinin harada yerləşdiriləcəyini seçmək imkanı yaradır.
+
+Qeyd etmək vacibdir ki, bəzi tənzimləyici və hüquqi tələblərə görə private cloud lazım ola bilsə də, əksər hallarda public cloud təhlükəsizlik baxımından tam kifayət edir. Bulud provayderlərinin data mərkəzləri ciddi təhlükəsizlik qaydalarına uyğun fəaliyyət göstərir və bir çox beynəlxalq standartlara cavab verir. Bununla yanaşı, yüksək əlçatanlıq və ehtiyatlılıq (redundancy) üstünlüklərini də təmin edir.
+
+Bulud provayderlərinin təqdim etdiyi təhlükəsizlik imkanları çox genişdir və sənaye səviyyəsində qabaqcıl hesab olunur. Çox vaxt bu imkanlar təşkilatların öz resurslarını idarə edərkən əldə edə bildiyindən daha yaxşı qoruma, monitorinq, xəbərdarlıq və problemlərin aradan qaldırılması imkanı yaradır. Əksinə xüsusi qeyd edilmədiyi halda, bu kitabda əsasən **public cloud** modelinin istifadə edildiyi qəbul olunacaq (çünki ən geniş yayılmış model də məhz budur).
+
+İndi əsas bulud yerləşdirmə modellərini başa düşdüyümüzə görə, növbəti addım olaraq mövcud **xidmət modellərini** nəzərdən keçirməliyik. Azure-da yaratdığınız hər bir xidmət bu modellərdən birinə aid olacaq və bu anlayışlarla kitab boyunca dəfələrlə qarşılaşacaqsınız.
+
+## **Bulud xidmət modellərinin izahı**
+
+Bulud hesablama mövzusunda danışarkən **Infrastructure as a Service (IaaS)**, **Platform as a Service (PaaS)** və **Software as a Service (SaaS)** anlayışlarını qeyd etməmək mümkün deyil. Başqa xidmət modelləri də mövcuddur, lakin bunlar bulud provayderləri tərəfindən ən çox təqdim olunan və **NIST** tərəfindən standart kimi qəbul edilən əsas modellərdir. Azure mövzularına keçməzdən əvvəl bu modelləri qısa və sadə şəkildə xatırlayaq.
+
+- **Infrastructure as a Service (IaaS)**
+  - Adından da göründüyü kimi, bu modeldə əsas infrastruktur bulud provayderi tərəfindən idarə olunur. Bu yanaşmanın ən yayğın nümunəsi bulud üzərində yaradılan virtual maşınlardır. Siz müəyyən xüsusiyyətlərə malik virtual maşın sifariş edirsiniz və onların qurulması avtomatik şəkildə həyata keçirilir. Fiziki serverlər və infrastrukturla bağlı narahat olmağa ehtiyac qalmır.
+  - Virtual maşının özü isə sizin idarənizdə olur: proqramların quraşdırılması, yenilənməsi və digər sazlamalar siz tərəfindən aparılır. Bu model fiziki serverləri idarə etməyə ən yaxın yanaşmadır, amma avadanlıqla məşğul olmadan.
+  - Virtual maşınların yaradılması, miqyaslanması və silinməsi fiziki serverlərlə müqayisədə xeyli sürətlidir. IaaS modeli sizə ən çox çeviklik və nəzarət imkanı verir.
+  - İstifadəyə əsaslanan ödəniş modeli sayəsində yalnız istifadə etdiyiniz resurslara görə ödəniş edirsiniz (OpEx). Məsələn, əgər virtual maşın üçün gündəlik avtomatik söndürmə (auto-shutdown) aktiv edilsə, sistem onu hər gün müəyyən saatda söndürəcək. Bu zaman virtual maşın dayandırılır və resurslardan ayrılır, nəticədə yenidən işə salınana qədər əlavə xərc yaratmır (amma ona bağlı olan bəzi digər resurslar ayrıca xərc yarada bilər).
+- **Platform as a Service (PaaS)**
+  - Proqramçı baxımından bu model getdikcə daha populyar olur. PaaS ilə tətbiqlərinizi hazır və idarə olunan bir hostinq mühitinə yerləşdirə bilərsiniz.
+  - Bu modeldə, IaaS-də olduğu kimi, əsas infrastruktur bulud provayderi tərəfindən idarə olunur. Bundan əlavə, virtual maşınlar, əməliyyat sistemi, təhlükəsizlik yeniləmələri (patching) və digər texniki məsələlər də provayderin üzərinə düşür. Siz isə proqramçı olaraq yalnız tətbiqin özünü, məlumatları və həmin məlumatlara girişi idarə edirsiniz.
+  - İstifadəyə əsaslanan ödəniş modeli PaaS-i xərclər baxımından sərfəli edir. Tətbiqinizi tez bir zamanda yerləşdirə, test edə və ehtiyac qalmadıqda (məsələn, Azure App Service) həmin mühiti silə bilərsiniz. Bütün bunlar arxa plandakı serverlərin necə işlədiyi ilə maraqlanmadan edilir ki, bu da proqramçı çevikliyini xeyli artırır.
+- **Software as a Service (SaaS)**
+  - Bu modeldə sizə birbaşa hazır proqram təminatı təqdim olunur. Sizin əsas işiniz isə kimin proqramdan istifadə edə biləcəyini və hansı funksiyalara çıxışı olduğunu müəyyən etməkdir.
+  - Microsoft-un ən tanınmış SaaS nümunələrindən biri Microsoft 365-dir (əvvəllər Office 365 kimi tanınırdı). Burada proqramlar artıq hazır şəkildə təqdim olunur, siz sadəcə istifadəçi və icazələri idarə edirsiniz. Qalan bütün texniki məsələlər bulud provayderi tərəfindən həll olunur.
+  - Adətən SaaS aylıq və ya illik ödəniş modeli ilə işləyir və proqramdan nə qədər istifadə etdiyinizdən asılı olmur. Proqram olduğu kimi təqdim olunur. Siz proqramı idarə etmədiyiniz üçün, hər hansı funksional məhdudiyyət varsa, ona müdaxilə etmək imkanınız olmur. Bu, proqramı özünüz idarə etdiyiniz hallardan fərqli bir yanaşmadır.
+
+Aşağıdakı diaqram bulud xidmət modellərini on-premises (yerli infrastruktur) ilə müqayisə edir və hər bir modeldə hansı hissələrin sizin tərəfinizdən idarə olunduğunu göstərir. Bu tip diaqramlara internetdə tez-tez rast gəlinir, ona görə də böyük ehtimalla buna bənzər bir nümunəni artıq görmüsünüz.
+
+Şəkil 1.2 – Fərqli bulud xidmət modelləri və idarəetmə məsuliyyətinin müqayisəsi
+
+Getdikcə daha çox tətbiq PaaS xidmətləri üzərində işləmək üçün yenidən dizayn olunur. Bu yanaşma proqramçılara əsas diqqəti kod yazmağa yönəltməyə imkan verir və infrastruktur detalları ilə məşğul olmaq ehtiyacını aradan qaldırır. Nəticədə inkişaf prosesi xeyli sürətlənir.
+
+Bu yanaşma seçilib-seçilməməsindən asılı olmayaraq, mövcud bütün seçimləri başa düşmək çox vacibdir. Artıq buludun əsas anlayışlarını xatırladıq, indi isə Azure-a xas mövzulara daha dərindən keçməyin vaxtıdır.
+
+## **Azure-un əsas anlayışları ilə tanışlıq**
+
+Microsoft Azure, Microsoft-un qlobal miqyasda fəaliyyət göstərən bulud platformasıdır və 200-dən çox məhsul və xidmət təqdim edir. Bu xidmətlər əvvəllər danışdığımız bütün xidmət modellərini əhatə edir – virtual maşınlardan tutmuş süni intellekt və kognitiv servislərə qədər.
+
+Azure-da olan bütün xidmətləri və subscription-ları əsasən **Azure Portal** vasitəsilə idarə etmək olar. Portal bu ünvandan açılır: https://portal.azure.com. Ancaq yalnız portal ilə məhdudlaşmır. Azure həmçinin geniş imkanlara malik **API** və **CLI** təqdim edir və kitab boyunca bunlardan da istifadə ediləcək. Bundan əlavə, Azure Marketplace mövcuddur. Burada Microsoft tərəfdaşları, müstəqil proqram təminatı istehsalçıları (ISV-lər) və startaplar Azure üçün optimallaşdırılmış öz həllərini və servislərini təklif edirlər.
+
+Azure-un əsas və ən vacib komponentlərindən biri **Azure Active Directory (AAD)**-dir. Bu kitab boyunca AAD anlayışı ilə dəfələrlə qarşılaşacaqsınız. Burada AAD-nin bütün imkanları detallı şəkildə izah edilmir, yalnız AZ-204 imtahanı üçün lazım olan hissələrə fokuslanılır.
+
+Azure-da işləmək üçün **subscription** anlayışı əsas rol oynayır. Subscription sizə Azure xidmətlərindən istifadə imkanı verir. Şirkətlər bir neçə subscription-a sahib ola bilər ki, bu da ödənişlərin ayrılması, giriş icazələrinin idarə olunması və daha rahat nəzarət üçün istifadə olunur. Subscription-lar **management group**-lar altında birləşdirilə bilər. Həmin subscription-ların daxilində isə resurslar yaradılır və onlar **resource group**-lar altında qruplaşdırılır (bu anlayışlara bir az sonra daha ətraflı baxılacaq).
+
+## **Regionlar və availability zone-lar**
+
+Azure-da bir resurs yaratdıqda, adətən onun hansı regionda yaradılacağını seçməlisiniz. _“Bulud əslində yoxdur, sadəcə başqasının kompüteridir”_ kimi ifadələr son illərdə məşhurlaşıb və bunun nə demək olduğu əvvəl izah edilib. Azure dünya üzrə yerləşən çoxsaylı data mərkəzlərindən ibarət olduğu üçün, xidmətinizin hansı coğrafi ərazidə yerləşən serverlərdə işləyəcəyini özünüz seçə bilərsiniz.
+
+Bəs Azure region nədir? Region – bir coğrafi ərazi deməkdir və bu ərazidə bir və ya bir neçə (əksər hallarda bir neçə) Azure data mərkəzi yerləşir. Bu data mərkəzləri bir-biri ilə xüsusi, gecikməsi çox az olan (təxminən 2 millisaniyədən az) regional şəbəkə vasitəsilə əlaqələndirilir. Azure bu quruluş sayəsində yükləri data mərkəzləri arasında balanslı şəkildə paylayır.
+
+Qeyd etmək lazımdır ki, bəzi Azure xidmətləri yalnız müəyyən regionlarda mövcuddur. Region seçimi resursları istifadəçilərə daha yaxın yerləşdirməyə imkan verir və eyni zamanda məlumatların konkret ölkə və ya ərazidə saxlanılması tələblərinə uyğunluğu təmin edir. Bundan əlavə, bəzi dövlət qurumları üçün xüsusi Azure regionları mövcuddur və bu regionlar ümumi (public) infrastrukturdan tam şəkildə ayrı saxlanılır.
+
+**Availability zone**-lar eyni Azure regionu daxilində yerləşən, fiziki olaraq bir-birindən ayrı data mərkəzlərindən ibarətdir. Bu data mərkəzləri yüksək sürətli fiber-optik şəbəkə ilə birləşdirilir və hər birinin ayrıca elektrik, soyutma və şəbəkə infrastrukturu olur. Əgər bir availability zone sıradan çıxarsa, digərləri işləməyə davam edir. Bir regionda minimum üç availability zone mövcuddur. Regiondan və istifadə olunan xidmətdən asılı olaraq, məlumatların eyni zone-da, eyni regiondakı fərqli zone-larda və ya tamamilə başqa bir regionda saxlanılmasını (replikasiyasını) seçmək mümkündür. Bu mövzu ilə bağlı ətraflı sənədlər mövcuddur, lakin bu xülasə üçün bu məlumatlar kifayətdir.
+
+Azure resurslarının qurulması və idarə olunması mövzusunda mütləq başa düşülməli anlayışlardan biri də **Azure Resource Manager**-dır.
+
+## **Azure Resource Manager (ARM)**
+
+Azure Resource Manager (ARM) 2014-cü ildən əvvəl mövcud deyildi və o vaxta qədər Azure resursları Azure Service Manager (ASM) vasitəsilə idarə olunurdu. ASM dövründə hər bir resurs ayrıca yaradılır və idarə edilirdi. Məsələn, bir tətbiqə aid olan resursları birlikdə idarə etmək istədikdə, bunun üçün ayrıca skriptlər yazmaq lazım gəlirdi.
+
+2014-cü ildə Microsoft ARM-i təqdim etdi və bununla birlikdə _resource group_ anlayışı ortaya çıxdı. Resource group – məntiqi baxımdan bir-biri ilə əlaqəli olan resursların idarəetmə vahididir. ARM istifadə edildikdə, bütün resurslar mütləq bir resource group-a aid olmalıdır və eyni anda yalnız bir resource group-da ola bilər. Bununla belə, dəstəklənən resurslar sonradan bir resource group-dan digərinə köçürülə bilər.
+
+Resource group-lar resursları tətbiqin həyat dövrünə uyğun şəkildə qruplaşdırmağa imkan verir. Məsələn, bir tətbiq artıq istifadə olunmadıqda, sadəcə resource group-u silməklə ona bağlı bütün resursları birdəfəlik silmək mümkündür. Bundan əlavə, resource group-lar rol əsaslı giriş nəzarəti **(RBAC)** üçün də istifadə olunur. Yəni, istifadəçilərə və ya sistemlərə yalnız müəyyən resource group daxilindəki resurslara giriş icazəsi vermək olar, bütün subscription səviyyəsində icazə verməyə ehtiyac qalmaz.
+
+Burada qısaca toxunmalı olduğumuz başqa bir anlayış da _tag_-lərdir. Resource group-lar resursların təşkilində çox faydalıdır, amma bir resursun eyni anda yalnız bir resource group-da ola bilməsi bu yanaşmanı məhdudlaşdırır. Tag-lər isə resurslara əlavə etiketlər verməyə imkan yaradır və bu da resursların daha rahat kateqoriyalara bölünməsinə və idarə olunmasına kömək edir.
+
+Tag-lər _ad–dəyər_ (name–value) cütlükləri şəklində işləyir və istədiyiniz məqsəd üçün istifadə oluna bilər. Məsələn, xərclərin izlənməsi (cost center), mühitin növü (dev, test, prod), şöbə adı, təsnifat və ya başqa istənilən kateqoriya üçün tag-lərdən yararlanmaq mümkündür. Bu mövzu ilə bağlı Azure-un _Cloud Adoption Framework_ sənədində tag-lərin düzgün seçilməsi haqqında tövsiyələr də mövcuddur.
+
+Hazırkı vəziyyətdə, dəstəklənən resurslara maksimum 50 tag əlavə etmək olar. Tag adlarının uzunluğu 512 simvolla məhdudlaşır (storage account-lar üçün bu limit 128 simvoldur), tag dəyərləri isə maksimum 256 simvol ola bilər.
+
+Azure portalı, Azure PowerShell, Azure CLI, SDK-lar və ya REST müştəriləri vasitəsilə göndərilən bütün sorğular əvvəlcə Azure Resource Manager (ARM) tərəfindən qəbul olunur. ARM sorğunu qəbul etdikdən sonra onu yoxlayır, yəni autentifikasiya və avtorizasiya proseslərini həyata keçirir və yalnız bundan sonra sorğunu müvafiq Azure xidmətinə yönləndirir. Portal üzərindən edilən əməliyyatlar da daxil olmaqla bütün üsullar eyni ARM REST API-lərindən istifadə edir, sadəcə bu API-lərlə birbaşa işləmək mümkün deyil. Nümunə olaraq bəzi xidmətlər aşağıdakı diaqramda göstərilir.
+
+Şəkil 1.3 – ARM-in Azure sorğularının idarə olunmasındakı rolunu göstərən sxem
+
+Resource group-lar vasitəsilə resursları birlikdə idarə etmə, qoruma və izləmə imkanı ilə yanaşı, ARM həm də **Azure Resource Manager template**-lərini (ARM template) təqdim etdi. ARM template – JSON formatında olan bir fayldır və bir və ya bir neçə resursu təsviri (declarative) şəkildə müəyyən edir. Siz hansı resursların yaradılacağını və onların bir-biri ilə asılılıqlarını göstərirsiniz, ARM isə bütün qurma və əlaqələndirmə prosesini özü idarə edir. ARM template-lər resursları eyni şəkildə və təkrar-təkrar qurmağa imkan verir və Azure-un daxili _Infrastructure as Code (IaC)_ həlli hesab olunur.
+
+IaC mövzusu kitabın sonrakı hissələrində daha detallı izah ediləcək. Hələlik bilməyiniz kifayətdir ki, əgər infrastrukturunuz kod şəklində təsvir olunubsa, onu avtomatik, sürətli və eyni qaydada qurmaq mümkündür. Bu yanaşma insan səhvlərinin qarşısını alır. Eyni zamanda, əgər bir resource group daxilində ARM template-də olmayan resurslar varsa, istədiyiniz halda onları da silmək mümkündür. Hətta mövcud olan bir resursu və ya bütöv bir resource group-u ARM template-ə çevirib gələcəkdə avtomatlaşdırma üçün istifadə etmək olar.
+
+ARM-in başqa bir üstün cəhəti isə **idempotence** anlayışıdır. Yəni, eyni ARM template-i artıq mövcud olan və template-ə uyğun resursları olan bir resource group-a yenidən tətbiq etdikdə, həmin resurslara heç bir təsir göstərilmir. Bu, mühitdəki fərqlərin (environment drift) qarşısını almağa imkan verir. Əgər resource group-da ARM template-də göstərilən, amma mövcud olmayan resurslar varsa, ARM onları avtomatik yaradaraq mühiti istənilən vəziyyətə uyğunlaşdırır.
+
+## **ARM template-lər**
+
+Bir az əvvəl ARM template-lərin resursları ardıcıl və təkrar oluna bilən şəkildə yaratmaq üçün çox rahat üsul olduğunu qeyd etdik. ARM template-lər _declarative_ yanaşma ilə işləyir, yəni siz nə yaratmaq istədiyinizi yazırsınız, necə yaradılacağını isə ARM özü həll edir.
+
+Aşağıda çox sadə bir ARM template nümunəsi var. Bu nümunə resource group daxilində bir **storage account** yaratmaq üçün istifadə olunur:
+
+```
+{
+  "$schema": "<https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#>",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "stdemoaz204"
+    },
+    "purpose": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "name": "[parameters('storageAccountName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-04-01",
+      "tags": {
+        "purpose": "[parameters('purpose')]"
+      },
+      "location": "[resourceGroup().location]",
+      "kind": "StorageV2",
+      "sku": {
+        "name": "Premium_LRS",
+        "tier": "Premium"
+      }
+    }
+  ]
+}
+```
+
+Bu template Azure üçün deyir ki: _bu xüsusiyyətlərə sahib bir storage account yarat_. Burada storage account-un adı və məqsədi parametr kimi verilir, yerləşdiyi region isə avtomatik olaraq resource group-un regionundan götürülür.
+
+Bu cür template-ləri yaratmaq olduqca asandır. Məsələn, Visual Studio Code üçün olan **Azure Resource Manager (ARM) Tools** əlavəsindən istifadə edərək bu template rahat şəkildə hazırlanıb. Bu alət yazım zamanı səhvləri göstərir və template-lə işləməyi xeyli asanlaşdırır.
+
+Gördüyünüz kimi, template əvvəlcə istifadə olunan **schema** və **content version** məlumatlarını göstərir. Daha sonra **storageAccountName** və **purpose** adlı parametrlər təyin olunur. Bu parametrlərdən **storageAccountName** üçün əvvəlcədən bir dəyər verilib. Template-in son hissəsində isə yaradılacaq resurs təsvir olunur.
+
+Resursun adı **storageAccountName** parametrindən götürülür. Bir neçə sətir aşağıda resursa **purpose** adlı tag əlavə edildiyini görürük və bu tag-in dəyəri **purpose** parametrindən alınır. Növbəti sətirdə göstərilir ki, resursun yaradılacağı region, template-in tətbiq edildiyi resource group-un regionu ilə eyni olacaq. Son hissədə isə storage account-a xas olan ayarlar yer alır: storage növü, səviyyəsi (tier) və replikasiya parametrləri.
+
+Bu faylı məsələn **deploy.json** adı ilə saxladıqdan sonra (adın özü önəmli deyil, əsas odur ki, `.json` olsun), resursları yaratmaq üçün Az PowerShell modulundan istifadə edə bilərik. Eyni işi Azure CLI və ya Azure portal üzərindən də görmək mümkündür.
+
+Əvvəlcə resource group yaradılır:
+
+`New-AzResourceGroup -Name "<group name>" -Location "<desired location>"`
+
+Burada `<group name>` yerinə resource group-un adını, `<desired location>` yerinə isə istifadə etmək istədiyiniz Azure regionunu yazırsınız. Bu region eyni zamanda storage account üçün də istifadə olunacaq. Məsələn, nümunədə bu əmr belədir:
+
+`New-AzResourceGroup -Name "rg-az-204" -Location "uksouth"`
+
+Resource group yaradıldıqdan sonra ARM template-i deploy etmək üçün aşağıdakı əmr istifadə olunur:
+
+`New-AzResourceGroupDeployment -Name "<deploymentName>" -ResourceGroupName "<group name>" -TemplateFile "<ARM template path>" -storageAccountName "<storage account name>" -purpose "<purpose tag value>"`
+
+Burada:
+
+- `<deploymentName>` – boşluqsuz bir deployment adı,
+- `<group name>` – resource group-un adı,
+- `<ARM template path>` – ARM template faylının yolu,
+- `<storage account name>` – yaradılacaq storage account-un adı (yalnız kiçik hərflər və rəqəmlər),
+- `<purpose tag value>` – tag üçün istədiyiniz dəyərdir.
+
+Əslində bütün dəyərləri dırnaq içində yazmaq məcburi deyil, amma qarışıqlıq olmasın deyə adətən bu cür yazılır. Bu, sadəcə vərdişdir və çox vaxt işi daha rahat edir.
+
+Qarışıqlıq olmasın deyə, mənim istifadə etdiyim nümunə əmr tam olaraq belədir:
+
+`New-AzResourceGroupDeployment -Name "StorageDeployment_1" -ResourceGroupName "rg-az-204" -TemplateFile ".\\ARM templates\\deploy.json" -storageAccountName "strfirstarm" -purpose "AZ-204 book"`.
+
+Bu əmri tamamladıqdan sonra, eyni əmri yenidən əvvəlki kimi işlətsəm belə, template-də göstərilən resurs artıq mövcud olduğu və konfiqurasiyası dəyişmədiyi üçün həmin resursa toxunulmayacaq. Əgər sadəcə resursun adını dəyişsəm, ARM eyni konfiqurasiyaya sahib, amma fərqli adda yeni bir resurs yaradacaq. Bu da Infrastructure as Code yanaşmasının əsas üstünlüklərindən biridir.
+
+Biz burada ARM template-lərdən Microsoft-un rəsmi (first-party) IaC həlli kimi danışsaq da, Azure resurslarını qurmaq və konfiqurasiya etmək üçün üçüncü tərəf həllər də mövcuddur. Bundan əlavə, Microsoft-un **Bicep** adlı başqa bir aləti də var ki, daha rahat oxunan sintaksis və developer üçün daha əlverişli imkanlar təqdim edir. Yazıldığı vaxtda Bicep imtahan mövzularına daxil olmadığı üçün burada detala girmirik. İstəyənlər üçün sənədlərə keçid “Further reading” bölməsində mövcuddur.
+
+Yenidən template-ə qayıdaq və toxunmadığımız iki hissəyə – **type** və **apiVersion** sahələrinə baxaq. Bu anlayışlar resurs provayderləri və resurs tipləri ilə əlaqəlidir və növbəti bölmədə izah olunacaq.
+
+## **Resurs provayderləri və resurs tipləri**
+
+İndi ki, ARM anlayışı ilə tanış olduq, bir az da dərinə gedib Azure **resource provider**-lərindən danışaq. ARM müxtəlif növ resursları idarə etmək üçün fərqli resource provider-lərdən istifadə edir. Yəni siz bir resurs yaratmaq istədikdə, sorğu əvvəlcə ARM-ə gedir, ARM isə həmin resursun növünə uyğun olan resource provider-i işə salır.
+
+Resource provider-lər xüsusi ad məkanları (namespace) ilə tanınır. Məsələn, ən çox rast gəlinənlər bunlardır: **Microsoft.Compute**, [**Microsoft.Storage**](http://Microsoft.Storage) və [**Microsoft.Web**](http://Microsoft.Web). Hər bir resource provider-in özünə aid bir və ya bir neçə **resurs tipi** olur. Məsələn, bir virtual maşını götürək. Hazırda onunla birlikdə yaradılan digər resursları (məsələn, şəbəkə komponentlərini) nəzərə almasaq, ARM bu virtual maşını yaratmaq üçün **Microsoft.Compute/virtualMachines** resurs tipindən istifadə edir. Gördüyünüz kimi, bu resurs tipi **Microsoft.Compute** resource provider-inə aiddir.
+
+Bəs bunu niyə bilməliyik? Bunun bir neçə səbəbi var.
+
+- Birincisi, əgər hansısa resursu yaratmaq istədikdə ona uyğun resource provider subscription daxilində qeydiyyatdan keçməyibsə, həmin resursun yaradılması mümkün olmaya bilər. Bu isə subscription səviyyəsində resource provider-lərin qeydiyyatına icazə verilib-verilməməsindən asılıdır.
+- İkincisi, ARM template-lərlə və ya Azure portal üzərindən deploy əməliyyatlarına baxdıqda tez-tez resource provider və resurs tipi anlayışları ilə qarşılaşacaqsınız. Ona görə də bunları əvvəlcədən bilmək işi xeyli asanlaşdırır. Əvvəl göstərilən ARM template nümunəsində də bunu görmək mümkündür.
+
+Aşağıda Azure portal üzərindən edilmiş bir deploy nümunəsi təsvir olunur. Burada bir virtual maşın və onun üçün lazım olan əlavə resurslar yaradılıb. **Type** sütununda resursun tipi göstərilir və bu tip resource provider adı ilə resurs tipinin birlikdə yazılmasından ibarətdir.
+
+Şəkil 1.4 – Azure portal-da resurs provayderləri və resurs tipləri
+
+Resource provider-lər Azure-u genişlənə bilən edir. Yəni Azure-a yeni xidmətlər əlavə olunduqca, onlara uyğun yeni resource provider-lər də eyni qaydada sistemə əlavə edilir. Hətta istəsəniz, xüsusi (custom) resurs tiplərini idarə etmək üçün öz resource provider-inizi də yaza bilərsiniz.
+
+Resource provider-lərin, resurs tiplərinin və konkret **API version**-ların mövcudluğu Azure regionundan asılı olaraq dəyişə bilər. Azure portal daxilində **Resource Explorer** adlı bir alət də mövcuddur və bu alət vasitəsilə hansı resource provider-lərin və resurs tiplərinin əlçatan olduğunu araşdıra bilərsiniz. Hər bir resurs tipinin isə bir və ya bir neçə API versiyası olur. Bu mövzuya daha sonra ətraflı toxunulacaq.
+
+## **Resurs tərifləri (Resource definitions)**
+
+Növbəti mövzuya keçməzdən əvvəl son olaraq resurs təriflərinə toxunaq. Bəzi xüsusiyyətlər bir resursda olub digərində olmaya bilər, amma ARM tərəfindən idarə olunan bütün resurslarda aşağıdakı əsas məlumatlar mütləq olur:
+
+- **Name**
+- **ResourceGroupName**
+- **ResourceType**
+- **Location**
+- **ResourceId**
+- **Tags** (istəyə bağlı)
+
+Bu cür resurs təriflərinə öyrəşmək faydalıdır, çünki onlarla tez-tez, müxtəlif formalarda qarşılaşacaqsınız. Bu anlayışların çoxu artıq izah olunub (bu kontekstdə _location_ region deməkdir). Burada yeni olan əsas anlayış **ResourceId**-dir.
+
+ResourceId hər bir resurs üçün unikal identifikatordur və qlobal miqyasda təkrarlanmır. Onun formatı belədir:
+
+`/subscriptions/<subscription ID>/resourceGroups/<resource group name>/providers/<resource provider>/<resource type>/<resource name>`
+
+Məsələn, aşağıda tək bir tag adı və dəyəri olan bir virtual maşının ResourceId nümunəsi göstərilir:
+
+Şəkil 1.5 – Tag daxil olan resurs tərifi nümunəsi
+
+Bu məlumatları necə əldə etdim? **Azure PowerShell** vasitəsilə. Növbəti bölmədə Azure CLI və Azure PowerShell-dən necə istifadə edildiyinə baxacağıq.
+
+## **Azure CLI və Azure PowerShell**
+
+Bu fəsil ümumi xatırlatma məqsədi daşıdığı üçün mövzulara çox dərindən girməyəcəyik. Əgər **Az PowerShell** modulunu quraşdırmısınız, amma hələ daxil olmamısınızsa, **Connect-AzAccount** əmri ilə sistemə daxil ola bilərsiniz. Eyni şəkildə, **Azure CLI** quraşdırılıbsa və giriş edilməyibsə, **az login** əmrindən istifadə etmək olar.
+
+Bu fəsildə mən brauzer üzərindən **Azure Cloud Shell** istifadə edəcəyəm. Əgər siz də eyni üsulla işləmək istəsəniz, bununla bağlı təlimatları Microsoft-un rəsmi sənədlərində tapa bilərsiniz. İndi isə indiyə qədər danışdığımız mövzulara toxunan bir neçə sadə əmri nəzərdən keçirək. Nümunələri həm PowerShell, həm də Azure CLI üçün göstərəcəyik.
+
+### **Az PowerShell modulu**
+
+Aşağıda PowerShell sessiyası daxilində (istər lokal olaraq, istərsə də PowerShell Azure Cloud Shell üzərindən) icra edə biləcəyiniz bir neçə sadə əmr var:
+
+- Cari subscription üçün mövcud olan bütün Azure regionlarını görmək üçün **Get-AzLocation** əmrindən istifadə olunur. Burada _Location_ ilə _DisplayName_in bir qədər fərqli olduğunu görəcəksiniz.
+- Cari subscription üçün əlçatan olan resource provider-ləri siyahılamaq üçün
+
+  **Get-AzLocation | Select -ExpandProperty Providers | sort** əmri istifadə olunur.
+- **Microsoft.Compute/virtualMachines** resurs tipinin hansı regionlarda mövcud olduğunu və hansı API versiyalarının dəstəkləndiyini görmək üçün bu əmr işlədilir:
+
+  `(Get-AzResourceProvider -ProviderNamespace Microsoft.Compute).ResourceTypes | where ResourceTypeName -eq "virtualMachines"`.
+- Əgər artıq yaradılmış bir resursunuz varsa, onun detallı məlumatlarını görmək üçün
+
+  **Get-AzResource | Where Name -eq "\<resource name\>"** əmri istifadə olunur. Burada `<resource name>` yerinə resursunuzun adını yazmalısınız.
+
+### **Azure CLI**
+
+Aşağıda isə Azure CLI sessiyasında (istər lokal olaraq, istərsə də Bash Azure Cloud Shell üzərindən) istifadə edilə bilən bəzi əsas əmrlər göstərilib:
+
+- Cari subscription üçün bütün Azure regionlarını görmək üçün **az account list-locations** əmri istifadə olunur. Burada _displayName_ və _name_ dəyərlərinin PowerShell-də gördüklərimizə uyğun olduğunu görmək olar. Yalnız region adlarını görmək üçün isə bu əmrdən istifadə etmək mümkündür:
+
+  **az account list-locations --query [].name -o tsv**.
+- Cari subscription üçün mövcud olan resource provider-ləri siyahılamaq üçün
+
+  **az provider list --query [].namespace -o tsv** əmri istifadə olunur.
+- **Microsoft.Compute/virtualMachines** resurs tipinin hansı regionlarda mövcud olduğunu və hansı API versiyalarını dəstəklədiyini görmək üçün aşağıdakı əmr işlədilir:
+
+  **az provider show --namespace Microsoft.Compute --query "resourceTypes[?resourceType == 'virtualMachines'].{Locations:locations, apiVersions:apiVersions}"**.
+- Əgər artıq yaradılmış bir resurs varsa, onun məlumatlarını görmək üçün
+
+  **az resource list --name "\<resource name\>"** əmri istifadə olunur. Burada `<resource name>` yerinə resursun adı yazılır.
+
+Bunlar Az PowerShell modulu və Azure CLI vasitəsilə Azure-dan məlumat almaq üçün sadə nümunələrdir. Kitabın davamında bu alətlərlə bağlı çoxlu nümunələr veriləcək. Ona görə də, əgər əvvəldən bu alətlərlə tanış deyildinizsə, bu ilkin məlumatlar sizin üçün faydalı olacaq.
+
+### **Xülasə**
+
+Bu fəsildə əvvəlcə bulud hesablamasının əsas anlayışlarını və üstünlüklərini xatırladıq, eyni zamanda ən çox istifadə olunan deployment və xidmət modellərini nəzərdən keçirdik. Daha sonra Azure-a xas mövzulara keçdik: Azure-un ümumi strukturu, subscription-lar, Azure Active Directory və resurslar haqqında əsas məlumatlara baxdıq. Ardınca regionlar və availability zone-lar mövzusuna toxunduq və sonra ARM-ə keçdik – onun nə olduğu, ümumi olaraq necə işlədiyi, resource group-lar və tag-lər izah olundu. Daha sonra ARM template-lərdən istifadə edərək resursların proqramlaşdırılmış və ardıcıl şəkildə deploy edilməsi, eləcə də ARM-in idempotence xüsusiyyəti izah edildi.
+
+ARM mövzusunu davam etdirərək resource provider-lər, resurs tipləri və resurs tərifləri ilə tanış olduq. Sonda isə bu anlayışların bir qismini praktik şəkildə görmək üçün Az PowerShell modulu və Azure CLI vasitəsilə Azure-dan məlumatların necə alındığına baxdıq. Əgər siz AZ-204 imtahanına hazırlaşırsınızsa, çox güman ki, bu mövzuların əksəriyyəti sizə artıq tanışdır. Əgər yoxdursa, bu fəsil kitabın qalan hissəsi üçün yaxşı və möhkəm başlanğıc nöqtəsi rolunu oynayacaq.
+
+2-ci fəsildə – **IaaS Həllərinin Tətbiqi** mövzusunda – bu fəsildə danışılan bəzi anlayışların üzərinə əlavə edəcəyik. Xüsusilə IaaS və ARM ətrafında mövzular daha dərindən izah olunacaq. Virtual maşınların daha detallı şəkildə yaradılmasına, o cümlədən proqramlaşdırılmış deployment-ə baxacağıq, daha sonra isə konteynerlər və onlarla əlaqəli Azure xidmətlərini öyrənəcəyik.
+
+---
+
+**Suallar**
+
+Bu fəsli nə dərəcədə başa düşdüyünüzü yoxlamaq üçün aşağıdakı suallara cavab verin:
+
+1. Şaquli miqyaslama (scale up/down) ilə üfüqi miqyaslama (scale in/out) arasındakı fərq nədir?
+2. Virtual maşınlar üçün istifadə olunan resource provider hansıdır?
+3. SaaS modelində istifadəçi olaraq siz məlumatları, girişi və proqramın işlədiyi əməliyyat sistemini idarə edirsiniz. Doğru, yoxsa yanlış?
+4. Azure virtual maşınları hansı bulud xidmət modelinə aiddir?
+5. Bir Azure resursu maksimum neçə resource group-un üzvü ola bilər?
+
+---
+
+**Əlavə oxu materialları**
+
+Bu fəsildə əhatə olunan mövzularla bağlı daha ətraflı məlumat almaq üçün aşağıdakı mənbələrə baxa bilərsiniz:
+
+- Azure regionlar və availability zone-lar haqqında:
+
+  https://docs.microsoft.com/azure/availability-zones/az-overview
+- Azure Resource Manager haqqında:
+
+  https://docs.microsoft.com/azure/azure-resourcemanager/management/overview
+- ARM template-lər haqqında:
+
+  https://docs.microsoft.com/azure/azure-resource-manager/templates
+- Bicep sənədləri:
+
+  https://docs.microsoft.com/azure/azure-resource-manager/bicep/
+- Role-Based Access Control (RBAC) haqqında:
+
+  https://docs.microsoft.com/azure/role-based-access-control/overview
+- Cloud Adoption Framework üzrə qərar bələdçiləri:
+
+  https://docs.microsoft.com/azure/cloud-adoption-framework/decision-guides
+- Azure CLI sorğuları haqqında:
+
+  https://docs.microsoft.com/cli/azure/query-azure-cli
+- Azure CLI və PowerShell üçün Microsoft learning path:
+
+  https://docs.microsoft.com/learn/modules/automate-azure-tasks-with-powershell/
+- Azure əsasları (AZ-900) üçün Microsoft learning path:
+
+  https://docs.microsoft.com/learn/paths/az-900-describe-cloud-concepts/
