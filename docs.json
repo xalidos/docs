@@ -11,10 +11,10 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Home",
+        "tab": "Ana səhifə",
         "groups": [
           {
-            "group": "",
+            "group": "Məlumat",
             "pages": ["index"]
           }
         ]
