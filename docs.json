@@ -20,22 +20,6 @@
                 "az204/chapter14",
                 "az204/chapter1"
             ]
-          },
-          {
-            "group": "Chapter 1",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
           }
         ]
       }
