@@ -11,14 +11,14 @@
   "navigation": {
     "tabs": [
       {
-    "tab": "Home",
-    "groups": [
-      {
-        "group": "Overview",
-        "pages": ["index"]
-      }
-    ]
-  },
+        "tab": "Home",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["index"]
+          }
+        ]
+      },
       {
         "tab": "AZ-204",
         "groups": [
