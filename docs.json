@@ -14,7 +14,7 @@
         "tab": "Home",
         "groups": [
           {
-            "group": "Overview",
+            "group": "",
             "pages": ["index"]
           }
         ]
