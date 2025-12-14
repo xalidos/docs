@@ -17,9 +17,9 @@
             "group": "AZ-204",
             "pages": [
              {
-                "page": "index",
+                "page": "az-204/index",
                 "children": [
-                  "quickstart"
+                  "az-204/quickstart"
                 ]
               }
             ]
