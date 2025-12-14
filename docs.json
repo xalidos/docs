@@ -41,7 +41,7 @@
   },
   "logo": {
     "light": "/dotnet_logo.webp",
-    "dark": "/logo/dark.svg"
+    "dark": "/dotnet_logo.webp"
   },
   "navbar": {
     "links": [
