@@ -1,9 +1,8 @@
 ---
 title: "Azure və Bulud Əsasları"
-description: "Description of your new file."
 ---
 
-Bu gün bulud texnologiyalarının və DevOps yanaşmasının geniş yayılması ilə sənaye sahəsi bulud üzərində tətbiqlər hazırlaya, onları yerləşdirə və bütün həyat dövrü boyunca izləyə bilən proqramçılara ehtiyac duyur. Microsoft tərəfindən sertifikatlaşdırılmış Azure developer olmaq sizi digər mütəxəssislərdən fərqləndirə bilər. Ancaq mövzu ilə bağlı məlumatların çoxluğu bəzən öyrənmə prosesini düzgün şəkildə planlamağı çətinləşdirir. Bu kitabın əsas məqsədi **AZ-204: _Developing Solutions for Microsoft Azure_** imtahanına hazırlaşmaq üçün lazım olan bilikləri daha anlaşılan və sistemli formada təqdim etməkdir.
+Bu gün bulud texnologiyalarının və DevOps yanaşmasının geniş yayılması ilə sənaye sahəsi bulud üzərində tətbiqlər hazırlaya, onları yerləşdirə və bütün həyat dövrü boyunca izləyə bilən proqramçılara ehtiyac duyur. Microsoft tərəfindən sertifikatlaşdırılmış Azure developer olmaq sizi digər mütəxəssislərdən fərqləndirə bilər. Ancaq mövzu ilə bağlı məlumatların çoxluğu bəzən öyrənmə prosesini düzgün şəkildə planlamağı çətinləşdirir. Bu kitabın əsas məqsədi **_AZ-204: Developing Solutions for Microsoft Azure_** imtahanına hazırlaşmaq üçün lazım olan bilikləri daha anlaşılan və sistemli formada təqdim etməkdir.
 
 Bəlkə də bunu artıq bilirsiniz, amma yenə də qeyd etmək lazımdır: “bulud” dediyimiz anlayış əslində havada üzən sehrli bir sistem deyil. Bu, bulud provayderlərinin data mərkəzlərində yerləşən çox güclü fiziki serverlərdir. Siz bu resurslardan əsasən web portal vasitəsilə (və ya digər üsullarla) istifadə edir və ehtiyaclarınıza uyğun şəkildə konfiqurasiya edirsiniz.
 
@@ -329,7 +328,7 @@ Bu fəsildə mən brauzer üzərindən **Azure Cloud Shell** istifadə edəcəy�
 
 Aşağıda PowerShell sessiyası daxilində (istər lokal olaraq, istərsə də PowerShell Azure Cloud Shell üzərindən) icra edə biləcəyiniz bir neçə sadə əmr var:
 
-- Cari subscription üçün mövcud olan bütün Azure regionlarını görmək üçün **Get-AzLocation** əmrindən istifadə olunur. Burada _Location_ ilə _DisplayName_in bir qədər fərqli olduğunu görəcəksiniz.
+- Cari subscription üçün mövcud olan bütün Azure regionlarını görmək üçün **Get-AzLocation** əmrindən istifadə olunur. Burada _Location_ ilə \_DisplayName_in bir qədər fərqli olduğunu görəcəksiniz.
 - Cari subscription üçün əlçatan olan resource provider-ləri siyahılamaq üçün
 
   **Get-AzLocation | Select -ExpandProperty Providers | sort** əmri istifadə olunur.
@@ -356,8 +355,7 @@ Aşağıda isə Azure CLI sessiyasında (istər lokal olaraq, istərsə də Bash
 
 – Əgər artıq yaradılmış bir resurs varsa, onun məlumatlarını görmək üçün istifadə olunur.
 
-
-  **az resource list --name "\<resource name\>"** əmri istifadə olunur. Burada `<resource name>` yerinə resursun adı yazılır.
+**az resource list --name "\<resource name\>"** əmri istifadə olunur. Burada `<resource name>` yerinə resursun adı yazılır.
 
 Bunlar Az PowerShell modulu və Azure CLI vasitəsilə Azure-dan məlumat almaq üçün sadə nümunələrdir. Kitabın davamında bu alətlərlə bağlı çoxlu nümunələr veriləcək. Ona görə də, əgər əvvəldən bu alətlərlə tanış deyildinizsə, bu ilkin məlumatlar sizin üçün faydalı olacaq.
 
