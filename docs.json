@@ -40,7 +40,7 @@
     ]
   },
   "logo": {
-    "light": "/logo/light.svg",
+    "light": "/logo/dotnet.png",
     "dark": "/logo/dark.svg"
   },
   "navbar": {
