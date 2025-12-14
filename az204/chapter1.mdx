@@ -38,11 +38,7 @@ Bu fəsildəki nümunələri praktik olaraq yerinə yetirmək istəyirsinizsə, 
 
   https://docs.microsoft.com/azure/azure-portal/azure-portal-supported-browsers-devices
 
-\<aside\> 💡
-
 > **Vacib qeyd**
-
-\</aside\>
 
 İstər pulsuz Azure kreditindən istifadə edin, istərsə də etməyin, hesabınıza nəzarət etmək və onu idarə etmək sizin məsuliyyətinizdir. Bu kitab boyunca praktik tapşırıqları yerinə yetirməyi planlaşdırırsınızsa, yarana biləcək xərcləri əvvəlcədən başa düşməli, istifadəni və büdcəni diqqətlə izləməlisiniz. İstifadəyə əsaslanan ödəniş modeli çox rahatdır, amma məsələn resursları yaradıb 24/7 açıq saxlasanız, xərclər qısa zamanda arta bilər. Buna görə də bu kitabdakı tapşırıqlar zamanı yarana biləcək xərclərə mütləq nəzarət edin.
 
@@ -52,7 +48,7 @@ Bulud hesablama ortaya çıxmazdan əvvəl şirkətlər istifadəçi idarəetmə
 
 Məsələn, web serverlərinizdən birinə qəfil çoxlu sorğu gəlsəydi, avadanlığınız kifayət qədər güclü olmadığı üçün xidmət əlçatanlığında problemlər yarana bilərdi. Əgər bu artımı əvvəlcədən təxmin etmisinizsə, məsələn mövsümi artım səbəbindən, böyük ehtimalla əlavə avadanlıq almaq üçün **CapEx** prosesi başlamalı olardınız. Lazımi təsdiqlər alınıb sistem qurulduqdan sonra isə real trafik gözlənildiyi kimi olmazsa və ya bir müddət sonra azalsa, bahalı avadanlıqdan tam istifadə olunmazdı. Buna baxmayaraq, həmin avadanlığın işlək qalması və saxlanması üçün yenə də xərclər davam edərdi (üstəlik maliyyə şöbəsinin narazılığı da qaçılmaz olardı). Bu özü artıq ciddi bir problemdir, hələ fəlakət bərpası və yüksək əlçatanlıq tələblərini demirik.
 
-Bu nöqtədə bulud hesablama ortaya çıxır.
+### Bu nöqtədə bulud hesablama ortaya çıxır.
 
 Şirkət bulud əsaslı infrastruktura keçdikdə ən çox hiss olunan dəyişikliklərdən biri fiziki avadanlıqlara olan ehtiyacın xeyli azalmasıdır. Məsələn, istifadəçi və identifikasiya idarəetməsi üçün artıq fiziki server saxlamağa ehtiyac yoxdur – sadəcə web portal vasitəsilə daxil olub hər şeyi oradan idarə edirsiniz. İstifadəçilərin təhlükəsiz şəkildə qoşulması üçün də artıq daxili şəbəkəyə birbaşa bağlı olmaları tələb edilmir.
 
@@ -61,6 +57,14 @@ Bulud provayderinizlə olan **xidmət səviyyəsi razılaşmasına (SLA)** əsas
 Alternativ olaraq avtomatik **horizontal miqyaslama** (yəni _scaling in/out_) qura bilərdiniz. Bu halda tətbiq müəyyən bir metrikə çatdıqda avtomatik olaraq əlavə instansiyalar yaradılır və yük artımını qarşılayır. Tələb azaldıqda isə instansiyaların sayı yenidən avtomatik şəkildə azaldılır. Bu yanaşma həm fasiləsiz işləməni təmin edir, həm də xərclərin effektiv idarə olunmasına kömək edir.
 
 Bunu nümayiş etdirmək üçün **Microsoft Azure**-da bir web tətbiq yaratdım. Tətbiqin qurulması və işlək vəziyyətə gəlməsi cəmi 30 saniyə çəkdi və daha sonra autoscaling konfiqurasiya olundu. Tətbiqin instansiyalarını izlədikdə müəyyən müddət ərzində sorğuların sayında artım müşahidə olundu (aşağı xətt). Bu zaman instansiyaların sayı (yuxarı xətt) 2-yə yüksəldi. Yük azaldıqdan sonra isə instansiyaların sayı avtomatik olaraq yenidən 1-ə endirildi.
+
+<img
+  src="/images/az204/chapter1/image.png"
+  alt="Image Pn"
+  title="Image Pn"
+  className="mx-auto"
+  style={{ width:"78%" }}
+/>
 
 Bulud hesablamağın gətirdiyi elastiklik sayəsində tətbiqimə lazım olan resurslar heç bir fasilə olmadan təmin olundu və artıq ehtiyac qalmadıqda resurslar avtomatik olaraq azaldıldı. Qeyd etdiyim kimi, web tətbiqimi cəmi 30 saniyə ərzində qurub internet üzərindən əlçatan vəziyyətə gətirə bildim – nə CapEx xərcləri oldu, nə fiziki avadanlıq, nə də vaxt itkisi və mürəkkəb proseslər.
 
@@ -115,6 +119,8 @@ Bulud hesablama mövzusunda danışarkən **Infrastructure as a Service (IaaS)**
 
 Aşağıdakı diaqram bulud xidmət modellərini on-premises (yerli infrastruktur) ilə müqayisə edir və hər bir modeldə hansı hissələrin sizin tərəfinizdən idarə olunduğunu göstərir. Bu tip diaqramlara internetdə tez-tez rast gəlinir, ona görə də böyük ehtimalla buna bənzər bir nümunəni artıq görmüsünüz.
 
+![Şəkil 1.2 – Fərqli bulud xidmət modelləri və idarəetmə məsuliyyətinin müqayisəsi](/images/az204/chapter1/image\(1\).png)
+
 Şəkil 1.2 – Fərqli bulud xidmət modelləri və idarəetmə məsuliyyətinin müqayisəsi
 
 Getdikcə daha çox tətbiq PaaS xidmətləri üzərində işləmək üçün yenidən dizayn olunur. Bu yanaşma proqramçılara əsas diqqəti kod yazmağa yönəltməyə imkan verir və infrastruktur detalları ilə məşğul olmaq ehtiyacını aradan qaldırır. Nəticədə inkişaf prosesi xeyli sürətlənir.
@@ -158,6 +164,14 @@ Tag-lər _ad–dəyər_ (name–value) cütlükləri şəklində işləyir və i
 Hazırkı vəziyyətdə, dəstəklənən resurslara maksimum 50 tag əlavə etmək olar. Tag adlarının uzunluğu 512 simvolla məhdudlaşır (storage account-lar üçün bu limit 128 simvoldur), tag dəyərləri isə maksimum 256 simvol ola bilər.
 
 Azure portalı, Azure PowerShell, Azure CLI, SDK-lar və ya REST müştəriləri vasitəsilə göndərilən bütün sorğular əvvəlcə Azure Resource Manager (ARM) tərəfindən qəbul olunur. ARM sorğunu qəbul etdikdən sonra onu yoxlayır, yəni autentifikasiya və avtorizasiya proseslərini həyata keçirir və yalnız bundan sonra sorğunu müvafiq Azure xidmətinə yönləndirir. Portal üzərindən edilən əməliyyatlar da daxil olmaqla bütün üsullar eyni ARM REST API-lərindən istifadə edir, sadəcə bu API-lərlə birbaşa işləmək mümkün deyil. Nümunə olaraq bəzi xidmətlər aşağıdakı diaqramda göstərilir.
+
+<img
+  src="/images/az204/chapter1/image(2).png"
+  alt="Şəkil 1.3 – ARM-in Azure sorğularının idarə olunmasındakı rolunu göstərən sxem"
+  title="Şəkil 1.3 – ARM-in Azure sorğularının idarə olunmasındakı rolunu göstərən sxem"
+  className="mx-auto"
+  style={{ width:"76%" }}
+/>
 
 Şəkil 1.3 – ARM-in Azure sorğularının idarə olunmasındakı rolunu göstərən sxem
 
@@ -260,6 +274,14 @@ Bəs bunu niyə bilməliyik? Bunun bir neçə səbəbi var.
 
 Aşağıda Azure portal üzərindən edilmiş bir deploy nümunəsi təsvir olunur. Burada bir virtual maşın və onun üçün lazım olan əlavə resurslar yaradılıb. **Type** sütununda resursun tipi göstərilir və bu tip resource provider adı ilə resurs tipinin birlikdə yazılmasından ibarətdir.
 
+<img
+  src="/images/az204/chapter1/image(3).png"
+  alt="Şəkil 1.4 – Azure portal-da resurs provayderləri və resurs tipləri"
+  title="Şəkil 1.4 – Azure portal-da resurs provayderləri və resurs tipləri"
+  className="mx-auto"
+  style={{ width:"89%" }}
+/>
+
 Şəkil 1.4 – Azure portal-da resurs provayderləri və resurs tipləri
 
 Resource provider-lər Azure-u genişlənə bilən edir. Yəni Azure-a yeni xidmətlər əlavə olunduqca, onlara uyğun yeni resource provider-lər də eyni qaydada sistemə əlavə edilir. Hətta istəsəniz, xüsusi (custom) resurs tiplərini idarə etmək üçün öz resource provider-inizi də yaza bilərsiniz.
@@ -284,6 +306,14 @@ ResourceId hər bir resurs üçün unikal identifikatordur və qlobal miqyasda t
 `/subscriptions/<subscription ID>/resourceGroups/<resource group name>/providers/<resource provider>/<resource type>/<resource name>`
 
 Məsələn, aşağıda tək bir tag adı və dəyəri olan bir virtual maşının ResourceId nümunəsi göstərilir:
+
+<img
+  src="/images/az204/chapter1/image(4).png"
+  alt="Şəkil 1.5 – Tag daxil olan resurs tərifi nümunəsi"
+  title="Şəkil 1.5 – Tag daxil olan resurs tərifi nümunəsi"
+  className="mx-auto"
+  style={{ width:"90%" }}
+/>
 
 Şəkil 1.5 – Tag daxil olan resurs tərifi nümunəsi
 

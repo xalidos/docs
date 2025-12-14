@@ -14,9 +14,11 @@
         "tab": "AZ-204",
         "groups": [
           {
-            "group": "Giriş",
+            "group": "Hissə 1: Azure-da Hesablama (Compute) Həllərinin Hazırlanması",
             "pages": [
-                "az204/index"
+                "az204/index",
+                "az204/chapter14",
+                "az204/chapter1"
             ]
           },
           {
