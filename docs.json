@@ -17,11 +17,9 @@
             "group": "AZ-204",
             "pages": [
              {
-                "page": "az-204/index",
+                "page": "index",
                 "children": [
-                  "az-204/azure-basics",
-                  "az-204/compute",
-                  "az-204/storage"
+                  "quickstart"
                 ]
               }
             ]
