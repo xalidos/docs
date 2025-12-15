@@ -23,14 +23,9 @@
         "tab": "AZ-900",
         "groups": [
           {
-            "group": "Giriş",
-            "pages": [
-                "az900/introdution"
-            ]
-          },
-          {
             "group": "Hissə 1",
             "pages": [
+                "az900/introdution",
                 "az900/chapter1"
             ]
           }
