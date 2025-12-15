@@ -37,3 +37,70 @@ Kapital xərclərindən əməliyyat xərcləri modelinə keçid, hardware, lisen
 Bulud hesablama ilə bağlı digər bir iqtisadi fayda isə miqyas iqtisadiyyatıdır. Burada bir bulud təminatçısı böyük miqdarda hardware alaraq endirim əldə edə bilir və bu endirimi müştərilərinə ötürür.
 
 Məsələn, təşkilatınızın beş köhnəlmiş serverini dəyişdirmək lazım gəlsə, bu serverləri almağın xərci əhəmiyyətli dərəcədə yüksək olardı. Lakin, Microsoft böyük miqdarda server alır və buna görə də server başına qiymət daha ucuz olur və ehtimal ki, eyni avadanlıq üçün ödəyəcəyiniz qiymətdən çox daha ucuzdur. Bu, anbar mağazasında bir qutu konserv fasulyesi almağa bənzəyir. Bir qutuda 24 banka olan bir paket, tək bir bankadan çox daha ucuz olacaq. Bu da miqyas iqtisadiyyatıdır.
+
+Saxlama, miqyas iqtisadiyyatının başqa bir yaxşı nümunəsidir. Microsoft kimi bulud təminatçıları böyük miqdarda saxlamanı əhəmiyyətli endirimlə alır və bu endirimi müştərilərinə ötürürlər. Nəticədə, Microsoft-dan aldığınız saxlamanın qiyməti adətən özünüzün satın aldığınız saxlamadan və əlaqədar infrastrukturdan çox daha ucuz olur. Yuxarıdakı konserv bankası nümunəsində olduğu kimi, bu xərc bir çox müştəri arasında bölüşdürülür və hər bir müştəri üçün xərcləri daha da azaldır.
+
+### **Miqyaslanma və Elastiklik**
+
+Bulud hesablama texnologiyasının iki əlavə faydası miqyasanma və elastiklikdir. **Miqyaslanma**, artan tələbatı qarşılayacaq hesablama resurslarını əlavə etmə bacarığıdır. Məsələn, düşünün ki, təşkilatınız e-ticarət işini idarə etmək üçün bir veb-farm yerləşdirir. İl ərzində yeddi və ya səkkiz ay ərzində ehtiyaclarınız nisbətən sabitdir. Lakin, pik tətil mövsümündə, satışlardan gələn artan trafikə cavab vermək üçün əlavə bir neçə serverə ehtiyacınız ola bilər. Serverlərinizi **horizontallıqla miqyaslayaraq** artan tələbatı qarşılayacaq əlavə serverlər əlavə edə bilərsiniz və sonra tətil mövsümü bitdikdən sonra bu əlavə serverləri çıxara bilərsiniz. Bu, **horizontal miqyaslanma** adlanır.
+
+Avadanlıq üçün əvvəlcədən kapital xərci ödəmək əvəzinə, yalnız bu serverlərdən istifadə etdiyiniz müddət ərzində artırılmış əməliyyat xərci yaranır. Şəkil 1.2, orizontal miqyaslanmanın bir nümunəsini göstərir.
+
+**Horizontal miqyaslanma** əlavə resursları lazım olduğu zaman əlavə edir və artıq lazım olmadığı zaman onları çıxarır.
+
+<img
+  src="/images/az900/chapter1/image2.png"
+  alt="Horizontal miqyaslanma əlavə resursları lazım olduğu zaman əlavə edir və artıq lazım olmadığı zaman onları çıxarır."
+  title="Horizontal miqyaslanma əlavə resursları lazım olduğu zaman əlavə edir və artıq lazım olmadığı zaman onları çıxarır."
+  className="mx-auto"
+  style={{ width:"59%" }}
+/>
+
+Miqyaslanmanın iki növü var. Əvvəlki nümunə h**orizontal miqyaslanma** və onun tərsi olan **şaquli miqyaslanma** (scaling in) haqqında idi. **Şaquli miqyaslanma** (və ya **vertical scaling**) resursların mövcud tutumunu tələbinə uyğun olaraq artırmağa yönəlmişdir. Məsələn, bir virtual serverə mövcud olan yaddaşın artırılması, şaquli miqyaslanmanın bir nümunəsidir. Mövcud bir serverə əlavə prosessor nüvələri əlavə etmək də şaquli miqyaslanmanın başqa bir nümunəsidir. Həmçinin, orizontal miqyaslanmada olduğu kimi, şaquli miqyaslanmada da azalma mümkündür. Artıq ehtiyacınız olmadıqda əlavə yaddaşı çıxarmaq, **şaquli miqyaslanmanın azaldılması** (scaling down) deməkdir. Şəkil 1.3, şaquli miqyaslanmanın bir nümunəsini göstərir.
+
+**Şəkil 1.3** Şaquli miqyaslanma, tələbin dəyişməsinə uyğun olaraq mövcud resursların tutumunu tənzimləyir.
+
+<img
+  src="/images/az900/chapter1/image3.png"
+  alt="Image3"
+  title="Image3"
+  className="mx-auto"
+  style={{ width:"56%" }}
+/>
+
+Şaquli və orizontal miqyaslanma əl ilə edilə bilən proseslərdir və resursları miqyaslamaq üçün müəyyən addımlar atmaq tələb olunur. Azure-da resursları miqyaslamaq nisbətən asandır, amma avtomatik miqyaslanma daha çox üstünlük təşkil edir. Məsələn, düşünün ki, bir məhsulu saat 11:00-də yayımlanan televiziya proqramında reklam edirsiniz. Bu, istehlakçıları saytınıza cəlb edir və tələbat təxminən gecə yarısı artmağa başlayır. IT işçiləriniz isə tamamilə yatıb. Kim tələbatı görəcək və uyğun şəkildə miqyaslamağı təmin edəcək?
+
+Avtomatik miqyaslanma, elastiklik olaraq adlanır və Azure-un sizin üçün resursları qarşılıqsız miqyaslamasına imkan verir. Resurslar, CPU istifadəsi, yaddaş istifadəsi, saxlanma istifadəsi və s. əsasında avtomatik miqyaslana bilər. Autoscale isə Azure-un avtomatik miqyaslanmanı təmin edən xidmətidir. Autoscale ilə parametrləri yaratdığınız qaydalar vasitəsilə tənzimləyirsiniz. Qaydalarda müəyyən edilmiş həddlərə çatıldığında, Autoscale, qaydalarda göstərildiyi şəkildə miqyaslama prosesini idarə edir.
+
+Daha çox məlumat üçün [Azure Autoscale-i necə qurmaq və istifadə etmək barədə](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/autoscale-get-started) linkinə baxın. 
+
+Azure, tələbat tələblərinə uyğun olaraq resursları miqyaslamağı çox asanlaşdırır və **Autoscale** - bir dəfə konfiqurasiya edildikdə - resursları miqyaslamağı demək olar ki, səylə əhatə etmədən həyata keçirə bilir. Resursları sürətlə tələblərə uyğunlaşdırmaq bacarığı bulud çevikliyinin bir hissəsidir. Bulud çevikliyinin digər bir hissəsi isə dəyişən iş tələblərinə tez uyğunlaşma qabiliyyətidir. Sonuncu konsept, Azure Fundamentals sertifikatında əhatə olunmur, amma bulud hesablama seçimlərini qiymətləndirərkən nəzərə alınması vacib olan bir anlayışdır.
+
+## **Yüksək Əlçatanlıq (HA)**
+
+Yüksək əlçatanlıq (HA) bir sistemin, ciddi fasiləsizliyə yol vermədən istifadə üçün əlçatan olduğu və ümumiyyətlə xidmət səviyyəsi müqaviləsi (SLA) ilə dəstəkləndiyi bir vəziyyəti təsvir edir. Məsələn, bir xidmətin SLA-sı 99.9 faizdirsə, bu o deməkdir ki, xidmət 99.9 faiz müddətində əlçatandır. Gerçək dünyada bu, deməkdir ki, xidmət həmin ay üçün 30 gün ərzində 43.2 dəqiqədən çox qeyri-aktiv olmamalıdır, əks halda 99.9 faiz SLA təmin edilə bilməz. Maliyyə ilə təmin edilmiş bir SLA, xidmətin əlçatmaz olduğu müddət üçün kredit təmin edir.
+
+Xidmət səviyyəsi müqavilələri (SLA) haqqında ətraflı məlumat **6-cı fəsildə**, "Azure Qiymətləndirməsi, Xidmət Səviyyələri və Həyat Dövrü" bölməsində müzakirə edilir.
+
+Bir xidmətin əlçatan olmamağına bir çox səbəb ola bilər. Serverlər düşə bilər, şəbəkə problemi serverlərə və ya serverlərdən trafik göndərilməsini əngəlləyə bilər, bir server tətbiqi uğursuz ola bilər və ya bir periferik xidmət uğursuz ola bilər. Məsələn, əgər iş fəaliyyətiniz bir verilənlər bazasına əsaslanırsa və verilənlər bazası offline olarsa, tətbiqinizin əlçatan olmaması ehtimalı yüksəkdir.
+
+\
+Qeyd etmək vacibdir ki, "əlaqə" əlçatanlıqla əlaqəli olsa da, bu, performans demək deyil. Əgər bir Azure xidməti əlçatandır, amma azalmış performansla işləyirsə, SLA kontekstində hələ də əlçatan sayılır.
+
+## **Xətaya Davamlılıq**
+
+"Xətaya davamlılıq" termini, sistemin tərkib hissələrindən biri və ya bir neçəsi uğursuz olduqda belə işləməyə davam etmə qabiliyyətini təsvir edir. Məsələn, adi bir SharePoint farmı ən azı bir verilənlər bazası serveri, bir veb server və bir tətbiq serveri ehtiva edir. Bu serverlər bir yerdə istifadəçilərin istifadə etdiyi SharePoint xidmətlərini təmin edir. Əgər bir veb server düşərsə, xidmət əlçatan olmaz. SharePoint farmını daha çox xətaya davamlı etmək üçün ikinci bir veb server əlavə edib trafiği onlara bölüşdürə bilərsiniz. Beləliklə, bir veb server düşsə də, digəri web sorğularını yerinə yetirməyə davam edir. İstifadəçilər reaksiyaların ləngiməsi hiss edə bilər, amma xidmət hələ də işlək qalır. Bu halda, SharePoint farmı müəyyən dərəcədə daha çox xətaya davamlıdır. Şəkil 1.2 (yuxarıda göstərilmişdir) bu nümunəni izah edir.
+
+Bu SharePoint nümunəsində, farm tamamilə xətaya davamlı deyil, çünki tək tətbiq serveri və verilənlər bazası serverində hələ də uğursuzluq nöqtələri mövcuddur. Bir xidmət üçün xətaya davamlılıq strategiyası qurarkən, tək bir şəbəkə yolu kimi potensial uğursuzluq nöqtələrini də nəzərə almalısınız.
+
+## **Fəlakət Bərpası**
+
+Xətaya davamlılıq ümumiyyətlə xidmətin tərkib hissəsi səviyyəsində tətbiq edilir. Məsələn, ikinci bir veb server əlavə etmək, virtual maşının başqa bir instansiyaya sürətlə keçməsini təmin etmək və ya xətaya davamlılığı təmin edən bir klaster verilənlər bazası yaratmaq xətaya davamlılıq nümunələridir. Xətaya davamlılıq ümumiyyətlə bir resursun uğursuz olduğu zaman baş verir.
+
+**Fəlakət bərpası** isə sistemin tamamilə uğursuz olduğu bir vəziyyətdən bərpa olunma prosesini ifadə edir. Məsələn, düşünün ki, şirkətinizin əsas məlumat mərkəzinə bir tornado düşdü və orada yerləşən bütün İT infrastrukturunu və xidmətləri məhv etdi. Bu, daha ciddi bir fəlakətdir; belə bir fəlakət, yeni serverlərin qurulması və onların konfiqurasiyasının və məlumatlarının ehtiyat nüsxələrindən bərpa edilməsi qədər çətin ola bilər, ya da bütün istifadəçilərinizi bir ehtiyat məlumat mərkəzinə yönləndirib, orada kritik xidmətlərinizi davam etdirməyə başlamanız qədər dağıdıcı ola bilər, ta ki, orijinal məlumat mərkəzi təmir edilə və ya yenilənmiş məlumatlarla bərpa olunsun.
+
+Fəlakət bərpası strategiyasına sahib olmağın bir çox səbəbi var və bu, çoxlu şirkətlərə, sahələrə və təklif etdikləri İT xidmətlərinə görə fərqli olacaqdır. Məsələn, kiçik bir şirkət yalnız serverinin tam ehtiyat nüsxələrinə və yeni bir serverə sürətli şəkildə bərpa etmə qabiliyyətinə ehtiyac duyur. Daha böyük bir təşkilat isə, çoxlu məlumat mərkəzləri, məlumat mərkəzləri arasında xidmətlərin aktiv monitorinqi və daha çoxunu əhatə edən daha mürəkkəb bir bərpa planına ehtiyac duyur. Bir çox təşkilat indi bulud infrastruktur xidmətləri (məsələn, Microsoft 365 və Azure) istifadə edərək fəlakət bərpası mühiti yaratmağa yönəlir. Digər təşkilatlar isə Microsoft 365 və Azure-u on-premises İT xidmətlərini yerləşdirmək üçün istifadə edir, burada yerli serverlər uzaq bir yerdə infrastruktura xidmət edir və miqyaslanma, elastiklik və fəlakət bərpası təmin edir.
+
+**2-ci Fəsil**, "Azure Əsas Xidmətləri", fəlakət bərpası mühitini qurmaq və infrastrukturunuza xətaya davamlılıq və yüksək əlçatanlıq əlavə etmək üçün istifadə edə biləcəyiniz əsas anlayışları və xidmətləri ətraflı şəkildə təsvir edir. 
+
+9cu sehife
