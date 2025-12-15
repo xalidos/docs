@@ -20,14 +20,18 @@
         ]
       },
       {
-        "tab": "AZ-204",
+        "tab": "AZ-900",
         "groups": [
+          {
+            "group": "Giriş",
+            "pages": [
+                "az900/introdution"
+            ]
+          },
           {
             "group": "Hissə 1",
             "pages": [
-                "az204/introdution",
-                "az204/chapter14",
-                "az204/chapter1"
+                "az900/chapter1"
             ]
           }
         ]
