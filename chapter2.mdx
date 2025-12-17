@@ -1,0 +1,159 @@
+---
+title: "Chapter2"
+---
+
+## Geographies and Regions
+
+Azure infrastrukturunun əsasını onun qlobal şəbəkəsi təşkil edir. Bu strukturu anlamaq üçün ən böyükdən kiçiyə doğru — **Geographies**, **Regions** və **Availability Zones** ardıcıllığı ilə baxmaq lazımdır.
+
+### 1. Azure Geographies (Coğrafiyalar)
+
+Azure dünyanı bir neçə coğrafi zonaya bölür. Bir Coğrafiya adətən bir və ya bir neçə Regionu özündə birləşdirən böyük bir ərazidir (məsələn, Amerika, Avropa, Asiya-Sakit Okean, Yaxın Şərq və Afrika).
+
+- **Məqsədi:** Məlumatların müəyyən sərhədlər daxilində qalmasını təmin etmək (**Data Residency**). Məsələn, bir şirkətin qanunla məlumatları Avropa daxilində saxlamalıdırsa, Azure həmin məlumatın Avropa coğrafiyasından kənara çıxmayacağına zəmanət verir.
+- **Xüsusiyyəti:** Adətən ölkə sərhədləri və ya qitə miqyası ilə müəyyən olunur.
+
+### 2. Azure Regions (Regionlar)
+
+Region — bir-birinə çox yaxın yerləşən və aşağı gecikmə müddətinə (**low-latency**) malik şəbəkə ilə birləşdirilmiş data mərkəzləri toplusudur.
+
+- **Genişlik:** Azure-un dünyada 60-dan çox regionu var (məsələn, _East US_, _North Europe_, _Southeast Asia_).
+- **Seçim meyarları:** Region seçərkən istifadəçilərinizə yaxınlığı (sürət üçün), qiyməti (hər regionda qiymət fərqli ola bilər) və mövcud xidmətləri nəzərə almalısınız.
+
+### 3. Region Pairs (Region Cütlükləri)
+
+Hər bir Azure regionu həmin coğrafiya daxilində başqa bir region ilə "cütləşir". Bu cütlüklər bir-birindən ən azı **300 mil (təxminən 480 km)** məsafədə yerləşir.
+
+- **Niyə lazımdır?** Böyük bir təbii fəlakət (zəlzələ, yanğın) bir regionu tamamilə sıradan çıxarsa, məlumatlarınız avtomatik olaraq digər cütləşmiş regiondan bərpa olunur.
+- **Yenilənmə qaydası:** Azure sistem yeniləmələrini eyni anda hər iki cütlük regiona tətbiq etmir. Öncə birini yeniləyir, hər şey qaydasındadısa, digərinə keçir. Bu, sistemin tam çökmə riskini azaldır.
+
+### 4. Availability Zones (Əlçatanlıq Zonaları)
+
+Regionun daxilində olan daha kiçik vahidlərdir. Bir Region adətən ən azı **3 ayrı zonadan** ibarət olur.
+
+- **Nədir?** Hər bir Zona müstəqil elektrik enerjisi, soyutma və şəbəkə sisteminə malik bir və ya bir neçə fiziki data mərkəzidir.
+- **Məqsəd:** Əgər bir binada elektrik kəsilsə, digər binadakı (zonadakı) serverlər işinə davam edir. Bu, **High Availability** (Yüksək Əlçatanlıq) təmin edir.
+
+### Xülasə İerarxiya:
+
+1. **Geography:** Data sərhədlərini müəyyən edir (Məsələn: Europe).
+2. **Region:** Bir-birinə bağlı data mərkəzləri qrupudur (Məsələn: North Europe - İrlandiya).
+3. **Availability Zone:** Region daxilindəki müstəqil data mərkəzidir.
+
+## **Availability Zones**
+
+**Availability Zones (AZ)**, Azure regionu daxilində bir-birindən fiziki olaraq ayrılmış, hər biri öz müstəqil elektrik enerjisi, soyutma sistemi və şəbəkəsinə malik olan data mərkəzləridir.
+
+Sadə desək, əgər bir Region bir şəhərdirsə, Availability Zones həmin şəhərin fərqli məhəllələrində yerləşən və bir-birindən asılı olmayan binalardır.
+
+### Availability Zones-un Əsas Xüsusiyyətləri
+
+1. **İzolyasiya:** Bir zonada baş verən qəza (məsələn, yanğın və ya elektrik kəsilməsi) digər zonalara təsir etmir.
+2. **Yüksək Sürətli Şəbəkə:** Zonalar bir-birinə çox sürətli fiber-optik şəbəkə ilə bağlıdır, buna görə də məlumatların zonalar arası ötürülməsində gecikmə (latency) çox aşağıdır.
+3. **Minimum Say:** Bir Region "Availability Zone" dəstəkləyirsə, orada adətən ən azı **3 ayrı zona** olur.
+
+### Niyə Availability Zones istifadə etməliyik?
+
+Əsas məqsəd **High Availability (Yüksək Əlçatanlıq)** təmin etməkdir. Təsəvvür et ki, sən bir veb-sayt işlədirsən:
+
+- **Ssenari A (Tək server):** Saytın tək bir serverdədir. Həmin serverin olduğu binada işıq sönsə, saytın çökür.
+- **Ssenari B (Availability Zones):** Sən saytını 2 fərqli zonada (məsələn, Zone 1 və Zone 2) yerləşdirirsən. Əgər Zone 1-də sel daşqını olsa və data mərkəzi sıradan çıxsa, saytın Zone 2-dəki server vasitəsilə işləməyə davam edəcək.
+
+### Zonalara görə xidmət növləri
+
+Azure-da xidmətləri zonalarda iki cür yerləşdirmək olar:
+
+- **Zonal services:** Sən resursu konkret bir zonaya bağlayırsan (məsələn, Virtual Machine yalnız Zone 1-də olsun).
+- **Zone-redundant services:** Azure resursu avtomatik olaraq zonalar arasında kopyalayır (məsələn, SQL bazası hər üç zonada eyni anda saxlanılır).
+
+### Region vs. Availability Zone (Fərq nədir?)
+
+| **Xüsusiyyət** | **Region**                                     | **Availability Zone**                                        |
+| :------------- | :--------------------------------------------- | :----------------------------------------------------------- |
+| **Məsafə**     | Ölkələr və ya şəhərlər arası (yüzlərlə mil).   | Şəhər daxili (fiziki yaxın, amma müstəqil).                  |
+| **Qorunma**    | Regional fəlakətlərdən (məs. zəlzələ) qorunma. | Bina səviyyəli qəzalardan (məs. elektrik kəsilməsi) qorunma. |
+| **Gecikmə**    | Daha yüksək gecikmə (latency).                 | Çox aşağı gecikmə (saniyənin mində biri).                    |
+
+### Service Level Agreement (SLA) Üstünlüyü
+
+Əgər sən iki və ya daha çox Virtual Maşını müxtəlif Availability Zone-larda yerləşdirsən, Microsoft sənə **99.99%** (four nines) işləmə zəmanəti verir. Bu da ildə cəmi 52 dəqiqə dayanma müddəti deməkdir.
+
+## Bringing It All Together
+
+Sənin paylaşdığın bu mətn Azure-un **"High Availability" (Yüksək Əlçatanlıq)** strategiyasının bütün parçalarını bir yerə toplayır. Bu strukturu ən kiçikdən ən böyüyə doğru bir zəncir kimi təsəvvür etsək, hər həlqə bir əvvəlkinin təhlükəsizlik boşluğunu doldurur.
+
+Gəl, bu siyahını daha anlaşıqlı şəkildə xülasə edək:
+
+### Azure-un Müdafiə Layihələri (Summarized)
+
+1. **Data Center (Məlumat Mərkəzi):** İşin "mətbəxi" buradır. Serverlərin, disklərin və şəbəkə avadanlıqlarının fiziki olaraq yerləşdiyi bina.
+2. **Availability Zones (Əlçatanlıq Zonaları):** Bir region daxilindəki "müstəqil adalar".
+   - **Fərqi:** Data center sadəcə binadırsa, Availability Zone o binanı (və ya binalar qrupunu) elektrik, soyutma və şəbəkə baxımından tam müstəqil edən **infrastruktur zəmanətidir**.
+   - **Məqsəd:** Yerli qəzalardan (məsələn, binanın elektrik transformatorunun yanması) qorunmaq.
+3. **Region:** Bir-birinə çox yaxın və sürətli qoşulmuş data mərkəzləri qrupu.
+   - Sən xidməti "Region" səviyyəsində seçirsən, daxildə isə onu "Zonalar"a bölürsən.
+4. **Region Pair (Region Cütlüyü):** Bu, Azure-un "fəlakət sığortası"dır.
+   - **Qızıl Qayda:** Hər zaman eyni coğrafiya (Geography) daxilində olur.
+   - **Serial Updates:** Yenilənmələr eyni anda edilmir. Bu o deməkdir ki, əgər bir yenilənmə (update) xətaya səbəb olsa, bu yalnız bir regiona təsir edəcək, cütlükdəki digər region isə sağlam qalacaq.
+5. **Geography (Coğrafiya):** Ən böyük sərhəd.
+   - **Data Residency:** Əsas məqsəd qanunvericiliyə riayət etməkdir. Məsələn, "Mənim datam Almaniya sərhədlərindən çıxmasın" dedikdə, Azure Geography bunu təmin edir.
+
+### Hansı Səviyyə Sizi Nədən Qoruyur?
+
+| **Səviyyə**           | **Qoruduğu Risk**                                                                                        |
+| :-------------------- | :------------------------------------------------------------------------------------------------------- |
+| **Availability Zone** | Bir binada işığın sönməsi, su basması və ya soyutma sisteminin sıradan çıxması.                          |
+| **Region Pair**       | Bütün bir şəhəri və ya ərazini vuran fəlakət (məsələn, böyük zəlzələ və ya regional internet kəsintisi). |
+| **Geography**         | Qanuni problemlər və dövlətlərarası data təhlükəsizliyi tələbləri.                                       |
+
+### Praktiki Nəticə:
+
+Əgər sən çox kritik bir proqram işlədirsənsə, Microsoft sənə tövsiyə edir ki:
+
+- Xidmətini **Availability Zones** vasitəsilə bir region daxilində payla (lokal xətalardan qorun).
+- Məlumatlarını **Region Pair** vasitəsilə başqa bir regiona sinxronizasiya et (regional fəlakətlərdən qorun).
+
+## Resources and Resource Groups
+
+Azure-un idarəetmə strukturunda **Resources** (Resurslar) və **Resource Groups** (Resurs Qrupları) ən təməl anlayışlardır. Bunları bir ofis və sənədlər sistemi kimi təsəvvür edə bilərsən.
+
+### 1. Resource (Resurs) Nədir?
+
+Azure-da yaratdığın hər bir element bir **Resursdur**.
+
+- **Nümunələr:** Bir Virtual Maşın (VM), bir Verilənlər Bazası (SQL Database), bir Veb Sayt (App Service) və ya bir Yaddaş Sahəsi (Storage Account).
+- Hər bir resurs müəyyən bir regionda yerləşir və özünəməxsus sazlamalara malikdir.
+
+### 2. Resource Group (Resurs Qrupu) Nədir?
+
+Resurs Qrupu, Azure resurslarını bir yerə toplayan **məntiqi konteynerdir**. Onu bir qovluq kimi düşünə bilərsən.
+
+#### Əsas Qaydalar və Xüsusiyyətlər:
+
+- **Həyat Dövrü (Lifecycle):** Bir resurs qrupunun daxilindəki bütün resurslar eyni həyat dövrünə sahib olmalıdır. Məsələn, bir layihə bitdisə, resurs qrupunu sildiyində onun içindəki bütün serverlər və bazalar da eyni anda silinir. Bu, idarəetməni çox asanlaşdırır.
+- **Üzvlük:** Bir resurs yalnız **bir** resurs qrupuna məxsus ola bilər.
+- **Fərqli Regionlar:** Bir resurs qrupunun daxilindəki resurslar müxtəlif regionlarda ola bilər. Məsələn, qrup "West Europe" regionunda yaradıla bilər, amma daxilindəki VM "East US" regionunda ola bilər.
+- **Teqləmə (Tagging):** Resurs qrupuna teqlər əlavə edərək xərcləri izləmək olar (məsələn, "Departament: Satış").
+
+### Niyə Resurs Qrupları Lazımdır?
+
+1. **İdarəetmə (Management):** 100-lərlə serverin varsa, onları layihələrə görə qruplamaq onları tapmağı və idarə etməyi asanlaşdırır.
+2. **Giriş İdarəetməsi (RBAC - Role-Based Access Control):** Sən bir işçiyə bütün Azure-a deyil, yalnız konkret bir **Resurs Qrupuna** giriş icazəsi verə bilərsən. Məsələn, "Developerlər yalnız 'Dev-Project' qrupunu görə bilsin".
+3. **Xərc Analizi:** Şirkətin hansı layihəyə (qrupa) nə qədər pul xərclədiyini hesablamaq üçün idealdır.
+
+### Azure-un Tam İerarxiyası
+
+Resurslar və Qruplar daha böyük bir strukturun parçasıdır:
+
+1. **Management Groups:** Birdən çox abunəliyi (subscription) idarə etmək üçün.
+2. **Subscriptions (Abunəliklər):** Ödəniş və limitlərin müəyyən olunduğu səviyyə.
+3. **Resource Groups:** Resursları qruplayan konteynerlər.
+4. **Resources:** Ən kiçik vahidlər (VM, Database).
+
+### Nümunə Ssenari:
+
+Təsəvvür et ki, şirkətin bir "Mobil Bankçılıq" tətbiqi var. Sən bu tətbiq üçün:
+
+- Bir **Resource Group** yaradırsan (Adı: `Banking-App-RG`).
+- Onun daxilinə 2 dənə Virtual Maşın, 1 SQL Database və 1 Virtual Network əlavə edirsən.
+- Tətbiqi yeniləmək və ya silmək lazım gəldikdə, hər şeyi tək-tək axtarmırsan, birbaşa bu qrup üzərindən əməliyyat aparırsan.
