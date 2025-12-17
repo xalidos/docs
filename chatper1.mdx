@@ -257,3 +257,87 @@ Məsuliyyətlərin kimin üzərində olduğunu vizual olaraq belə görə bilər
 ### Əsas Qayda
 
 Bulud modelindən asılı olmayaraq, **məlumatların (data) təhlükəsizliyi və girişi idarə etmək (identity/access)** hər zaman **Müştərinin** məsuliyyətində qalır. Yəni, kimsə sənin şifrəni ələ keçirib datanı silsə, buna görə provayder məsuliyyət daşımır.
+
+## **Shared Responsibility**
+
+**Shared Responsibility Model** (Birgə Məsuliyyət Modeli) bulud provayderi (məsələn, Microsoft, AWS və ya Google) ilə sizin (müştərinin) aranızdakı təhlükəsizlik və idarəetmə sərhədlərini müəyyən edən bir qaydadır.
+
+Sadə dillə desək: **"Buludun təhlükəsizliyi provayderin, buludun içindəkilərin təhlükəsizliyi isə sizin məsuliyyətinizdir."**
+
+### Məsuliyyət Bölgüsü Necə Dəyişir?
+
+Məsuliyyətlər istifadə etdiyiniz bulud modelinə (**IaaS, PaaS, SaaS**) görə dəyişir. Lakin bəzi şeylər var ki, onlar **hər zaman** sizin məsuliyyətinizdə qalır.
+
+#### 1. Hər zaman SİZİN məsuliyyətinizdə olanlar (Müştəri):
+
+Hansı modeli seçməyinizdən asılı olmayaraq, aşağıdakılara görə provayder cavabdehlik daşımır:
+
+- **Məlumatlar (Data):** Buluda yüklədiyiniz hər bir fayl və məlumat.
+- **Giriş İdarəetməsi (Identity & Access):** Kimin sistemə daxil ola biləcəyi, şifrələrin güclü olması və çoxfaktorlu doğrulama (MFA).
+- **Cihazlar (Endpoints):** Buluda qoşulan noutbuklar, telefonlar və ofis kompüterləri.
+
+#### 2. Hər zaman PROVAYDERİN məsuliyyətində olanlar:
+
+- **Fiziki İnfrastruktur:** Serverlərin yerləşdiyi bina, elektrik enerjisi, soyutma sistemi.
+- **Fiziki Şəbəkə:** Data mərkəzi daxilindəki kabellər və avadanlıqlar.
+- **Fiziki Təhlükəsizlik:** Data mərkəzinin mühafizəsi və girişə nəzarət.
+
+### Modellər üzrə Fərqlər
+
+Məsuliyyətlərin "boz zonası" modeldən-modelə belə dəyişir:
+
+- **IaaS (İnfrastruktur):** Provayder sizə "virtual maşın" verir. Siz onun içindəki **Əməliyyat Sistemini (Windows/Linux)** yeniləməli və antivirus quraşdırmalısınız. (Ən çox məsuliyyət müştəridədir).
+- **PaaS (Platforma):** Provayder əməliyyat sistemini özü idarə edir. Siz sadəcə **yazdığınız proqram koduna** cavabdehsiniz.
+- **SaaS (Proqram təminatı):** Demək olar ki, hər şeyi provayder idarə edir. Sizin tək işiniz **tətbiqdən istifadə etmək** və giriş icazələrini tənzimləməkdir.
+
+### Niyə bu modeli bilmək vacibdir?
+
+Əgər siz Azure-da bir server (IaaS) götürüb onun əməliyyat sistemini yeniləməsəniz və hakerlər boşluq tapıb sızsa, Microsoft buna görə məsuliyyət daşımır. Çünki Shared Responsibility Model-ə görə, IaaS modelində sistemin (OS) "patch" olunması **müştərinin** vəzifəsidir.
+
+> **Qızıl Qayda:** Bulud provayderi "fabriki" qoruyur, sən isə fabrikin içindəki "seyfini" və onun "açarlarını" qorumalısan.
+
+## Public, Private, and Hybrid Cloud Models
+
+Bulud texnologiyalarının üç əsas yayılma (deployment) modeli var. Bunlar bir-birindən resursların kimə məxsus olması, kim tərəfindən idarə olunması və təhlükəsizlik səviyyəsinə görə fərqlənir.
+
+### 1. Public Cloud (İctimai Bulud)
+
+Bu, ən çox yayılmış modeldir. Resurslar (serverlər, yaddaş) üçüncü tərəf provayderə (məsələn, Microsoft Azure, AWS, Google Cloud) məxsusdur və internet üzərindən hər kəsə təklif olunur.
+
+- **Mülkiyyət:** Provayderə məxsusdur.
+- **Xüsusiyyətləri:**
+  - **Aşağı xərc:** Avadanlıq almağa ehtiyac yoxdur (CapEx yoxdur).
+  - **Yüksək miqyalanma:** Ehtiyac olduqda resursları saniyələr içində artıra bilərsiniz.
+  - **Baxım yoxdur:** Yenilənmə və təmir provayder tərəfindən edilir.
+- **Bənzətmə:** Avtobus və ya metro istifadə etmək. Vasitə hər kəs üçündür, siz sadəcə bilet alıb istifadə edirsiniz.
+
+### 2. Private Cloud (Özəl Bulud)
+
+Resurslar eksklüziv olaraq yalnız bir təşkilat tərəfindən istifadə olunur. Bu bulud şirkətin öz data mərkəzində (on-premise) ola bilər və ya provayder tərəfindən yalnız həmin şirkət üçün ayrılmış xüsusi serverlərdə yerləşə bilər.
+
+- **Mülkiyyət:** Təşkilatın özünə və ya provayderə məxsusdur (amma resurslar paylaşılmır).
+- **Xüsusiyyətləri:**
+  - **Yüksək təhlükəsizlik:** Məlumatlar tam nəzarət altındadır.
+  - **Fərdiləşdirmə:** Şirkət öz infrastrukturunu istədiyi kimi qura bilər.
+  - **Yüksək xərc:** Avadanlıq alışı və saxlanması şirkətin üzərindədir.
+- **Bənzətmə:** Öz şəxsi avtomobilinə sahib olmaq. Yalnız siz istifadə edirsiniz, amma bütün xərcləri siz ödəyirsiniz.
+
+### 3. Hybrid Cloud (Hibrid Bulud)
+
+Adından göründüyü kimi, bu, **Public** və **Private** buludun birləşməsidir. Şirkət bəzi məlumatlarını özəl buludda (məsələn, məxfi müştəri datası), bəzi tətbiqlərini isə ictimai buludda (məsələn, veb saytın özü) saxlayır.
+
+- **Mülkiyyət:** Hər ikisinin qarışığıdır.
+- **Xüsusiyyətləri:**
+  - **Çeviklik:** Ən vacib datanı içəridə, ağır yükü isə çöldə idarə etmək olar.
+  - **Cloud Bursting:** Saytda yük artanda (məsələn, bayramda), daxili serverlərdən ictimai buluda "keçid" edib əlavə güc almaq olar.
+  - **Mürəkkəblik:** İki fərqli mühiti idarə etmək daha çətindir.
+- **Bənzətmə:** Lazım olanda öz maşınını sürmək, uzaq yola gedəndə isə təyyarədən istifadə etmək kimi.
+
+### Müqayisə Cədvəli
+
+| **Özəllik**       | **Public Cloud**         | **Private Cloud** | **Hybrid Cloud**      |
+| :---------------- | :----------------------- | :---------------- | :-------------------- |
+| **Xərc**          | Ən aşağı (OpEx)          | Ən yüksək (CapEx) | Qarışıq               |
+| **Nəzarət**       | Provayderdən asılılıq    | Tam nəzarət       | Balanslaşdırılmış     |
+| **Təhlükəsizlik** | Yüksək (amma paylaşılan) | Maksimum          | Rugulyasiyalara uyğun |
+| **Quraşdırma**    | Çox sürətli              | Zaman aparan      | Mürəkkəb              |
