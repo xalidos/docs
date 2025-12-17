@@ -8,15 +8,13 @@ Microsoft Azure AZ-900 Sertifikat İmtahanında Birinci Məqsəd
 
 ## İlk olaraq bulud hesablamaya nəzər salaq.
 
-Hazırda Microsoft üç bulud hesablaması həlli təklif edir: Microsoft Azure, Microsoft 365 və Microsoft Dynamics 365. AZ-900 Sertifikat İmtahanında əhatə olunan Azure, geniş bulud xidmətləri spektrini təmin edir. Bu xidmətlər həm server əsaslı, həm də son istifadəçi əsaslı hesablama xidmətlərini, verilənlər bazası xidmətlərini və analitikaları, süni intellekti, şəbəkə, infrastruktur və daha çoxunu əhatə edir.
+Microsoft Azure, şirkətlərin öz serverlərini və şəbəkə avadanlıqlarını Microsoft-un idarə etdiyi mərkəzlərə köçürməsinə imkan verir. Şirkətlər bu mərkəzlərə sərmayə qoymaq yerinə, Azure xidmətlərini istifadə edərək lazım olan resursları aylıq ödənişlə alırlar. Bu, böyük ilkin xərcləri aradan qaldırır və xərcləri daha idarəolunan edir.
 
-İkinci Microsoft bulud təklifi olan Microsoft 365, əsasən Windows, Office, SharePoint və OneDrive kimi son istifadəçi SaaS həlləri təqdim etməyə yönəlmişdir. Microsoft Dynamics 365 isə müəssisə resurslarının idarə edilməsi və müştəri əlaqələri idarəetmə tətbiqlərini əhatə edir. Microsoft 365 və Microsoft Dynamics 365 AZ-900 imtahanında əhatə olunmur.
+Böyük şirkətlər öz serverlərini və IT avadanlıqlarını xüsusi məlumat mərkəzlərində saxlayır. Kiçik şirkətlər isə üçüncü tərəf məlumat mərkəzlərinə serverlərini yerləşdirirlər. Azure isə bütün bu server və avadanlıqları Microsoft-un mərkəzlərində saxlayır.
 
-Hər iki Microsoft bulud təklifi, təşkilatlara özləri tərəfindən ev sahibliyi edilə bilən hesablama infrastrukturunu aradan qaldırmağa imkan verir. Böyük təşkilatlar adətən öz serverlərini, şəbəkə avadanlıqlarını və digər İT resurslarını bir məlumat mərkəzində yerləşdirirlər. Məlumat mərkəzi, serverlər və digər İT hardware-ləri ilə əlaqəli infrastrukturu yerləşdirmək üçün xüsusi olaraq nəzərdə tutulmuş və inşa edilmiş bir obyekt növüdür. Bəzi təşkilatlar öz məlumat mərkəzlərini idarə edir, digərləri isə üçüncü tərəf məlumat mərkəzi provayderi ilə müqavilə bağlayaraq İT avadanlıqlarını orada yerləşdirir.
+Bundan başqa, Microsoft böyük miqdarda hardware alaraq endirim əldə edir və bu endirimi müştərilərinə təqdim edir. Bu, şirkətlərin öz serverlərini almaqdan daha ucuz başa gəlir.
 
-Kiçik təşkilatlar adətən ya üçüncü tərəf məlumat mərkəzlərindən istifadə edir, ya da serverlərini və digər İT infrastrukturunu şirkətin daxilində bir və ya daha çox server otağında yerləşdirir, bu isə praktik olaraq çox kiçik məlumat mərkəzləridir.
-
-Azure kimi bir bulud təklifi, təşkilatlara bəzi—əgər hamısını deyil—serverlərini, şəbəkə avadanlıqlarını və digər İT resurslarını başqa bir şirkət tərəfindən idarə olunan məlumat mərkəzinə köçürməyə imkan verir. Azure vəziyyətində isə Microsoft, bu resursları bütün ölçülü təşkilatlar üçün yerləşdirmək məqsədilə dünyanın bir çox yerində məlumat mərkəzlərinə sahibdir və onları idarə edir. Bu resursların idarə olunması, təşkilat və Microsoft arasında paylaşılmış məsuliyyət olur. Bu paylaşılmış idarəetmənin dərəcəsi, Microsoft-un hansı resursları yerləşdirdiyinə və təşkilatın Azure-da hansı xidmətləri istifadə etdiyinə görə dəyişir. Şəkil 1.1-də, bir təşkilatın İT infrastrukturunun bəzilərinin Azure-da yerləşdirildiyi, digərlərinin isə öz məlumat mərkəzlərində saxlanıldığı və bu mühitlər arasında xidmətlərin qarşılıqlı əlaqəsi nümunəsi göstərilir.
+Azure xidmətləri, şirkətlərə öz resurslarını idarə etməkdə daha çevik və sərfəli imkanlar təqdim edir, həmçinin xərcləri asanlıqla idarə etməyə kömək edir.
 
 ![Chapter 1. Cloud Concepts](/images/az900/chapter1/image.png)
 
@@ -26,55 +24,58 @@ Bulud təminatçısı olan Microsoft kimi bir şirkətə resursların köçürü
 
 Bulud hesablama modelinin tətbiqi həm maliyyə, həm də insan resursları baxımından bir çox üstünlük təmin edir. Bu bölmədə bu əsas faydalar araşdırılacaq.
 
-### **İqtisadi Faydalar**
+### 1. **Kapital Xərcləri (CapEx) ilə Əməliyyat Xərcləri (OpEx) arasındakı fərq:**
 
-İT avadanlıqları, infrastruktur və əlaqədar resurslar çox baha başa gələ bilər. Bir təşkilat öz İT infrastrukturunu öz məlumat mərkəzində və ya üçüncü tərəf məlumat mərkəzində saxladığı zaman, təşkilat hardware, göndərmə, dəstək və əlaqədar xərcləri öz üzərinə götürür. Bu xərclər bir neçə il ərzində (bəzən hardware-in faydalı ömründən uzun) amortizasiya edilir. Bu cür alımlar kapital xərcləri (CapEx) olaraq təsnif edilir, yəni təşkilatın sabit aktivlər əldə etmək və ya saxlamaq üçün sərf etdiyi pullardır. Çoxsaylı təşkilatlar kapital xərclərini diqqətlə büdcələyir və CapEx büdcəsini təyin etmək üçün bir illik büdcələmə prosesi tələb edir, sonra isə büdcəyə ciddi şəkildə riayət edirlər.
+İlk olaraq, ənənəvi modeldə bir təşkilat öz məlumat mərkəzini (data center) idarə edərkən, çoxsaylı **kapital xərcləri** (CapEx) ilə qarşılaşır. Bu, yeni hardware-lərin alınması, daşınması, dəstəklənməsi və digər əlaqəli xidmətlərdən ibarətdir. Bu cür xərclər, təşkilatın illik büdcəsi ilə idarə olunur və çox vaxt uzun müddətə yayılan, bəzən hardware-in ömrü bitənə qədər davam edən xərcdir.
 
-Azure ilə Microsoft, xidməti saxlamaq və inkişaf etdirmək üçün lazım olan kapital xərclərini öz üzərinə götürür. Azure xidmətlərindən istifadə edən bir təşkilat, bu kapital xərclərini aradan qaldırır və onları əməliyyat xərcləri (OpEx) ilə əvəz edir ki, bunlar təşkilatın əməliyyatlarını idarə etmək üçün ayda ödənilən xərclərdir. Məsələn, hər istifadəçi üçün Microsoft Office lisenziyasını almaq (ki, bu, kapital xərci olardı) yerinə, təşkilat Microsoft 365 üçün aylıq istifadəçi başına ödəniş edir (əməliyyat xərci). Daimi lisenziya üçün nisbətən böyük bir ilkin xərci ödəmək əvəzinə, təşkilat xərci aylıq olaraq yayır.
+**CapEx** xərcləri sabit varlıqların (hardware, lisenziyalar və s.) alınması ilə əlaqələndirilir. Təşkilatlar adətən bu xərcləri illik büdcə ilə müəyyən edir və həmin büdcəyə ciddi şəkildə riayət edirlər.
 
-Kapital xərclərindən əməliyyat xərcləri modelinə keçid, hardware, lisenziyalar, dəstək müqavilələri və digər resursları yerləşdirmək üçün çox böyük ilkin xərcləri aradan qaldıra bilər. Əməliyyat modeli yalnız bu böyük ilkin xərclərdən qaçınmaqla qalmır, həm də təşkilatın xərcləri ilin sonuna qədər yaymasına imkan verir. Həmçinin, bu model təşkilata xərcləri əməkdaş sayı ilə əlaqələndirməyə imkan verir, beləliklə bir şəxs təşkilatdan çıxdıqda, müvafiq əməliyyat xərci də itir və ya sadəcə yeni gələn resursa yönəldilir.
+Bunun əksinə olaraq, **Azure** kimi bulud xidmətlərində təşkilatlar bu kapital xərclərini aradan qaldıraraq onları **əməliyyat xərclərinə (OpEx)** çevirirlər. Yəni, bulud xidmətlərində təşkilat bir aylıq ödənişlər ilə (məsələn, istifadəçi başına aylıq ödəniş) xidmətləri əldə edir və bunu əməliyyat xərcləri kimi hesablaya bilər. Bunun ən yaxşı nümunəsi **Microsoft 365**-dir. Ənənəvi olaraq Microsoft Office üçün hər bir istifadəçi üçün lisenziya alınması lazım idi, bu isə kapital xərcləri yaradırdı. Amma Azure ilə təşkilat, hər ay istifadəçi başına ödəniş edərək əməliyyat xərcləri yaradır.
 
-Bulud hesablama ilə bağlı digər bir iqtisadi fayda isə miqyas iqtisadiyyatıdır. Burada bir bulud təminatçısı böyük miqdarda hardware alaraq endirim əldə edə bilir və bu endirimi müştərilərinə ötürür.
+Bu dəyişiklik çox böyük ilkin xərclərin qarşısını alır və təşkilata xərcləri ilin müxtəlif dövrlərinə yaymağa imkan verir. Əgər bir işçi işdən ayrılırsa, həmin istifadəçi ilə bağlı əməliyyat xərci də avtomatik olaraq aradan qalxır və ya yeni bir işçiyə yönəldilir.
 
-Məsələn, təşkilatınızın beş köhnəlmiş serverini dəyişdirmək lazım gəlsə, bu serverləri almağın xərci əhəmiyyətli dərəcədə yüksək olardı. Lakin, Microsoft böyük miqdarda server alır və buna görə də server başına qiymət daha ucuz olur və ehtimal ki, eyni avadanlıq üçün ödəyəcəyiniz qiymətdən çox daha ucuzdur. Bu, anbar mağazasında bir qutu konserv fasulyesi almağa bənzəyir. Bir qutuda 24 banka olan bir paket, tək bir bankadan çox daha ucuz olacaq. Bu da miqyas iqtisadiyyatıdır.
+### 2. **Miqyas İqtisadiyyatı (Economy of Scale):**
 
-Saxlama, miqyas iqtisadiyyatının başqa bir yaxşı nümunəsidir. Microsoft kimi bulud təminatçıları böyük miqdarda saxlamanı əhəmiyyətli endirimlə alır və bu endirimi müştərilərinə ötürürlər. Nəticədə, Microsoft-dan aldığınız saxlamanın qiyməti adətən özünüzün satın aldığınız saxlamadan və əlaqədar infrastrukturdan çox daha ucuz olur. Yuxarıdakı konserv bankası nümunəsində olduğu kimi, bu xərc bir çox müştəri arasında bölüşdürülür və hər bir müştəri üçün xərcləri daha da azaldır.
+Azure və digər bulud xidmət təminatçıları, çoxlu sayda server və digər hardware-lər alır və bu alımlarda **miqyas iqtisadiyyatı** istifadə edirlər. Bu, böyük miqdarda hardware alındığı üçün alıcının xərcləri azaldılır. Microsoft kimi bulud xidmət təminatçıları, hardware-ləri böyük həcmdə aldıqda, alım qiymətləri daha ucuz olur. Bu da Microsoft-un öz müştərilərinə daha aşağı qiymətə xidmətlər təklif etməsinə imkan verir.
 
-### **Miqyaslanma və Elastiklik**
+Bu prinsip, **koli ilə qida alarkən** daha aydın izah olunur: Bir koli içərisində 24 ədəd konservi daha ucuz başa gəlir, nəinki tək bir ədəd alanda. Yəni, çoxlu alım həcmi qiyməti azaldır.
 
-Bulud hesablama texnologiyasının iki əlavə faydası miqyasanma və elastiklikdir. **Miqyaslanma**, artan tələbatı qarşılayacaq hesablama resurslarını əlavə etmə bacarığıdır. Məsələn, düşünün ki, təşkilatınız e-ticarət işini idarə etmək üçün bir veb-farm yerləşdirir. İl ərzində yeddi və ya səkkiz ay ərzində ehtiyaclarınız nisbətən sabitdir. Lakin, pik tətil mövsümündə, satışlardan gələn artan trafikə cavab vermək üçün əlavə bir neçə serverə ehtiyacınız ola bilər. Serverlərinizi **horizontallıqla miqyaslayaraq** artan tələbatı qarşılayacaq əlavə serverlər əlavə edə bilərsiniz və sonra tətil mövsümü bitdikdən sonra bu əlavə serverləri çıxara bilərsiniz. Bu, **horizontal miqyaslanma** adlanır.
+**Saxlama xərcləri** də bu növ iqtisadiyyatın nümunəsidir. Bulud təminatçıları böyük həcmdə saxlama məkanını daha ucuz qiymətə alırlar və bu endirimləri öz müştərilərinə ötürürlər. Əgər bir təşkilat öz serverlərini və saxlama infrastrukturunu qurarsa, bu halda onlar daha yüksək qiymət ödəyəcəklər, çünki onlar tək başlarına bu resursları almalıdırlar. Ancaq Microsoft bu resursları çox sayda müştəri üçün istifadə edərək, qiymətləri daha əlverişli edir.
 
-Avadanlıq üçün əvvəlcədən kapital xərci ödəmək əvəzinə, yalnız bu serverlərdən istifadə etdiyiniz müddət ərzində artırılmış əməliyyat xərci yaranır. Şəkil 1.2, orizontal miqyaslanmanın bir nümunəsini göstərir.
+### Nəticə:
 
-**Horizontal miqyaslanma** əlavə resursları lazım olduğu zaman əlavə edir və artıq lazım olmadığı zaman onları çıxarır.
+- **Kapital xərcləri (CapEx)** və **əməliyyat xərcləri (OpEx)** arasındakı fərq, təşkilatların maliyyə idarəetməsini və büdcə planlaşdırmasını sadələşdirir. Azure kimi bulud xidmətləri, təşkilatları böyük ilkin xərclərdən qoruyur və aylıq, daha proqnozlaşdırıla bilən ödənişlərə yönəldir.
+- **Miqyas iqtisadiyyatı** sayəsində bulud təminatçıları daha ucuz hardware-ləri və saxlama xidmətlərini təklif edirlər, bu da müştərilər üçün xərcləri daha da azaldır.
 
-<img
-  src="/images/az900/chapter1/image2.png"
-  alt="Horizontal miqyaslanma əlavə resursları lazım olduğu zaman əlavə edir və artıq lazım olmadığı zaman onları çıxarır."
-  title="Horizontal miqyaslanma əlavə resursları lazım olduğu zaman əlavə edir və artıq lazım olmadığı zaman onları çıxarır."
-  className="mx-auto"
-  style={{ width:"59%" }}
-/>
+### **Miqyaslanabilirlik (Scalability) və Elastiklik (Elasticity):**
 
-Miqyaslanmanın iki növü var. Əvvəlki nümunə h**orizontal miqyaslanma** və onun tərsi olan **şaquli miqyaslanma** (scaling in) haqqında idi. **Şaquli miqyaslanma** (və ya **vertical scaling**) resursların mövcud tutumunu tələbinə uyğun olaraq artırmağa yönəlmişdir. Məsələn, bir virtual serverə mövcud olan yaddaşın artırılması, şaquli miqyaslanmanın bir nümunəsidir. Mövcud bir serverə əlavə prosessor nüvələri əlavə etmək də şaquli miqyaslanmanın başqa bir nümunəsidir. Həmçinin, orizontal miqyaslanmada olduğu kimi, şaquli miqyaslanmada da azalma mümkündür. Artıq ehtiyacınız olmadıqda əlavə yaddaşı çıxarmaq, **şaquli miqyaslanmanın azaldılması** (scaling down) deməkdir. Şəkil 1.3, şaquli miqyaslanmanın bir nümunəsini göstərir.
+- **Miqyaslanabilirlik (Scalability)**, sistemin resurslarını artırmaq və ya azaltmaq qabiliyyətini ifadə edir. Bu, tələbin artması ilə resursları artırmaq və tələbin azalması ilə resursları azaltmaq imkanı verir. Bulud xidmətləri bu bacarıq sayəsində təşkilatların öz ehtiyaclarına uyğun olaraq resursları istədikləri kimi uyğunlaşdırmalarına imkan verir.
+- **Elastiklik (Elasticity)** isə **miqyaslanabilirlik** ilə əlaqəli olub, resursların dinamik şəkildə dəyişə bilməsini ifadə edir. Yəni, elastik sistemlər, tələbə əsaslanaraq, anında resursları əlavə edə və ya azalda bilər.
 
-**Şəkil 1.3** Şaquli miqyaslanma, tələbin dəyişməsinə uyğun olaraq mövcud resursların tutumunu tənzimləyir.
+### **Horizontal və Vertical Scailing:**
 
-<img
-  src="/images/az900/chapter1/image3.png"
-  alt="Image3"
-  title="Image3"
-  className="mx-auto"
-  style={{ width:"56%" }}
-/>
+#### 1. **Yatay Miqyaslanma (Horizontal Scaling):**
 
-Şaquli və orizontal miqyaslanma əl ilə edilə bilən proseslərdir və resursları miqyaslamaq üçün müəyyən addımlar atmaq tələb olunur. Azure-da resursları miqyaslamaq nisbətən asandır, amma avtomatik miqyaslanma daha çox üstünlük təşkil edir. Məsələn, düşünün ki, bir məhsulu saat 11:00-də yayımlanan televiziya proqramında reklam edirsiniz. Bu, istehlakçıları saytınıza cəlb edir və tələbat təxminən gecə yarısı artmağa başlayır. IT işçiləriniz isə tamamilə yatıb. Kim tələbatı görəcək və uyğun şəkildə miqyaslamağı təmin edəcək?
+Mətnin izah etdiyi birinci miqyaslanma növü **yatay miqyaslanmadır** (horizontal scaling). Bu zaman, təşkilat daha çox server və ya resurs əlavə edərək sistemin tutumunu artırır. Məsələn, bir **e-ticarət** saytının illik tələbatı müəyyən bir səviyyədə sabitdir, amma tətil dövründə trafik çoxalır. Bu halda, saytın serverləri daha çox server əlavə edərək **yatay miqyaslanır**. Həmçinin, tətil bitdikdən sonra əlavə edilmiş serverlər çıxarılaraq **yatay miqyaslanma geri alınır** (scaling in). Bu cür miqyaslanma, resursların sadəcə ehtiyac olduqda artırılmasını təmin edir və yalnız istifadə edilən resurslar üçün əməliyyat xərcləri yaranır.
 
-Avtomatik miqyaslanma, elastiklik olaraq adlanır və Azure-un sizin üçün resursları qarşılıqsız miqyaslamasına imkan verir. Resurslar, CPU istifadəsi, yaddaş istifadəsi, saxlanma istifadəsi və s. əsasında avtomatik miqyaslana bilər. Autoscale isə Azure-un avtomatik miqyaslanmanı təmin edən xidmətidir. Autoscale ilə parametrləri yaratdığınız qaydalar vasitəsilə tənzimləyirsiniz. Qaydalarda müəyyən edilmiş həddlərə çatıldığında, Autoscale, qaydalarda göstərildiyi şəkildə miqyaslama prosesini idarə edir.
+#### 2. **Dikey Miqyaslanma (Vertical Scaling):**
 
-Daha çox məlumat üçün [Azure Autoscale-i necə qurmaq və istifadə etmək barədə](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/autoscale-get-started) linkinə baxın.
+**Dikey miqyaslanma** (vertical scaling) isə mövcud resursların gücünü artırmaqla bağlıdır. Məsələn, bir serverin RAM və ya CPU gücünü artırmaqla tutumunu genişləndirmək. Bu, yeni resurslar əlavə etmək yerinə mövcud resursları daha güclü etməkdir. Dikey miqyaslanma, şəbəkə resurslarının və serverlərin mövcud tutumunun artırılması yolu ilə tələbə cavab verir.
 
-Azure, tələbat tələblərinə uyğun olaraq resursları miqyaslamağı çox asanlaşdırır və **Autoscale** - bir dəfə konfiqurasiya edildikdə - resursları miqyaslamağı demək olar ki, səylə əhatə etmədən həyata keçirə bilir. Resursları sürətlə tələblərə uyğunlaşdırmaq bacarığı bulud çevikliyinin bir hissəsidir. Bulud çevikliyinin digər bir hissəsi isə dəyişən iş tələblərinə tez uyğunlaşma qabiliyyətidir. Sonuncu konsept, Azure Fundamentals sertifikatında əhatə olunmur, amma bulud hesablama seçimlərini qiymətləndirərkən nəzərə alınması vacib olan bir anlayışdır.
+### **Nümunə:**
+
+Bir təşkilatın e-ticarət saytında, il ərzində sabit trafik mövcuddur. Lakin, tətil dövründə satışların artması səbəbindən serverlərin daha çox resursa ehtiyacı ola bilər. Bu halda, təşkilat **yatay miqyaslanma** ilə əlavə serverlər əlavə edəcək və daha çox istifadəçi trafikini idarə edə biləcək. Tətil dövrü bitdikdən sonra isə bu əlavə serverlər çıxarılacaq.
+
+**Əlavə fayda:**\
+Miqyaslanabilirlik və elastiklik sayəsində təşkilatlar yalnız tələb olduqda əlavə xərclər çəkirlər və artıq xərclərdən qaçınmaq imkanı əldə edirlər. Bu, həm də resursların daha səmərəli istifadəsinə şərait yaradır.
+
+### Nəticə:
+
+- **Yatay miqyaslanma** (horizontal scaling): Yeni serverlər əlavə etmək.
+- **Dikey miqyaslanma** (vertical scaling): Mövcud serverlərin resurslarını artırmaq.
+- **Elastiklik**: Resursların tələblərə uyğun olaraq avtomatik artıb-azalma qabiliyyəti.
+
+Bu yanaşma, bulud xidmətlərinin səmərəli şəkildə istifadə edilməsini və xərclərin yalnız tələb olunan zamanlarda artırılmasını təmin edir.
 
 ## **Yüksək Əlçatanlıq (HA)**
 
