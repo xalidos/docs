@@ -61,8 +61,6 @@ Scalability sistemin artan yükü (məsələn, sayta daxil olan istifadəçi say
 
 ![Vertical Scailing](/images/az900/chapter1/vertical.png)
 
----
-
 ### 2. Elasticity (Elastiklik) nədir?
 
 Scalability bir "bacarıqdırsa", Elasticity bu bacarığın **avtomatik** baş verməsidir.
@@ -70,3 +68,192 @@ Scalability bir "bacarıqdırsa", Elasticity bu bacarığın **avtomatik** baş 
 Təsəvvür et ki, gecə saat 03:00-da saytına qəfildən minlərlə insan girir. Sən yuxudaykən sistem özü bunu hiss edir və saniyələr içində yeni serverlər açır (Scale Out). İnsanlar saytdan çıxanda isə həmin serverləri özü bağlayır (Scale In).
 
 > **Əsas fərq:** Scalability strateji bir planlamadır (məsələn, "Sistemimiz 1 milyon istifadəçini qaldıra bilir"), Elasticity isə bu dəyişikliklərin dinamik və anlıq idarə olunmasıdır.
+
+**High Availability (HA)** və ya Azərbaycan dilində **Yüksək Əlçatanlıq**, bir sistemin və ya tətbiqin uzun müddət ərzində fasiləsiz və problemsiz işləmə qabiliyyətidir.
+
+Bulud texnologiyalarında məqsəd sistemin il boyu **99.9%** və ya daha yüksək (məsələn, 99.999% - "five nines") nisbətdə aktiv qalmasını təmin etməkdir.
+
+## High Availability necə işləyir?
+
+HA-nı təmin etmək üçün sistemdə **"Single Point of Failure"** (Tək uğursuzluq nöqtəsi) olmamalıdır. Yəni bir hissə sıradan çıxsa belə, sistem çökməməlidir. Bu, aşağıdakı mexanizmlərlə əldə edilir:
+
+- **Redundancy (Artıqlıq/Ehtiyatlılıq):** Hər bir komponentin (server, baza, şəbəkə) ən azı bir ehtiyat kopyası saxlanılır.
+- **Failover (Keçid mexanizmi):** Əsas komponent sıradan çıxdıqda, trafik avtomatik olaraq ehtiyat komponentə yönləndirilir.
+- **Load Balancing (Yükün paylanması):** Daxil olan trafik bir neçə server arasında bərabər bölünür. Əgər serverlərdən biri xarab olsa, Load Balancer bunu hiss edir və trafiki digər sağlam serverlərə göndərir.
+
+"9-lar" (və ya **The Rule of Nines**) bulud xidmətlərində və IT dünyasında bir sistemin **nə qədər etibarlı və əlçatan** olduğunu göstərən beynəlxalq bir standartdır.
+
+Bu termin sistemin il boyu nə qədər müddət işlək vəziyyətdə (uptime) olduğunu ifadə edən faizlərdəki doqquz rəqəmlərinin sayından gəlir.
+
+### 9-ların İzahı və "Downtime" (Dayanma müddəti)
+
+Faiz nə qədər yüksəkdirsə (doqquzlar nə qədər çoxdursa), sistemin ildə sıradan çıxma ehtimalı olan vaxt o qədər azdır:
+
+| **"9-ların" sayı** | **Faiz (%)** | **İllik icazə verilən dayanma (Downtime)** | **Status**              |
+| :----------------- | :----------- | :----------------------------------------- | :---------------------- |
+| **2 Doqquz**       | 99%          | ~3.65 gün                                  | Zəif / Standart         |
+| **3 Doqquz**       | 99.9%        | ~8.77 saat                                 | Yaxşı (Əksər xidmətlər) |
+| **4 Doqquz**       | 99.99%       | ~52.56 dəqiqə                              | Mükəmməl                |
+| **5 Doqquz**       | 99.999%      | **~5.26 dəqiqə**                           | **"Qızıl Standart"**    |
+
+### Niyə 5 Doqquz (99.999%) bu qədər vacibdir?
+
+Sənaye dilində **"Five Nines"** (Beş doqquz) yüksək əlçatanlığın zirvəsi hesab olunur. Təsəvvür et ki, bir bankın sistemi və ya xəstəxana avadanlığı il boyu cəmi 5 dəqiqə dayana bilər. Bu səviyyəyə çatmaq çox çətindir və bahalıdır, çünki:
+
+1. **Tam Redundancy:** Hər bir sistemin bir neçə ehtiyat kopyası olmalıdır.
+2. **Sürətli Failover:** Bir server sıradan çıxdığında digərinə keçid saniyələr içində (istifadəçi hiss etmədən) baş verməlidir.
+3. **İnsan müdaxiləsi olmadan bərpa:** Sistem özü-özünü təmir etməyi bacarmalıdır.
+
+### Hər bir "9"-un qiyməti
+
+Unutma ki, doqquzların sayını artırmaq iqtisadi baxımdan hər zaman sərfəli olmaya bilər. 99.9%-dən 99.99%-ə keçmək sistemin qiymətini bir neçə dəfə artıra bilər. Şirkətlər adətən belə düşünür: _"Mənim saytım ildə 9 saat bağlı qalsa nə qədər pul itirərəm, yoxsa 52 dəqiqə? Aradakı fərq yeni infrastruktur xərcinə dəyərmi?"_
+
+## **Fault Tolerance**
+
+**Fault Tolerance (Xətalara Dözümlülük)**, bir sistemin hər hansı bir aparat (hardware) və ya proqram (software) nasazlığı zamanı **heç bir fasilə vermədən** işinə davam edə bilmək qabiliyyətidir.<sup>1</sup>
+
+Əgər High Availability (HA) məqsədi "dayanma müddətini minimuma endirmək"dirsə, Fault Tolerance-ın məqsədi **dayanma müddətini sıfıra endirməkdir**.
+
+### Fault Tolerance-ın Əsas Xüsusiyyətləri
+
+Bu sistemlər adətən çox bahalıdır və kritik sahələrdə (məsələn, təyyarə idarəetmə sistemləri, bank əməliyyatları, xəstəxana həyat dəstək sistemləri) istifadə olunur.
+
+1. **Sıfır Fasilə (Zero Downtime):** Bir server yansa belə, sistem saniyənin mində biri qədər belə dayanmır. Digər server anında (real vaxtda) işi təhvil alır.<sup>2</sup>
+2. **Tam Dublikat (Mirroring):** Sistemdə hər şeyin (CPU, RAM, Disklər, Şəbəkə kartı) tam bir kopyası eyni anda paralel işləyir. Bir tərəfdə xəta olan kimi digər tərəf davam edir.
+3. **Mürəkkəblik və Qiymət:** Fault tolerance qurmaq çox baha başa gəlir, çünki sən faktiki olaraq ikiqat resurs alırsan və onları mükəmməl sinxron saxlayırsan.
+
+### High Availability (HA) və Fault Tolerance (FT) arasındakı fərq
+
+İnsanlar çox vaxt bunları qarışdırır, amma aralarında incə və mühüm bir fərq var:
+
+| **Xüsusiyyət**  | **High Availability (HA)**                             | **Fault Tolerance (FT)**                                                          |
+| :-------------- | :----------------------------------------------------- | :-------------------------------------------------------------------------------- |
+| **Məqsəd**      | Sistemin əlçatanlığını maksimum etmək.                 | Sistemin **heç vaxt** sönməməsini təmin etmək.                                    |
+| **Xəta zamanı** | Qısa bir fasilə ola bilər (məsələn, 10-30 saniyə).     | Fasilə olmur, istifadəçi heç nə hiss etmir.                                       |
+| **Xərc**        | Daha münasibdir.                                       | Çox bahalıdır (resursların tam dublikatı lazımdır).                               |
+| **Nümunə**      | Bir server sıradan çıxanda avtomatik digəri işə düşür. | İki server eyni işi paralel görür, biri sönsə digəri artıq "hazır" vəziyyətdədir. |
+
+### Gündəlik həyatdan bir nümunə:
+
+- **High Availability:** Maşının ehtiyat təkərinin (zapas) olmasıdır. Təkər partlasa, maşını saxlayıb təkəri dəyişməlisən. Bir neçə dəqiqə dayanmalı olursan, amma sonra yoluna davam edirsən.
+- **Fault Tolerance:** Maşının hər küncündə 2 təkərin (qoşa təkər) olmasıdır. Təkərlərdən biri partlasa belə, sən maşını saxlamadan eyni sürətlə yoluna davam edə bilərsən.
+
+### High Availability vs. Fault Tolerance
+
+Bu iki anlayış tez-tez qarışdırılır:
+
+- **High Availability:** Sistemdə qısa bir fasilə ola bilər (məsələn, 10-20 saniyəlik keçid vaxtı), amma sistem tez bərpa olunur.
+- **Fault Tolerance (Xətalara dözümlülük):** Sistem sıfır fasilə ilə işləyir. Bir hissə xarab olsa belə, istifadəçi bunu heç hiss etmir. Bu, daha baha başa gələn bir üsuldur.
+
+## **Human Resources**
+
+Bulud texnologiyaları və ümumiyyətlə İT idarəçiliyi kontekstində **Human Resources (İnsan Resursları)** həm bu sistemləri idarə edən mütəxəssislərə, həm də buludun HR departamentlərinə gətirdiyi texnoloji üstünlüklərə aid edilir.
+
+Lakin buludun faydalarından danışarkən "Human Resources" dedikdə, əsasən **əmək və kadr xərclərinin səmərəliliyi** nəzərdə tutulur.
+
+Budur buludun HR və kadr idarəçiliyi baxımından əsas üstünlükləri:
+
+### 1. İT Heyətinin Effektivliyi
+
+Ənənəvi məlumat mərkəzlərində (on-premise) şirkət çox sayda mütəxəssis saxlamalı idi:
+
+- **Donanım mühəndisləri:** Serverləri fiziki olaraq quraşdıranlar.
+- **Şəbəkə inzibatçıları:** Kabellər və fiziki keçidlərlə məşğul olanlar.
+- **Soyutma və elektrik texnikləri.**
+
+Buluda keçdikdə bu "fiziki" işləri provayder (AWS, Azure və s.) öz üzərinə götürür. Sizin HR departamentiniz artıq bu qədər çox fiziki texnik işə götürmək məcburiyyətində qalmır. Mövcud İT heyəti isə vaxtını "server təmiri"nə deyil, şirkət üçün daha gəlirli olan "proqram təminatı inkişafı"na ayırır.
+
+### 2. HR Proqram təminatları (SaaS)
+
+HR departamentləri öz işlərini idarə etmək üçün bulud əsaslı **SaaS (Software as a Service)** modellərindən geniş istifadə edir (məsələn: Workday, SAP SuccessFactors, BambooHR). Bunun iqtisadi faydaları:
+
+- **Mərkəzləşdirilmiş məlumat:** Bütün işçilərin məlumatları vahid bulud bazasında olur.
+- **Məsafədən iş imkanı:** HR mütəxəssisləri və işçilər dünyanın istənilən yerindən sənədləşmə işlərini apara bilirlər.
+
+### 3. "Agile" İşçi Qüvvəsi
+
+Bulud texnologiyası şirkətə çeviklik verir. Əgər yeni bir layihə başlayırsa, sürətlə yeni komandalar yığılıb onlara bulud üzərindən iş mühiti yaratmaq olar. Layihə bitdikdə isə bu resursları və lisenziyaları asanlıqla ləğv etmək mümkündür.
+
+### Buludun HR-a gətirdiyi "Çeviklik" Modeli
+
+Bulud texnologiyaları HR-ın iş yükünü aşağıdakı kimi dəyişir:
+
+| **Sahə**       | **Əvvəl (On-premise)**                | **İndi (Cloud)**                        |
+| :------------- | :------------------------------------ | :-------------------------------------- |
+| **İşə qəbul**  | Fiziki infrastruktur mütəxəssisləri.  | Bulud memarları və DevOps mühəndisləri. |
+| **Təlim**      | Bahalı daxili təlim proqramları.      | Onlayn bulud akademiyaları (LMS).       |
+| **Performans** | Kağız üzərində və ya lokal sistemlər. | Real vaxtlı bulud analitikası.          |
+
+Xülasə:
+
+Bulud texnologiyaları HR baxımından şirkəti "ağır və hərəkətsiz" bir strukturdun "yüngül və çevik" bir struktura çevirir. Şirkət rəhbərliyi diqqətini texniki problemlərə deyil, insan kapitalının inkişafına yönəldə bilir.
+
+# Cloud Computing Models and Responsibilities
+
+Bulud texnologiyalarında məsuliyyətlərin necə bölündüyünü anlamaq üçün **"Shared Responsibility Model" (Birgə Məsuliyyət Modeli)** anlayışını bilmək çox vacibdir. Bu modeldə məsuliyyət istifadəçi (müştəri) və provayder (AWS, Azure, Google Cloud) arasında xidmət növünə görə dəyişir.
+
+Buludun 3 əsas xidmət modeli var: **IaaS**, **PaaS** və **SaaS**.
+
+### 1. IaaS (Infrastructure as a Service)
+
+Burada provayder sənə sadəcə "boş" bir infrastruktur (server, yaddaş, şəbəkə) verir.
+
+- **Məsuliyyət:** Sən əməliyyat sistemini (Windows/Linux), proqramları, məlumatları və təhlükəsizlik yenilənmələrini idarə edirsən. Provayder isə fiziki serverin və binanın təhlükəsizliyinə cavabdehdir.
+- **Nümunə:** Azure Virtual Machines, AWS EC2.
+- **Bənzətmə:** Boş mənzil kirayələmək (Mebeli sən gətirirsən, otaqları sən düzəldirsən).
+
+<img
+  src="/images/az900/chapter1/iaas.png"
+  alt="IaaS"
+  title="Iaas"
+  className="mx-auto"
+  style={{ width:"44%" }}
+/>
+
+### 2. PaaS (Platform as a Service)
+
+Provayder sənə proqram yazmaq və işlətmək üçün hazır "platforma" verir. Sən əməliyyat sistemi və ya serverin detalları ilə maraqlanmırsan.
+
+- **Məsuliyyət:** Sən yalnız öz yazdığın koda (app) və məlumatlarına cavabdehsən. Əməliyyat sisteminin yenilənməsi və serverin sazlanması provayderin işidir.
+- **Nümunə:** Google App Engine, Azure App Services.<sup>3</sup>
+- **Bənzətmə:** Hazır mətbəxi olan restoran kirayələmək (Avadanlıq ordadır, sən sadəcə yemək bişirirsən).
+
+<img
+  src="/images/az900/chapter1/paas.png"
+  alt="PaaS"
+  title="PaaS"
+  className="mx-auto"
+  style={{ width:"44%" }}
+/>
+
+### 3. SaaS (Software as a Service)
+
+Bu, proqramın tam hazır şəkildə internet üzərindən təqdim olunmasıdır.
+
+- **Məsuliyyət:** Sən demək olar ki, heç nəyə cavabdeh deyilsən (yalnız öz şifrən və daxil etdiyin məlumatlar istisna olmaqla). Hər şeyi provayder idarə edir.
+- **Nümunə:** Gmail, Microsoft 365, Netflix, Dropbox.
+- **Bənzətmə:** Oteldə qalmaq (Hər şey hazırdır, sən sadəcə istifadə edirsən).
+
+<img
+  src="/images/az900/chapter1/saas.png"
+  alt="SaaS"
+  title="SaaS"
+  className="mx-auto"
+  style={{ width:"44%" }}
+/>
+
+### Məsuliyyət Bölgüsü Cədvəli
+
+Məsuliyyətlərin kimin üzərində olduğunu vizual olaraq belə görə bilərsən:
+
+| **Komponent**            | **On-Premise (Özün)** | **IaaS**      | **PaaS**      | **SaaS**      |
+| :----------------------- | :-------------------- | :------------ | :------------ | :------------ |
+| **Məlumatlar (Data)**    | Müştəri               | Müştəri       | Müştəri       | Müştəri       |
+| **Tətbiqlər (Apps)**     | Müştəri               | Müştəri       | Müştəri       | **Provayder** |
+| **Əməliyyat Sistemi**    | Müştəri               | Müştəri       | **Provayder** | **Provayder** |
+| **Virtuallaşdırma**      | Müştəri               | **Provayder** | **Provayder** | **Provayder** |
+| **Fiziki Server/Şəbəkə** | Müştəri               | **Provayder** | **Provayder** | **Provayder** |
+
+### Əsas Qayda
+
+Bulud modelindən asılı olmayaraq, **məlumatların (data) təhlükəsizliyi və girişi idarə etmək (identity/access)** hər zaman **Müştərinin** məsuliyyətində qalır. Yəni, kimsə sənin şifrəni ələ keçirib datanı silsə, buna görə provayder məsuliyyət daşımır.
