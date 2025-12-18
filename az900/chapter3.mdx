@@ -1,0 +1,141 @@
+---
+title: "Chapter3"
+---
+
+## Client-Server and Serverless Computing
+
+Bulud texnologiyalarında proqramların necə işlədiyini başa düşmək üçün bu iki fərqli yanaşmanı müqayisə etmək lazımdır. Onlar əsasən serverin idarə edilməsi və resursların ayrılması qaydasına görə fərqlənirlər.
+
+### 1. Client-Server Computing (Ənənəvi Model)
+
+Bu, klassik hesablama modelidir. Burada iş iki tərəf arasında bölünür: **Client** (Müştəri - məsələn, brauzeriniz) və **Server** (Xidmət təqdim edən kompüter).<sup>1</sup>
+
+- **Necə işləyir?** Client sorğu göndərir (məsələn: "mənə bu videonu göstər"), Server isə bu sorğunu emal edir və cavab qaytarır.<sup>2</sup>
+- **İdarəetmə:** Sən bir server (Virtual Maşın) alırsan və o server 24/7 aktiv qalır. İstər kimsə sayta girsin, istər girməsin, sən həmin serverin pulunu ödəyirsən.
+- **Məsuliyyət:** Əməliyyat sistemini yeniləmək, RAM və CPU-nu idarə etmək sənin (və ya İT komandanın) işidir.
+- Shutterstock
+
+### 2. Serverless Computing (Serverdən azad hesablama)
+
+"Serverless" (Serversiz) o demək deyil ki, server yoxdur.<sup>3</sup> Əlbəttə, arxa fonda yenə bir fiziki kompüter işləyir. Amma **sən o serveri görmürsən, idarə etmirsən və onun varlığından xəbərin olmur.**
+
+- **Event-Driven (Hadisəyə əsaslanan):** Kod yalnız müəyyən bir hadisə baş verdikdə (məsələn, kimsə şəkil yükləyəndə və ya düyməni sıxanda) işə düşür.
+- **Pay-per-execution:** Sən serverin vaxtına deyil, yalnız kodun işlədiyi saniyələrə və ya milisaniyələrə görə pul ödəyirsən. Kod işləmirsə, xərcin **sıfırdır**.
+- **Abstraction:** Sən sadəcə funksiyanı (kodu) yazırsan, Azure isə onu harada və necə işlədəcəyinə özü qərar verir.
+
+### 3. Əsas Fərqlər: Client-Server vs. Serverless
+
+| **Xüsusiyyət**           | **Client-Server (VM/IaaS)**      | **Serverless (Azure Functions)**                 |
+| :----------------------- | :------------------------------- | :----------------------------------------------- |
+| **Resurs İdarəetməsi**   | Sən serveri sazlayırsan.         | Tamamilə Azure tərəfindən idarə olunur.          |
+| **Ödəniş Modeli**        | Sabit saatlıq/aylıq ödəniş.      | Yalnız icra sayına görə ödəniş.                  |
+| **Scalability (Böyümə)** | Manual və ya müəyyən qaydalarla. | Saniyələr içində tam avtomatik.                  |
+| **Həyat Dövrü**          | Hər zaman aktivdir (Always on).  | Müvəqqətidir (Ephemeral - işini görür və sönür). |
+
+### 4. Azure-da Serverless nümunələri
+
+Azure-da serverless dünyasının iki böyük ulduzu var:
+
+1. **Azure Functions:** Kiçik kod parçaları (funksiyalar) üçün. Məsələn: "Hər dəfə yeni şəkil gələndə onun ölçüsünü kiçilt".
+2. **Azure Logic Apps:** Kod yazmadan fərqli xidmətləri birləşdirmək üçün. Məsələn: "Əgər mənə Twitter-də mənfi rəy gəlsə, mənə email göndər".
+
+### Nə vaxt hansını seçməli?
+
+- Əgər sənin proqramın davamlı, proqnozlaşdırıla bilən və ağır iş yükünə malikdirsə ➔ **Client-Server (VM və ya App Service)** daha məntiqlidir.
+- Əgər sən nadir hallarda işləyən, qəfil artan yükləri olan və ya arxa fonda kiçik tapşırıqları icra edən sistem qurursansa ➔ **Serverless** sənə həm vaxta, həm də pula böyük qənaət edəcək.
+
+## **Network Addressing**
+
+Bulud texnologiyalarında, xüsusən də Azure-da **Network Addressing** (Şəbəkə Ünvanlaması), resursların bir-biri ilə və internetlə necə əlaqə saxlayacağını müəyyən edir. Bu sistem əsasən **IP ünvanları** üzərində qurulur.
+
+Azure-da şəbəkə ünvanlamasını başa düşmək üçün bu üç əsas sütuna baxmalıyıq:
+
+### 1. IP Ünvan Növləri: Public vs. Private
+
+Azure resursları eyni anda iki növ IP ünvanına malik ola bilər:
+
+- **Public IP (İctimai IP):** Bu ünvan resursun internet üzərindən əlçatan olmasını təmin edir. Məsələn, bir veb-serverin internetdən daxil olunması üçün Public IP lazımdır.
+- **Private IP (Özəl IP):** Bu ünvan yalnız **Azure Virtual Network (VNet)** daxilində rabitə üçün istifadə olunur. Məsələn, bir veb-serverin məlumat bazasına (database) qoşulması üçün Private IP kifayətdir. Bu, təhlükəsizliyi artırır, çünki bazanın internetə birbaşa çıxışı olmur.
+
+### 2. IP Ayrılma Metodları: Dynamic vs. Static
+
+IP ünvanının necə təyin edildiyi də vacibdir:
+
+- **Dynamic (Dinamik):** Azure resurs yaradılanda ona boş olan bir IP təyin edir. Əgər sən Virtual Maşını sönülü (deallocated) vəziyyətə gətirsən, həmin IP itə bilər və yenidən açanda fərqli bir IP verilə bilər.
+- **Static (Statik):** Bu metodda IP ünvanı resursa "yapışdırılır". Resurs silinənə qədər (hətta sönülü olsa belə) həmin IP dəyişmir. DNS sazlamaları və ya firewall qaydaları üçün statik IP-lər vacibdir.
+
+### 3. VNet və Subnetting (Alt şəbəkələr)
+
+Azure-da öz şəbəkə sahəni qurduqda, sənə bir IP diapazonu (address space) lazım olur. Bu, adətən **CIDR** notasiyası ilə ifadə edilir (məsələn, `10.0.0.0/16`).
+
+- **Address Space:** VNet-in istifadə edə biləcəyi bütün IP-lərin cəmi (Məsələn, 65,536 ünvan).
+- **Subnets:** Böyük şəbəkəni daha kiçik, idarə oluna bilən hissələrə bölməkdir.
+  - _Subnet A (Web):_ 10.0.1.0/24
+  - _Subnet B (Database):_ 10.0.2.0/24
+- **Azure Reserved IPs:** Hər subnet daxilində Azure ilk **4** və son **1** IP ünvanını öz daxili idarəetməsi üçün rezerv edir (məsələn, Gateway, DNS və s. üçün). Yəni bir subnet açanda 5 IP-ni avtomatik çıxmalısan.
+
+### 4. DNS (Domain Name System)
+
+İnsanlar rəqəmləri (IP) yadda saxlamaqda çətinlik çəkirlər, ona görə də Azure şəbəkə ünvanlamasında DNS-dən istifadə edir:
+
+- **Azure DNS:** Domain adlarını (məsələn, `www.sirket.com`) IP ünvanlarına yönləndirir.
+- **Azure Private DNS:** VNet daxilində serverlərin bir-birini adla tanımasını təmin edir (məsələn, `sql-server.local`).
+
+### Xülasə: Nəyi yadda saxlamalı?
+
+- İnternetə çıxış üçün **Public IP**, daxili əlaqə üçün **Private IP**.
+- Dəyişməyən ünvan lazımdırsa **Static IP**.
+- Subnet planlayarkən Azure-un rezerv etdiyi **5 IP** ünvanını nəzərə al.
+
+## **Domain Name System**
+
+**Domain Name System (DNS)** internetin "telefon kitabçasıdır". Kompüterlər və serverlər bir-biri ilə rəqəmlər (məsələn, `13.107.246.10`) vasitəsilə ünsiyyət qurur, lakin insanlar üçün sözləri (məsələn, `google.com` və ya `microsoft.com`) yadda saxlamaq daha asandır. DNS-in vəzifəsi bu sözləri (domain adlarını) kompüterlərin başa düşdüyü IP ünvanlarına çevirməkdir.
+
+Azure-da DNS-i anlamaq üçün onun necə işlədiyinə və Azure-un təklif etdiyi həllərə baxmaq lazımdır.
+
+### 1. DNS Necə İşləyir? (Səyahət yolu)
+
+Sən brauzerə bir ünvan yazdıqda, pərdə arxasında bir neçə addım baş verir:
+
+1. **Sual:** Sən "microsoft.com-un IP-si nədir?" deyə soruşursan.
+2. **Recursive Resolver:** İnternet provayderinin (ISP) DNS serveri bu sualı alır.
+3. **Root Server:** Resolver kök serverlərdən soruşur ki, `.com` ilə bitən ünvanları kim tanıyır?
+4. **TLD Server:** `.com` serverləri səni `microsoft.com` domeninin sahibi olan serverə yönləndirir.
+5. **Authoritative Name Server:** Bu server konkret IP ünvanını (`13.107.x.x`) qaytarır.
+6. **Nəticə:** Sən sayta daxil olursan.
+
+### 2. Azure-da DNS Xidmətləri
+
+Azure-da DNS iki fərqli ssenari üçün istifadə olunur:
+
+#### **A) Azure Public DNS**
+
+Bu, sənin domain adını internetdə hər kəs üçün əlçatan edir.
+
+- Sən domenini (məsələn, `sirketim.az`) Azure-da yerləşdirirsən.
+- Azure-un qlobal server şəbəkəsi sayəsində istifadəçilər dünyanın harasında olurlarsa olsunlar, sənin saytının IP-sini çox sürətlə tapırlar.
+- **Qeyd:** Azure domen adlarını **satmır** (registr deyil), sadəcə onları idarə edir. Domeni başqa yerdən (məsələn, GoDaddy) alıb, Azure DNS-ə bağlaya bilərsən.
+
+#### **B) Azure Private DNS**
+
+Bu, yalnız sənin **Azure Virtual Network (VNet)** daxilində işləyir.
+
+- **Niyə lazımdır?** Təsəvvür et ki, VNet daxilində 50 dənə serverin var. Onların IP-lərini yadda saxlamaq əvəzinə, onlara `db-server.local` və ya `web-01.internal` kimi adlar verirsən.
+- Bu adlar internetdən görünmür, yalnız sənin daxili şəbəkəndə (private) keçərlidir.
+- Sənə daxili DNS server qurmağa və onu idarə etməyə ehtiyac qalmır; Azure bunu sənin üçün avtomatik edir.
+
+### 3. DNS Qeydlərinin (Records) Növləri
+
+Azure DNS panelində tez-tez rast gələcəyin əsas qeydlər:
+
+- **A Record:** Domain adını birbaşa IPv4 ünvanına bağlayır (məsələn, `sayt.com` -\> `20.50.1.4`).
+- **AAAA Record:** Domain adını IPv6 ünvanına bağlayır.
+- **CNAME (Alias):** Bir domain adını başqa bir domain adına bağlayır (məsələn, `www.sayt.com` -\> `sayt.com`).
+- **MX Record:** Email-lərin hansı serverə gedəcəyini müəyyən edir.
+- **TXT Record:** Adətən domainin sahibi olduğunu sübut etmək üçün istifadə olunur.
+
+### 4. Niyə Azure DNS?
+
+1. **Sürət:** Microsoft-un qlobal "Anycast" şəbəkəsi sayəsində DNS sorğuları ən yaxın data mərkəzindən cavablandırılır.
+2. **Etibarlılıq:** Azure DNS-in əlçatanlıq zəmanəti (SLA) **100%**-dir.
+3. **Təhlükəsizlik:** Azure Resource Manager (ARM) vasitəsilə kimin DNS qeydlərini dəyişə biləcəyinə nəzarət edə bilərsən.

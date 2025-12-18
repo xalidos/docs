@@ -157,3 +157,630 @@ Təsəvvür et ki, şirkətin bir "Mobil Bankçılıq" tətbiqi var. Sən bu tə
 - Bir **Resource Group** yaradırsan (Adı: `Banking-App-RG`).
 - Onun daxilinə 2 dənə Virtual Maşın, 1 SQL Database və 1 Virtual Network əlavə edirsən.
 - Tətbiqi yeniləmək və ya silmək lazım gəldikdə, hər şeyi tək-tək axtarmırsan, birbaşa bu qrup üzərindən əməliyyat aparırsan.
+
+## **Azure Resource Manager (ARM)**
+
+**Azure Resource Manager (ARM)**, Azure üçün əsas idarəetmə və yerləşdirmə (deployment) xidmətidir. Azure-da hər hansı bir resursla (VM, Verilənlər bazası və s.) bağlı etdiyin hər bir əməliyyat — istər Azure Portal, istər CLI, istərsə də PowerShell vasitəsilə olsun — mütləq ARM-dan keçir.
+
+ARM-ı bütün sorğuları qəbul edən, yoxlayan və icra edən **"Mərkəzi Beyin"** kimi düşünə bilərsən.
+
+### 1. ARM Necə İşləyir?
+
+Sən bir resurs yaratmaq istədikdə ARM aşağıdakı addımları yerinə yetirir:
+
+1. **Authentication:** Sənin həqiqətən sən olduğunu yoxlayır.
+2. **Authorization:** Sənin həmin resursu yaratmağa icazənin olub-olmadığını yoxlayır.
+3. **Forwarding:** Sorğunu müvafiq Azure xidmətinə (məsələn, Compute və ya Storage) yönləndirir.
+
+### 2. ARM-ın Əsas Faydaları
+
+- **Deklarativ Şablonlar (ARM Templates):** Sən resursları tək-tək əllə yaratmaq əvəzinə, bir JSON faylı (şablon) yazırsan. Bu faylda "Mənə 2 VM və 1 Database lazımdır" deyirsən və ARM onu saniyələr içində tam eyni şəkildə qurur.
+- **İdarəetmə Rahatlığı:** Bütün layihəni (Resource Group) bir vahid kimi idarə edə, silə və ya köçürə bilərsən.
+- **Rol əsaslı giriş (RBAC):** ARM vasitəsilə kimin hansı resurs üzərində nə edə biləcəyini (oxumaq, yazmaq, silmək) dəqiq təyin edirsən.
+- **Teqləmə (Tagging):** Resurslara "etiketlər" yapışdıraraq onları kateqoriyalara ayırmağa imkan verir (Məsələn: `Environment: Production`).
+
+### 3. Infrastructure as Code (IaC)
+
+ARM-ın ən güclü tərəfi **Infrastructure as Code** konsepsiyasını dəstəkləməsidir. Bu o deməkdir ki, sən öz infrastrukturunu bir proqram kodu kimi yaza bilərsən. Bu sənə nə verir?
+
+- **Təkrar istifadə:** Eyni mühiti (məsələn, Test mühiti) dəfələrlə sıfırdan xətasız qura bilərsən.
+- **Versiya idarəetməsi:** Kodunda nəsə dəyişsə, onu əvvəlki versiyaya asanlıqla qaytara bilərsən.
+
+### 4. Azure Control Plane vs. Data Plane
+
+ARM-ı başa düşmək üçün bu iki anlayışı bilmək faydalıdır:
+
+- **Control Plane (ARM):** Resursun yaradılması, konfiqurasiyası və silinməsi (Məsələn: VM-in RAM-ını artırmaq).
+- **Data Plane:** Resursun öz daxilində baş verənlər (Məsələn: VM-in içində bir faylın açılması). ARM Data Plane-ə qarışmır.
+
+### Xülasə
+
+Azure Resource Manager olmasaydı, Azure-dakı hər bir xidməti fərqli dillərlə və fərqli idarəetmə panelləri ilə idarə etməli olardın. ARM bütün bunları vahid bir çətir altında birləşdirir.
+
+# Azure Subscriptions and Billing Scope
+
+## Azure Subscription
+
+**Azure Subscription** (Abunəlik), Azure resurslarını istifadə etmək üçün lazım olan **məntiqi vahiddir** və birbaşa sizin ödəniş hesabınıza bağlıdır.
+
+Onu belə təsəvvür edə bilərsən: Azure bir böyük supermarketdirsə, Subscription sənin **üzvlük kartın və ya kassanın sənə açdığı hesabdır**. Bütün aldıqların (resurslar) bu hesaba yazılır və ayın sonunda borc bura gəlir.
+
+### 1. Azure Subscriptions-ın İki Əsas Funksiyası
+
+#### **A) Faturalandırma (Billing Boundary)**
+
+Hər bir abunəlik üçün ayrıca bir hesab-faktura (invoice) çıxarılır. Bu, şirkətlər üçün xərcləri departamentlərə görə ayırmağa kömək edir.
+
+- _Nümunə:_ "Marketinq" departamenti üçün bir abunəlik, "İT" üçün başqa bir abunəlik aça bilərsən ki, hər birinin nə qədər pul xəclədiyi ayrı-ayrı görünsün.
+
+#### **B) Giriş və Limit İdarəetməsi (Access Control Boundary)**
+
+Abunəlik bir idarəetmə sərhədidir. Sən bir admini yalnız müəyyən bir abunəliyə təyin edə bilərsən. Həmçinin, Azure-un hər abunəlik üçün müəyyən limitləri (quota) olur (məsələn, bir abunəlikdə maksimum 10,000 Virtual Maşın ola bilər).
+
+### 2. Abunəliklərin Növləri
+
+Azure-da müxtəlif ehtiyaclara uyğun abunəlik növləri var:
+
+- **Free Account:** Yeni başlayanlar üçün müəyyən müddətlik pulsuz kredit və bəzi xidmətlərin 12 ay pulsuz istifadəsini verir.
+- **Pay-As-You-Go:** Ən populyar modeldir. Nə qədər işlədirsənsə, ayın sonunda kartından o qədər pul çıxılır.
+- **Enterprise Agreement (EA):** Böyük şirkətlər üçün nəzərdə tutulub. Şirkət Microsoft ilə illik müqavilə bağlayır və müəyyən endirimlər alır.
+- **Student:** Tələbələr üçün kredit kartı tələb olunmayan xüsusi pulsuz paket.
+
+### 3. Birdən çox abunəlik niyə lazımdır?
+
+Şirkətlər tək bir abunəliklə kifayətlənməyib, bir neçə dənə yarada bilərlər. Bunun səbəbləri:
+
+1. **Mühitlərin ayrılması:** "Production" (canlı sayt) və "Development" (test) mühitlərini fərqli abunəliklərdə saxlamaq ki, birində səhvən edilən dəyişiklik digərinə təsir etməsin.
+2. **Təşkilati struktur:** Hər bir filialın və ya ölkə ofisinin öz büdcəsini idarə etməsi üçün.
+3. **Limitlər:** Əgər bir abunəlikdəki resurs limiti dolubsa, yenisini açmaq olar.
+
+### 4. Azure Management Groups (İdarəetmə Qrupları)
+
+Əgər şirkətin 50 dənə abunəliyi varsa, onları tək-tək idarə etmək çətindir. Burada **Management Groups** köməyə çatır.
+
+- Sən abunəlikləri qruplayıb, ən yuxarıdan bir qayda (policy) qoya bilərsən.
+- _Məsələn:_ "Bu qrupdakı bütün 10 abunəlikdə yalnız Avropa regionunda server yaratmağa icazə verilsin."
+
+### Xülasə İerarxiya (Yuxarıdan aşağıya):
+
+1. **Management Groups** (Çoxlu abunəliyi idarə edir)
+2. **Subscriptions** (Ödəniş və limit sərhədi)
+3. **Resource Groups** (Resursları məntiqi qruplayır)
+4. **Resources** (VM, SQL, Storage)
+
+## Azure Billing Account
+
+**Azure Billing Account** (Hesab-faktura hesabı) abunəliklərin (subscriptions) və ödənişlərin ən yuxarı səviyyədə idarə olunduğu yerdir. Çox vaxt insanlar bunu "Subscription" ilə qarışdırır, lakin aralarında ciddi bir ierarxiya fərqi var.
+
+Sadə desək: **Billing Account** sizin Microsoft ilə olan hüquqi və maliyyə müqavilənizdir, **Subscription** isə bu müqavilə daxilində resursları istifadə etmək üçün açdığınız alt-hesablardır.
+
+### 1. Billing Account necə yaradılır?
+
+Siz Azure-dan istifadə etmək üçün qeydiyyatdan keçəndə (məsələn, kredit kartınızı daxil edəndə) Microsoft sizin üçün avtomatik olaraq bir **Billing Account** yaradır. Bütün ödənişlər, vergi məlumatları və hesab-fakturalar bu səviyyədə tənzimlənir.
+
+### 2. Billing Account növləri
+
+Azure-da müqavilə növündən asılı olaraq bir neçə billing modeli var:
+
+- **Microsoft Online Services Program (MOSP):** Bu, birbaşa saytdan qeydiyyatdan keçən fərdi şəxslər və kiçik bizneslər üçündür (Pay-As-You-Go).
+- **Enterprise Agreement (EA):** Böyük təşkilatlar üçündür. Microsoft ilə 3 illik müqavilə bağlanır və müəyyən məbləğ öncədən ödənilir.
+- **Microsoft Customer Agreement (MCA):** Yeni və daha sadələşdirilmiş modeldir. Adətən bulud həlləri tərəfdaşları (CSP) vasitəsilə və ya yeni fərdi hesablar üçün keçərlidir.
+
+### 3. Billing Profile (Ödəniş Profili)
+
+Bir Billing Account daxilində birdən çox **Billing Profile** ola bilər. Bu, xüsusilə böyük şirkətlər üçün faydalıdır.
+
+- Hər profilin özünəməxsus hesab-fakturası (invoice) və ödəniş metodu (məsələn, bir şöbə kredit kartı ilə, digəri bank köçürməsi ilə) ola bilər.
+- Hər profil daxilində xərcləri daha da detallı bölmək üçün **Invoice Sections** (Hesab-faktura bölmələri) yaradıla bilər.
+
+### 4. Billing Account və Subscription arasındakı fərq
+
+| **Özəllik**         | **Billing Account**                | **Azure Subscription**                |
+| :------------------ | :--------------------------------- | :------------------------------------ |
+| **Məqsəd**          | Ödəniş və hüquqi müqavilə.         | Resurs yaratmaq və texniki idarəetmə. |
+| **Səviyyə**         | Ən yuxarı (Maliyyə).               | Orta (Texniki/İnzibati).              |
+| **Sayı**            | Adətən şirkət üçün 1 dənə olur.    | Şirkət daxilində 10-larla ola bilər.  |
+| **Kim idarə edir?** | Billing Administrator (Maliyyəçi). | Subscription Owner (İT menecer).      |
+
+### 5. Xərcləri İzləmə: Azure Cost Management
+
+Azure Billing Account səviyyəsində siz **Cost Management** alətindən istifadə edərək:
+
+- Gələcək xərclərinizi təxmin edə bilərsiniz (Forecasting).
+- **Budgets** (Büdcələr) qura bilərsiniz (Məsələn: "Əgər xərc 500\$-ı keçsə, mənə email göndər").
+- Xərclərin hansı resursa görə artdığını analiz edə bilərsiniz.
+
+## **Billing Scope**
+
+**Billing Scope** (Ödəniş sahəsi) Azure-da xərclərin toplandığı və idarə olunduğu ierarxik səviyyəni ifadə edir. Azure-da xərclərə baxmaq və ya büdcə təyin etmək istədiyinizdə, mütləq bir "scope" (sahə) seçməlisiniz.
+
+Bu səviyyələr ən yuxarıdan (bütün şirkət üzrə ödəniş) ən aşağıya (konkret bir layihə) doğru sıralanır.
+
+### Azure-da Əsas Billing Scopes
+
+İerarxiya yuxarıdan aşağıya doğru belədir:
+
+1. **Billing Account Scope:** Ən yüksək səviyyədir. Bütün abunəliklərin və ödəniş profillərinin cəmini əks etdirir. Adətən maliyyə direktorları bütün şirkətin Azure xərcini görmək üçün bu səviyyədən istifadə edir.
+2. **Billing Profile Scope:** Hesab-fakturanın (invoice) formalaşdığı səviyyədir. Bir şirkətin müxtəlif ölkələrdəki ofisləri və ya fərqli hüquqi şəxsləri varsa, hər biri üçün ayrı Billing Profile yaradıla bilər.
+3. **Invoice Section Scope:** Hesab-faktura daxilində xərcləri qruplamaq üçün istifadə olunur. Məsələn, "İT xidmətləri" və ya "Marketinq tətbiqləri" üçün invoice daxilində ayrı bölmələr yarada bilərsiniz.
+4. **Subscription Scope:** Ən çox istifadə olunan sahədir. Bir abunəlik daxilindəki bütün resursların cəmi xərcini göstərir.
+5. **Resource Group Scope:** Ən detallı xərc sahəsidir. Konkret bir layihənin (məsələn, bank tətbiqi) ay ərzində nə qədər pul xərclədiyini burada görə bilərsiniz.
+
+### Niyə "Scope" seçmək vacibdir?
+
+Azure **Cost Management** alətinə daxil olduqda, sistem sizdən hansı sahədəki xərcləri görmək istədiyinizi soruşur. Seçdiyiniz scope-dan asılı olaraq sizə fərqli məlumatlar təqdim olunur:
+
+- **Büdcə Təyin Etmək:** Məsələn, siz bir **Resource Group** (Resurs Qrupu) üçün 100\$ büdcə qoya bilərsiniz. Əgər həmin layihə bu limiti keçsə, sistem sizə xəbərdarlıq edir.
+- **Giriş İcazəsi (RBAC):** Bir menecerə yalnız öz abunəliyinin (Subscription scope) xərclərini görmək icazəsi verə bilərsiniz, lakin o, şirkətin ümumi Billing Account xərclərini görə bilməz.
+
+### Billing Scope-ların İdarəetmə Üstünlükləri
+
+| **Scope Səviyyəsi** | **Kimin üçün maraqlıdır?**       | **Əsas funksiyası**                                     |
+| :------------------ | :------------------------------- | :------------------------------------------------------ |
+| **Billing Account** | CFO (Maliyyə Direktoru)          | Ümumi müqavilə və ödənişlərin idarə olunması.           |
+| **Billing Profile** | Mühasibatlıq                     | Hesab-fakturanın ödəniş metodu və vergi tənzimləmələri. |
+| **Subscription**    | IT Departamenti Rəhbəri          | Texniki büdcənin və limitlərin izlənməsi.               |
+| **Resource Group**  | Layihə Rəhbəri (Project Manager) |                                                         |
+
+## **Azure Tenant**
+
+Bulud dünyasında **Azure Tenant** (və ya daha dəqiq desək, **Microsoft Entra ID Tenant**), Microsoft bulud xidmətlərinin (Azure, Office 365, Teams) mərkəzləşdirilmiş idarəetmə vahididir.
+
+Onu belə təsəvvür edə bilərsən: Microsoft bir nəhəng göydələndirsə, hər bir **Tenant** həmin göydələndə bir şirkətə məxsus olan **ayrıca bir mərtəbədir**. Sənin şirkətinin bütün istifadəçiləri, şifrələri və icazələri yalnız həmin mərtəbəyə (Tenant-a) aiddir.
+
+### 1. Azure Tenant-ın Əsas Xüsusiyyətləri
+
+- **Identifikasiya (Identity):** Tenant sizin istifadəçi bazanızdır. Bütün `istifadeci@sirket.com` hesabları burada yaradılır və qorunur.
+- **İzolyasiya:** Bir Tenant daxilindəki məlumatlar və istifadəçilər digər Tenant-lar tərəfindən görünmür. Bu, tam təhlükəsiz bir sərhəddir.
+- **Adlandırma:** Hər Tenant-ın özünəməxsus bir domen adı olur (məsələn, `sirketim.onmicrosoft.com`). Daha sonra bura öz şəxsi domenini (`sirket.az`) bağlaya bilərsən.
+
+### 2. Tenant və Subscription Arasındakı Əlaqə
+
+Bu iki anlayış çox vaxt qarışdırılır, amma aralarında belə bir əlaqə var:
+
+- **Tenant** "Kimdir?" sualına cavab verir (İstifadəçilər və Təhlükəsizlik).
+- **Subscription** "Nə üçün ödəyirik?" sualına cavab verir (Resurslar və Hesab-faktura).
+
+**Qızıl Qayda:** Bir Subscription (Abunəlik) yalnız **bir** Tenant-a bağlana bilər. Lakin bir Tenant daxilində **onlarla müxtəlif** Subscription ola bilər.
+
+### 3. Azure Tenant Niyə Vacibdir?
+
+1. **Mərkəzi Giriş (Single Sign-On - SSO):** İşçi bir dəfə öz şifrəsi ilə daxil olur və həm Azure-a, həm Outlook-a, həm də şirkətin digər tətbiqlərinə giriş əldə edir.
+2. **Təhlükəsizlik Siyasətləri:** Məsələn, sən bütün Tenant üçün "Hər kəs mütləq İki-Faktorlu Doğrulama (MFA) istifadə etməlidir" qaydasını qoya bilərsən.
+3. **B2B Giriş:** Başqa bir şirkətin (başqa Tenant-ın) işçisinə öz resurslarına giriş icazəsi vermək üçün "Guest User" funksiyasından istifadə edə bilərsən.
+
+### 4. Azure Ierarxiyasında Tenant-ın Yeri
+
+Ən yuxarıdan aşağıya doğru baxsaq, struktur belədir:
+
+1. **Azure Tenant** (Ən yuxarı səviyyə - Şirkət səviyyəsi)
+2. **Management Groups** (Qruplaşdırma)
+3. **Subscriptions** (Ödəniş)
+4. **Resource Groups** (Məntiqi konteyner)
+5. **Resources** (VM, SQL və s.)
+
+**Xülasə:** Əgər Microsoft hesabın (Outlook və ya Hotmail) varsa, sənin artıq bir "Personal Tenant"-ın var. Amma şirkət olaraq qeydiyyatdan keçdikdə, bu, professional idarəetmə üçün nəzərdə tutulmuş bir **Enterprise Tenant** olur.
+
+## Virtual Machines
+
+**Virtual Machine (VM)** və ya **Virtual Maşın**, fiziki bir kompüterin proqram təminatı vasitəsilə yaradılmış rəqəmsal kopyasıdır. Azure kontekstində VM-lər **IaaS (Infrastructure as a Service)** modelinin ən təməl nümunəsidir.
+
+Sadə desək, öz kompüterini almaq əvəzinə, Microsoft-un məlumat mərkəzindəki güclü serverlərin bir hissəsini "icarəyə" götürürsən və ona istədiyin əməliyyat sistemini (Windows və ya Linux) yazırsan.
+
+### 1. Virtual Maşın necə işləyir?
+
+Fiziki serverin üzərində **Hypervisor** adlı xüsusi bir proqram təminatı işləyir. Bu proqram fiziki resursları (CPU, RAM, Disk) bir neçə hissəyə bölür və hər bir hissə müstəqil bir kompüter (VM) kimi davranır. Bir VM-də baş verən xəta və ya virus digər VM-lərə təsir etmir.
+
+### 2. Azure VM-in əsas komponentləri
+
+Bir VM yaratdıqda, əslində pərdə arxasında bir neçə fərqli resurs birləşir:
+
+- **Compute (Hesablama):** Virtual prosessor (vCPU) və operativ yaddaş (RAM).
+- **Storage (Yaddaş):** Əməliyyat sistemi və məlumatlar üçün virtual disklər (VHD).
+- **Networking (Şəbəkə):** Virtual şəbəkə kartı (NIC), ictimai IP ünvanı (Public IP) və təhlükəsizlik qaydaları (Network Security Group).
+
+### 3. Niyə Virtual Maşın istifadə etməliyik?
+
+- **Tam Nəzarət:** Əməliyyat sistemi səviyyəsində tam admin (root) səlahiyyətin olur. İstədiyin proqramı yükləyə və ayarları dəyişə bilərsən.
+- **Çeviklik (Scalability):** Kompüterin gücü çatmayanda cəmi bir neçə kliklə RAM-ı 8 GB-dan 64 GB-a qaldıra bilərsən.
+- **Xərc:** Fiziki server almaq üçün aylarla gözləmirsən və böyük pullar xərcləmirsən. İşlətdiyin hər dəqiqə üçün ödəniş edirsən (**Pay-as-you-go**).
+- **Test mühiti:** Yeni bir proqramı yoxlamaq üçün sürətlə VM yaradıb, işin bitəndə onu silə bilərsən.
+
+### 4. VM istifadə edərkən Sizin (Müştərinin) Məsuliyyətiniz
+
+Xatırlayırsansa, **Shared Responsibility Model**-də IaaS-da məsuliyyət daha çox müştəridə idi:
+
+1. **Əməliyyat sisteminin yenilənməsi (Patching):** Windows Update-ləri sən etməlisən.
+2. **Antivirus və Təhlükəsizlik:** VM-in daxili təhlükəsizliyi sənə aiddir.
+3. **Məlumatların ehtiyat nüsxəsi (Backup):** Azure alətlər versə də, backup-ı qurmaq və izləmək sənin işindir.
+
+### 5. VM Ölçüləri (Sizes)
+
+Azure-da ehtiyaca uyğun VM ailələri var:
+
+- **General Purpose (B-series, D-series):** Veb serverlər və kiçik bazalar üçün.
+- **Compute Optimized (F-series):** Ağır hesablama işləri üçün.
+- **Memory Optimized (E-series):** Böyük verilənlər bazaları üçün.
+- **GPU (N-series):** Video render və Süni İntellekt (AI) üçün.
+
+### Xülasə: Nə vaxt VM seçməli?
+
+Əgər proqram təminatınız xüsusi bir konfiqurasiya tələb edirsə və ya köhnə (legacy) bir tətbiqi buluda köçürürsünüzsə (Lift-and-Shift), VM ən yaxşı seçimdir. Amma sadəcə bir kod işlətmək istəyirsinizsə, **App Services** və ya **Serverless (Functions)** daha səmərəli ola bilər.
+
+## **Virtual Machine Scale Sets**
+
+**Virtual Machine Scale Sets (VMSS)**, eyni tipli virtual maşınlar qrupunu yaratmaq və idarə etmək üçün istifadə olunan bir Azure xidmətidir.
+
+Əgər bir Virtual Maşın (VM) tək bir serverdirsə, Scale Set həmin serverlərdən ibarət olan və ehtiyaca görə genişlənib-yığılan bir **"ordu"dur**.
+
+### 1. VM Scale Sets necə işləyir?
+
+VMSS-in ən böyük özəlliyi **Autoscaling** (Avtomatik miqyaslanma) qabiliyyətidir. Siz müəyyən qaydalar təyin edirsiniz və sistem bu qaydalara əsasən VM-lərin sayını artırır və ya azaldır:
+
+- **Məsələn:** "Əgər CPU istifadəsi 75%-i keçərsə, daha 2 VM əlavə et."
+- **Məsələn:** "Gecə saat 02:00-da istifadəçi az olduğu üçün VM sayını 1-ə endir."
+
+### 2. VMSS-in Əsas Üstünlükləri
+
+#### **A) Yüksək Əlçatanlıq (High Availability)**
+
+VMSS resursları avtomatik olaraq **Availability Zones** və ya **Fault Domains** arasında paylayır. Bu o deməkdir ki, əgər bir data mərkəzində problem çıxsa, sizin scale set daxilindəki digər serverlər fərqli zonalarda işləməyə davam edəcək.
+
+#### **B) Load Balancing (Yükün Paylanması)**
+
+VMSS adətən bir **Load Balancer** (Yük paylayıcı) ilə birlikdə işləyir. Daxil olan bütün internet trafiki bu load balancer-ə gəlir və o, trafiki scale set daxilindəki "sağlam" serverlər arasında bərabər bölür.
+
+#### **C) İdarəetmə Rahatlığı**
+
+100 dənə VM-i tək-tək yeniləmək əvəzinə, sən mərkəzi bir "image" (şablon) təyin edirsən. Bir dəyişiklik etdikdə (məsələn, proqramın yeni versiyasını yazdıqda), scale set həmin yeniliyi bütün VM-lərə eyni anda tətbiq edir.
+
+### 3. Niyə VM əvəzinə VMSS istifadə etməliyik?
+
+| **Xüsusiyyət**   | **Tək Virtual Maşın (VM)**                      | **VM Scale Set (VMSS)**                   |
+| :--------------- | :---------------------------------------------- | :---------------------------------------- |
+| **Yük artımı**   | Əllə (manual) yeni VM yaratmalısan.             | Avtomatik (Autoscale) artır.              |
+| **Yük azalması** | İşlətmədiyin VM üçün pul ödəməyə davam edirsən. | Lazımsız VM-ləri silərək xərci azaldır.   |
+| **Yenilənmə**    | Hər VM-ə tək-tək girməlisən.                    | Mərkəzi şablondan hamısına tətbiq olunur. |
+| **Ödəniş**       | Sabit xərc.                                     | Dinamik xərc (yalnız aktiv VM-lər üçün).  |
+
+### 4. İstifadə Ssenarisi (Real Case)
+
+Təsəvvür et ki, bir bilet satışı saytın var:
+
+1. **Normal günlərdə:** Saytda cəmi 2 VM işləyir.
+2. **Məşhur konsert satışı başlayanda:** Sayta minlərlə adam girir. VMSS CPU-nun artdığını görür və avtomatik olaraq VM sayını 2-dən 20-yə qaldırır. Sayt çökmür.
+3. **Satış bitəndə:** Yük düşür və VMSS artıq olan 18 VM-i silir. Sən yenə cəmi 2 VM üçün pul ödəməyə davam edirsən.
+
+### Xülasə
+
+VM Scale Sets **Horizontal Scaling** (Üfüqi miqyaslanma) üçün mükəmməl vasitədir. O, sizə həm pul qənaəti (yalnız lazım olanda çox server işlədir), həm də etibarlılıq (serverlərdən biri xarab olsa, dərhal yenisini yaradır) verir.
+
+## **Availability Set**
+
+**Availability Set** (Əlçatanlıq dəsti), Azure-da virtual maşınlarınızı (VM) bir-birindən asılı olmayan fiziki infrastruktur üzərində yerləşdirməyə imkan verən bir məntiqi qruplaşdırmadır.
+
+Əgər **Availability Zones** bütün bir binanı qoruyurdusa, **Availability Set** bir binanın daxilindəki fərqli server rəflərini (racks) və texniki qəzaları idarə edir.
+
+### 1. Availability Set necə işləyir?
+
+Bir Availability Set yaratdıqda, Azure sizin VM-lərinizi iki əsas qrup üzrə bölür: **Fault Domains** və **Update Domains**.
+
+#### **A) Fault Domains (Xəta Domenləri)**
+
+Bu, fiziki təhlükəsizliyi təmin edir. Bir Fault Domain, eyni enerji mənbəyinə və eyni şəbəkə keçidinə (switch) bağlı olan server rəfidir.
+
+- **Məqsəd:** Əgər bir rəfin (rack) elektrik kabeli sıradan çıxsa, digər rəfdəki VM-ləriniz işləməyə davam edir.
+- Azure adətən VM-ləri 2 və ya 3 Fault Domain arasında bölür.
+
+#### **B) Update Domains (Yenilənmə Domenləri)**
+
+Bu, proqram təminatı yenilənmələri zamanı əlçatanlığı təmin edir. Microsoft Azure infrastrukturunu yeniləyəndə (məsələn, təhlükəsizlik yenilənməsi üçün hostu restart edəndə), eyni Availability Set-də olan bütün VM-ləri eyni anda söndürmür.
+
+- **Məqsəd:** Azure yenilənməni növbəli şəkildə aparır. Bir qrup VM yenilənərkən, digər qrup aktiv qalır.
+- Standart olaraq 5 Update Domain olur (lazım gələrsə 20-yə qədər artırıla bilər).
+
+### 2. Niyə Availability Set istifadə etməliyik?
+
+Təsəvvür edin ki, eyni işi görən iki veb serveriniz var:
+
+- **Availability Set olmasa:** Azure hər iki serveri eyni fiziki rəfə qoya bilər. Əgər həmin rəfin elektriki kəsilsə, saytınız tamamilə sönür.
+- **Availability Set ilə:** Azure söz verir ki, bu iki server heç vaxt eyni fiziki rəfdə və eyni enerji mənbəyində olmayacaq. Biri sönsə, digəri mütləq işləyəcək.
+
+### 3. Müqayisə: Availability Set vs. Availability Zone
+
+Bu iki anlayış çox vaxt qarışdırılır:
+
+| **Xüsusiyyət**        | **Availability Set**                               | **Availability Zone**                                          |
+| :-------------------- | :------------------------------------------------- | :------------------------------------------------------------- |
+| **Qorunma Səviyyəsi** | Data mərkəzi daxilində (Server rəfi səviyyəsində). | Data mərkəzləri arası (Bina səviyyəsində).                     |
+| **Məsafə**            | VM-lər eyni binadadır.                             | VM-lər fərqli binalardadır.                                    |
+| **SLA (Zəmanət)**     | 99.95%                                             | 99.99%                                                         |
+| **Xərc**              | Pulsuzdur (yalnız VM-lərə görə ödəyirsiniz).       | Pulsuzdur (amma zonalar arası data transferi pullu ola bilər). |
+
+### 4. Vacib Qeyd: Managed Disks
+
+Availability Set istifadə edərkən mütləq **Managed Disks** (İdarə olunan disklər) istifadə etmək tövsiyə olunur. Çünki Azure bu zaman təkcə serverləri deyil, həmin serverlərin bağlı olduğu yaddaş (storage) qurğularını da fərqli "Fault Domain"lərə yerləşdirir ki, yaddaş sistemindəki xəta saytınızı çökdürməsin.
+
+Xülasə:
+
+Availability Set, tətbiqinizin bir binanın daxilindəki kiçik nasazlıqlardan (elektrik, kabel, proqram yenilənməsi) qorunması üçün ən yaxşı üsuldur.
+
+Bu iki anlayışı fərqləndirmək üçün ən yaxşı yol **"təhlükənin miqyasına"** baxmaqdır. Gəl, real bir biznes ssenarisi üzərindən nümunə çəkək.
+
+Təsəvvür et ki, sənin bir **Bank Proqramın** var və bu proqramın iki hissəsi var:
+
+1. **Veb Sayt (Ön hissə):** Müştərilərin daxil olduğu yer.
+2. **Məlumat Bazası (Database):** Bütün pulların və hesabların qeyd olunduğu çox kritik hissə.
+
+### 1. Nə vaxt "Availability Set" istifadə etməlisən?
+
+**Ssenari:** Sənin veb saytın üçün 2 ədəd eyni gücdə serverin (VM) var. Sən istəyirsən ki, əgər data mərkəzində bir **texnikin ayağı kabelə ilişsə** və ya bir **server rəfinin (rack) transformatoru yansa**, saytın sönməsin.
+
+- **Həll:** Bu 2 VM-i bir **Availability Set** daxilinə qoyursan.
+- **Nəticə:** Azure bu serverləri eyni binanın içində, amma **fərqli rəflərə** qoyur.
+- **Nə zaman seçməli:** Əgər sənin tətbiqin çox böyük deyilse və ya seçdiyin Azure regionu "Availability Zone" texnologiyasını dəstəkləmirsə, bu ən minimal və etibarlı addımdır.
+
+### 2. Nə vaxt "Availability Zone" istifadə etməlisən?
+
+**Ssenari:** İndi söhbət sənin bankının **Məlumat Bazasından** gedir. Burada təhlükəsizlik ən yüksək səviyyədə olmalıdır. Sən qorxursan ki, birdən **bütün bir binada yanğın olar**, şəhərin o hissəsində **elektrik şəbəkəsi tam çökər** və ya binanı **su basar**.
+
+- **Həll:** Bu məlumat bazasının kopyalarını fərqli **Availability Zone**-lara yerləşdirirsən (məsələn, Zone 1 və Zone 2).
+- **Nəticə:** Azure bir nüsxəni şəhərin şimalındakı data mərkəzinə, digərini isə şəhərin cənubundakı (tamamilə müstəqil infrastrukturu olan) data mərkəzinə qoyur.
+- **Nə zaman seçməli:** Əgər sistemin "mission-critical"dırsa (yəni bir dəqiqə belə sönməsi böyük ziyandırsa) və sən 99.99% zəmanət (SLA) istəyirsənsə.
+
+### Müqayisəli Xülasə Cədvəli
+
+| **Ssenari**                               | **Hansını seçməli?**  | **Səbəb**                                                                 |
+| :---------------------------------------- | :-------------------- | :------------------------------------------------------------------------ |
+| **Kiçik bir şirkət saytı**                | **Availability Set**  | Ucuzdur və binadakı kiçik texniki nasazlıqlardan qoruyur.                 |
+| **Bank, Dövlət sistemi, Böyük E-ticarət** | **Availability Zone** | Bütün bir binanın sıradan çıxması riskinə qarşı sığortadır.               |
+| **Regionun imkanı yoxdursa**              | **Availability Set**  | Bəzi köhnə Azure regionlarında "Zone" yoxdur, orada yeganə çıxış yoludur. |
+
+### Qızıl Qayda (Harada, nəyi saxlamalı?):
+
+- **Eyni binanın daxilində qorunmaq kifayətdir?** ➔ **Availability Set** (Məsələn: daxili işçi portalı).
+- **Binanın başına bir iş gəlsə də işləməliyəm?** ➔ **Availability Zone** (Məsələn: müştəri ödəniş sistemi).
+
+> **Vacib qeyd:** Əgər sən resurslarını **Availability Zone**-lar arasında paylasan, artıq **Availability Set** istifadə etməyə ehtiyac qalmır, çünki "Zone" onsuz da daha üstün qoruma səviyyəsidir.
+
+## **Azure App Service**
+
+**Azure App Service**, veb-tətbiqləri, REST API-ləri və mobil tətbiqlərin arxa fonunu (backend) yerləşdirmək üçün istifadə olunan **PaaS (Platform as a Service)** modelinə əsaslanan bir xidmətdir.
+
+Virtual Maşınlardan (VM) fərqli olaraq, burada sən serverin əməliyyat sistemi, infrastrukturun yenilənməsi və ya təhlükəsizlik "patch"ləri ilə məşğul olmursan. Sən sadəcə kodunu yazırsan və Azure-a verirsən.
+
+### 1. Azure App Service-in Əsas Xüsusiyyətləri
+
+- **Çoxdilli dəstək:** [ASP.NET](http://ASP.NET), .NET Core, Java, Ruby, Node.js, PHP və ya Python dillərində yazılmış proqramları dəstəkləyir.
+- **Serverless (İdarəetmədən azad):** Sən serverləri idarə etmirsən, Microsoft infrastrukturun sağlamlığına cavabdehdir.
+- **Təhlükəsizlik və Uyğunluq:** ISO, SOC və PCI standartlarına tam uyğundur. Active Directory (Microsoft Entra ID) ilə asanlıqla inteqrasiya olunur.
+- **DevOps İnteqrasiyası:** GitHub, Azure DevOps, Bitbucket kimi platformalardan avtomatik kod yükləməni (CI/CD) dəstəkləyir.
+
+## **Azure Kubernetes Service**
+
+**Azure Kubernetes Service (AKS)**, konteynerləşdirilmiş proqramları idarə etmək üçün istifadə olunan, yüksək dərəcədə təkmilləşdirilmiş bir **Konteyner Orkestrasiyası** platformasıdır.
+
+Kubernetes (K8s) özlüyündə çox mürəkkəb bir sistemdir, lakin AKS bu mürəkkəbliyin böyük bir hissəsini (idarəetmə hissəsini) öz üzərinə götürərək sənə hazır bir platforma təqdim edir.
+
+### 1. Konteyner nədir? (Qısa xatırlatma)
+
+Konteyner proqramı və onun işləməsi üçün lazım olan bütün kitabxanaları (libraries) bir qutuya yığmaqdır. VM-dən fərqi odur ki, konteyner daha yüngüldür və əməliyyat sistemi çəvirdəyini (kernel) paylaşır.
+
+### 2. AKS necə işləyir?
+
+AKS sistemi iki hissəyə bölünür:
+
+- **Control Plane (İdarəetmə Paneli):** Kubernetes-in "beyni"dir. Resursları bölüşdürür, sistemin sağlamlığını yoxlayır. Azure-da bu hissə **tamamilə pulsuzdur** və Microsoft tərəfindən idarə olunur.
+- **Nodes (İşçi serverlər):** Konteynerlərin real olaraq işlədiyi Virtual Maşınlardır. Sən yalnız bu işlək serverlər üçün pul ödəyirsən.
+
+### 3. AKS-in Əsas Üstünlükləri
+
+- **Avtomatik Miqyaslanma (Scaling):**
+  - **Horizontal Pod Autoscaler:** Proqrama yük düşəndə konteynerlərin sayını artırır.
+  - **Cluster Autoscaler:** Əgər konteynerlər üçün yer çatmasa, Azure avtomatik olaraq yeni Virtual Maşınlar (Node) əlavə edir.
+- **Özünü Müalicə (Self-healing):** Əgər bir konteyner (Pod) çöksə, AKS bunu dərhal hiss edir və onu yenidən başladır.
+- **Yük Paylanması (Load Balancing):** Daxil olan trafiki konteynerlər arasında bərabər bölür.
+- **Azure İnteqrasiyası:** Azure Active Directory, Azure Monitor və Azure Storage ilə birbaşa inteqrasiya olunur.4. VM, App Service və AKS: Hansını seçməli?
+
+| **Xidmət**          | **Model**     | **Nə vaxt istifadə etməli?**                                                                    |
+| :------------------ | :------------ | :---------------------------------------------------------------------------------------------- |
+| **Virtual Machine** | IaaS          | Köhnə proqramlar və OS üzərində tam nəzarət lazım olduqda.                                      |
+| **App Service**     | PaaS          | Sadə veb saytlar və API-lər üçün (Konteynerlərlə məşğul olmaq istəmədikdə).                     |
+| **AKS**             | PaaS / Hybrid | **Microservices** (Mikroxidmət) arxitekturası və yüzlərlə konteyneri idarə etmək lazım olduqda. |
+
+### 5. Real Nümunə
+
+Təsəvvür et ki, sənin bir "Trendyol" və ya "Amazon" kimi böyük e-ticarət saytın var.
+
+- Bir xidmət yalnız **Axtarış** ilə məşğuldur.
+- Biri yalnız **Ödəniş** ilə.
+- Biri isə Səbət ilə.
+
+  Bunların hər birini ayrı konteynerlərə qoyursan. Black Friday zamanı yalnız "Ödəniş" və "Axtarış" konteynerlərini minlərlə nüsxəyə qədər artırırsan, digərləri isə normal qalır. AKS bütün bu "trafik tıxacını" və konteynerlərin yerləşməsini avtomatik tənzimləyir.
+
+### Xülasə
+
+AKS sənə Kubernetes-in gücünü verir, amma onun quraşdırılması və server tərəfinin baxımı (patching, upgrade) ilə vaxtını itirmirsən. Bu, böyük və mürəkkəb proqramları miqyaslamaq üçün ən peşəkar alətdir.
+
+## **Windows Virtual Desktop**
+
+**Windows Virtual Desktop (WVD)**, indi rəsmi olaraq **Azure Virtual Desktop (AVD)** adlanır. Bu, buludda işləyən bir masaüstü və tətbiq virtuallaşdırma xidmətidir.
+
+Sadə dildə desək: Sənin güclü bir Windows kompüterin var, amma o, sənin masanın altında deyil, Azure-un data mərkəzindədir. Sən ona istənilən yerdən (noutbuk, planşet, telefon və ya brauzer) qoşulub öz proqramlarını və fayllarını istifadə edə bilərsən.
+
+### 1. Azure Virtual Desktop-un Əsas Özəllikləri
+
+- **Multi-session Windows 10/11:** Bu, AVD-nin ən inqilabi özəlliyidir. Əvvəllər bir Windows kompüterinə eyni anda yalnız bir nəfər qoşula bilərdisə, indi bir güclü Virtual Maşın resurslarını **onlarla işçi arasında** paylaşa bilər. Bu, xərcləri kəskin azaldır.
+- **Microsoft 365 İnteqrasiyası:** Outlook, Teams və Word kimi proqramlar bulud mühitində sanki lokal kompüterdəymiş kimi sürətli işləmək üçün optimallaşdırılıb.
+- **Tətbiq Virtuallaşdırması:** Sən işçiyə bütün masaüstünü deyil, yalnız konkret bir proqramı (məsələn, mühasibatlıq proqramı) sanki onun öz kompüterinə yazılmış kimi təqdim edə bilərsən (**RemoteApp**).
+- **Təhlükəsizlik:** Məlumatlar işçinin noutbukunda deyil, Azure-da qalır. Noutbuk oğurlansa və ya xarab olsa belə, şirkət datası təhlükəsizlikdədir.
+
+### 2. Niyə Şirkətlər AVD-ni Seçir?
+
+1. **Məsafədən İş (Remote Work):** İşçilər dünyanın istənilən yerindən şirkətin təhlükəsiz mühitinə daxil olur.
+2. **BYOD (Bring Your Own Device):** İşçilər öz şəxsi kompüterlərindən istifadə edirlər, amma iş işlərini yalnız təhlükəsiz virtual masaüstündə görürlər.
+3. **Müvəqqəti İşçilər:** Podratçılar və ya mövsümi işçilər üçün sürətlə virtual kompüter yaradıb, iş bitəndə onu silmək çox asandır.
+4. **Yüksək Performans Tələbi:** Əgər işçinin noutbuku zəifdirsə, o, Azure-da çox güclü (məsələn, 128 GB RAM-lı) bir virtual maşına qoşulub ağır dizayn və ya hesablama işlərini görə bilər.
+
+### 3. İdarəetmə: Kim Nəyə Cavabdehdir?
+
+Azure Virtual Desktop bir **PaaS/IaaS qarışığı** kimidir:
+
+- **Microsoft idarə edir:** Qoşulma şlüzünü (Gateway), Broker xidmətini (kimin haraya qoşulacağını təyin edən sistem) və Web Access hissəsini.
+- **Siz idarə edirsiniz:** Virtual Maşınların özünü, hansı proqramların yazılacağını və kimin daxil ola biləcəyini.
+
+### 4. Real Həyat Nümunəsi
+
+Təsəvvür et ki, bir memarlıq şirkətinin 50 işçisi var. Onlara ağır **AutoCAD** proqramı lazımdır.
+
+- **Köhnə üsul:** Hər işçiyə 3000-4000 dollarlıq güclü noutbuk almalısan.
+- **AVD üsulu:** İşçilərə sadə noutbuklar verirsən. Azure-da 5 dənə çox güclü, GPU-su (qrafik kartı) olan Virtual Maşın açırsan. Bütün işçilər bu 5 maşına paylanaraq qoşulur. İşçilər evdən belə ən ağır çertyojları rahatlıqla hazırlayır.
+
+**Xülasə:** Azure Virtual Desktop, infrastrukturu idarə etmədən istifadəçilərə çevik, təhlükəsiz və hər yerdən əlçatan bir iş mühiti yaratmaq üçün ən ideal həll yoludur.
+
+## Azure Blob Storage
+
+**Azure Blob Storage**, Microsoft-un buludda böyük həcmli strukturlaşdırılmamış məlumatları (unstructured data) saxlamaq üçün nəzərdə tutulmuş obyekt yaddaş həllidir.
+
+"Blob" termini **Binary Large Object** sözlərinin qısaltmasıdır. Onu internet üzərindən əlçatan olan nəhəng, limitsiz bir rəqəmsal anbar kimi düşünə bilərsən.
+
+### 1. Blob Storage-də nələr saxlanılır?
+
+Strukturlaşdırılmamış məlumat dedikdə, müəyyən bir cədvəl formasına (sətir və sütunlara) sığmayan hər şey nəzərdə tutulur:
+
+- **Multimedia:** Şəkillər, videolar və audio fayllar.
+- **Sənədlər:** PDF-lər, Office sənədləri, mətn faylları.
+- **Arxiv və Backup:** Ehtiyat nüsxələr və uzunmüddətli arxiv məlumatları.
+- **Log faylları:** Tətbiqlərin yaratdığı qeydiyyat faylları.
+- **Veb məzmun:** Veb saytların statik faylları (məsələn, saytdakı bütün şəkillər burada saxlana bilər).
+
+### 2. İerarxik Struktur
+
+Blob Storage-də məlumatlar üç səviyyədə təşkil olunur:
+
+1. **Storage Account:** Sizin Azure-dakı bütün yaddaş xidmətləriniz üçün unikal ad mühitidir.
+2. **Container:** Kompüterinizdəki "qovluğa" (folder) bənzəyir. Blobları qruplaşdırmaq üçün istifadə olunur.
+3. **Blob:** Faylın özüdür (məsələn, `şəkil.jpg`).
+
+### 3. Access Tiers (Giriş Səviyyələri)
+
+Azure pulunuza qənaət etmək üçün məlumatın istifadə tezliyinə görə 4 fərqli yaddaş səviyyəsi təklif edir:
+
+- **Hot tier:** Tez-tez istifadə olunan məlumatlar üçün (məsələn, veb saytda hər saniyə göstərilən şəkillər). Saxlama xərci yüksək, məlumata giriş xərci aşağıdır.
+- **Cool tier:** Az istifadə olunan (ən azı 30 gün saxlanacaq) məlumatlar üçün (məsələn, keçən ayın hesabatları). Saxlama xərci daha aşağıdır.
+- **Cold tier:** Nadir hallarda istifadə olunan (ən azı 90 gün saxlanacaq) məlumatlar üçün.
+- **Archive tier:** Demək olar ki, heç vaxt istifadə olunmayan, lakin saxlanması qanuni olaraq vacib olan məlumatlar üçün (məsələn, 5 il əvvəlin sənədləri). Ən ucuz saxlama növüdür, amma məlumatı oxumaq saatlarla vaxt ala bilər.
+
+### 4. Blob Növləri
+
+- **Block Blobs:** Sənədlər, şəkillər və videolar kimi adi fayllar üçün.
+- **Page Blobs:** Virtual Maşınların (VM) diskləri (VHD faylları) üçün optimallaşdırılıb.
+- **Append Blobs:** Yalnız məlumatın sonuna əlavə etmək üçün (məsələn, davamlı yenilənən log faylları).
+
+### 5. Niyə Blob Storage?
+
+1. **Dayanıqlıq (Durability):** Azure məlumatınızı avtomatik olaraq bir neçə yerdə kopyalayır (Redundancy).
+2. **Scalability:** Limitsiz məlumat saxlaya bilərsiniz; 1 GB-dan Petabaytlara qədər genişlənə bilər.
+3. **Təhlükəsizlik:** Bütün məlumatlar şifrələnmiş (encryption) şəkildə saxlanılır.
+4. **Əlçatanlıq:** Dünyanın istənilən yerindən HTTP/HTTPS vasitəsilə fayllara giriş mümkündür.
+
+## **Azure Storage Account**
+
+**Azure Storage Account**, Microsoft Azure-un bütün məlumat saxlama xidmətlərini (Blobs, Files, Queues, Tables) özündə birləşdirən mərkəzi konteynerdir. Azure-da hər hansı bir fayl və ya məlumat saxlamaq istəyirsinizsə, ilk öncə mütləq bir Storage Account yaratmalısınız.
+
+Onu bütün rəqəmsal varlıqlarınız üçün unikal bir **identifikator** və **idarəetmə mərkəzi** kimi düşünə bilərsiniz.
+
+### 1. Storage Account daxilində hansı xidmətlər var?
+
+Bir Storage Account yaratdıqda sənə 4 fərqli məlumat saxlama növü təqdim olunur:
+
+- **Azure Blobs:** Şəkil, video və sənəd kimi böyük həcmli fayllar üçün (Obyekt yaddaşı).
+- **Azure Files:** Buludda idarə olunan şəbəkə qovluqları (File Shares). Bunları kompüterinizə bir şəbəkə diski (Z: diski kimi) bağlaya bilərsiniz (SMB/NFS protokolu).
+- **Azure Queues:** Tətbiqlər arasında mesajlaşma və iş növbələrini saxlamaq üçün.
+- **Azure Tables:** Strukturlaşdırılmamış (NoSQL) açar-dəyər (key-value) formatlı məlumatlar üçün.
+
+### 2. Əsas Parametrlər (Nələri seçməliyik?)
+
+Storage Account yaradarkən müəyyən etməli olduğunuz 3 kritik amil var:
+
+#### **A) Performance (Performans)**
+
+- **Standard:** Adi disklər (HDD) üzərində qurulur, daha ucuzdur və əksər işlər üçün kifayətdir.
+- **Premium:** SSD disklər üzərində qurulur, çox yüksək sürət və aşağı gecikmə (low latency) tələb edən proqramlar üçün nəzərdə tutulub.
+
+#### **B) Redundancy (Artıqlıq/Ehtiyatlandırma)**
+
+Məlumatın fəlakətlərdən necə qorunacağını buradan seçirsiniz:
+
+- **LRS (Locally Redundant Storage):** Məlumatınızın 3 kopyası eyni data mərkəzi daxilində saxlanılır. (Ən ucuz seçim).
+- **ZRS (Zone-Redundant Storage):** Məlumat 3 fərqli **Availability Zone**-da kopyalanır. Bir bina sıradan çıxsa belə məlumat itmir.
+- **GRS (Geo-Redundant Storage):** Məlumat başqa bir regiona (yüzlərlə mil uzağa) kopyalanır. Bütün bir şəhər sıradan çıxsa belə məlumatınız salamat qalır.
+
+#### **C) Security (Təhlükəsizlik)**
+
+- Bütün məlumatlar avtomatik olaraq şifrələnir (**Encryption at rest**).
+- Giriş üçün **Shared Access Signatures (SAS)** və ya **Access Keys** istifadə olunur.
+
+### 3. Storage Account-un Adlandırılması (Vacib!)
+
+Storage Account-un adı Azure-da **qlobal səviyyədə unikal** olmalıdır. Çünki bu ad həmin resursun URL-inin bir hissəsi olur.
+
+- _Məsələn:_ `mysitefiles.blob.core.windows.net`
+- Ad yalnız kiçik hərflərdən və rəqəmlərdən ibarət olmalıdır (3-24 simvol).
+
+### 4. Niyə Storage Account?
+
+- **Limitsiz Miqyaslanma:** Petabaytlarla məlumat saxlaya bilərsiniz.
+- **İdarə olunan (Managed):** Aparat təminatı və disklərin təmiri ilə Azure məşğul olur.
+- **Hər yerdən giriş:** HTTP/HTTPS vasitəsilə internetin hər yerindən fayllara təhlükəsiz giriş mümkündür.
+
+# Core Data Services
+
+Məlumatların dünyasını iki böyük qrupa bölmək olar: **Structured** (Strukturlaşdırılmış) və **Unstructured** (Strukturlaşdırılmamış). Bunların arasındakı fərqi anlamaq, Azure-da hansı yaddaş növünü (Storage və ya Database) seçəcəyinə qərar vermək üçün çox vacibdir.
+
+### 1. Structured Data (Strukturlaşdırılmış Məlumat)
+
+Bu, müəyyən bir qəlibə, sxemə və ya formata malik olan məlumatdır. Onu ən yaxşı **Excel cədvəli** kimi təsəvvür edə bilərsən.
+
+- **Necə görünür?** Sətirlər və sütunlardan ibarətdir. Hər sütunun öz adı və tipi (rəqəm, tarix, mətn) var.
+- **Harada saxlanılır?** Relasiyalı Verilənlər Bazalarında (RDBMS). Azure-da buna nümunə: **Azure SQL Database**, **MySQL**, **PostgreSQL**.
+- **Xüsusiyyətləri:**
+  - Axtarış etmək çox asan və sürətlidir.
+  - Məlumatlar arasında əlaqələr (məsələn, "Müştəri ID-si" ilə "Sifariş ID-si" arasındakı bağ) qurulur.
+- **Nümunələr:** Bank hesab məlumatları, müştəri siyahıları, inventar qeydləri.
+
+### 2. Unstructured Data (Strukturlaşdırılmamış Məlumat)
+
+Bu, müəyyən bir daxili strukturu və ya sabit formatı olmayan məlumatdır. Onu "rəqəmsal yığın" kimi düşünmək olar.
+
+- **Necə görünür?** Hər bir fayl fərqli ölçüdə və fərqli tipdə ola bilər. Bir fayl şəkildir, digəri isə 1 saatlıq video.
+- **Harada saxlanılır?** Obyekt yaddaşlarında və ya NoSQL bazalarda. Azure-da buna nümunə: **Azure Blob Storage**, **Azure Data Lake**.
+- **Xüsusiyyətləri:**
+  - Çox böyük həcmlidir (Petabaytlarla).
+  - Onu cədvələ salmaq mümkün deyil və ya çox çətindir.
+  - Axtarış etmək üçün adətən metadata (fayl haqqında məlumat) lazımdır.
+- **Nümunələr:** Videolar, səs yazıları, PDF sənədlər, sosial media postları, peyk şəkilləri.
+
+### 3. Aralıq Variant: Semi-Structured Data
+
+Bəzən məlumat cədvəl şəklində olmasa da, müəyyən bir işarələmə (tag) sisteminə malik olur.
+
+- **Nümunələr:** JSON, XML və ya HTML faylları.
+- **Azure-da yeri:** **Azure Cosmos DB** bu növ məlumatlar üçün mükəmməldir.
+
+### Müqayisə Cədvəli
+
+| **Xüsusiyyət** | **Structured Data**      | **Unstructured Data**                |
+| :------------- | :----------------------- | :----------------------------------- |
+| **Model**      | Sxem (Schema-on-write)   | Sxemsiz (Schema-on-read)             |
+| **Format**     | Rəqəmlər və qısa mətnlər | Media, fayl və böyük mətnlər         |
+| **Yaddaş**     | SQL Verilənlər Bazası    | Blob Storage, Data Lake              |
+| **Analiz**     | Asan (Riyazi analizlər)  | Çətin (Süni İntellekt/ML tələb edir) |
+| **Həcm**       | Adətən Gigabayt/Terabayt | Terabayt/Petabayt                    |
+
+### Real Həyat Nümunəsi
+
+Təsəvvür et ki, bir **Həkim Klinikası** var:
+
+1. Xəstənin adı, soyadı, yaşı və qəbul vaxtı ➔ **Structured Data** (SQL bazasında saxlanılır).
+2. Xəstənin rentgen şəkli, USM videosu və həkimin əllə yazdığı qeydlərin skan olunmuş variantı ➔ **Unstructured Data** (Blob Storage-də saxlanılır).
