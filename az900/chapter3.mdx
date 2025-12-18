@@ -139,3 +139,48 @@ Azure DNS panelində tez-tez rast gələcəyin əsas qeydlər:
 1. **Sürət:** Microsoft-un qlobal "Anycast" şəbəkəsi sayəsində DNS sorğuları ən yaxın data mərkəzindən cavablandırılır.
 2. **Etibarlılıq:** Azure DNS-in əlçatanlıq zəmanəti (SLA) **100%**-dir.
 3. **Təhlükəsizlik:** Azure Resource Manager (ARM) vasitəsilə kimin DNS qeydlərini dəyişə biləcəyinə nəzarət edə bilərsən.
+
+## **Routing**
+
+Bulud texnologiyalarında **Routing** (Yönləndirmə), şəbəkə trafikinin bir nöqtədən digər nöqtəyə (məsələn, internetdən serverə və ya bir serverdən digərinə) hansı yolla gedəcəyini təyin edən qaydalar sistemidir.
+
+Azure-da trafikin hərəkəti üç əsas mexanizm vasitəsilə idarə olunur:
+
+### 1. System Routes (Sistem Marşrutları)
+
+Azure hər bir **Subnet** yaradıldıqda avtomatik olaraq bir sıra sistem marşrutları formalaşdırır. Sən bunları silə bilməzsən, lakin lazım gəldikdə üzərlərindən yeni qaydalar yaza bilərsən.
+
+Bu marşrutlar aşağıdakı əlaqələri təmin edir:
+
+- **Eyni VNet daxilində:** Subnet-lər arası trafik.
+- **İnternetə çıxış:** Resursların internetlə əlaqəsi.
+- **VNet-dən VNet-ə:** Əgər VNet Peering istifadə olunursa.
+
+### 2. User-Defined Routes (UDR) - İstifadəçi tərəfindən təyin olunan marşrutlar
+
+Bəzən Azure-un trafik üçün seçdiyi standart yol bizim üçün uyğun olmur. Məsələn, sən istəyirsən ki, internetə gedən bütün trafik birbaşa çıxmasın, əvvəlcə bir **Firewall**-dan (təhlükəsizlik divarı) keçsin.
+
+Bunun üçün sən bir **Route Table** (Marşrut Cədvəli) yaradırsan və onu Subnet-ə bağlayırsan.
+
+- **Next Hop Type:** Trafikin gedəcəyi növbəti "dayanacağı" bildirir. Bu, bir Virtual Appliance (NVA - məsələn, Firewall), Virtual Network Gateway və ya sadəcə "None" (trafiki bloklamaq üçün) ola bilər.
+
+### 3. BGP (Border Gateway Protocol)
+
+Əgər şirkətinizin ofisindəki (On-premises) şəbəkəni Azure-a **ExpressRoute** və ya **VPN Gateway** vasitəsilə bağlamısınızsa, marşrutlar **BGP** vasitəsilə avtomatik olaraq paylanılır. Bu, şəbəkə yollarının əllə yazılmadan, dinamik şəkildə öyrənilməsini təmin edir.
+
+### 4. Azure-da Trafik Yönləndirmə Alətləri
+
+Azure-da trafikin hansı istiqamətdə gedəcəyinə qərar verən bir neçə ağıllı xidmət var:
+
+- **Azure Load Balancer:** Trafiki daxil olan portlara görə eyni gücdəki serverlər arasında bölür (Layer 4).
+- **Azure Application Gateway:** Trafiki URL ünvanına görə yönləndirir (Layer 7). Məsələn, `/images` sorğularını bir serverə, `/video` sorğularını digərinə göndərir.
+- **Azure Traffic Manager:** İstifadəçini coğrafi olaraq ona ən yaxın olan Regiondakı serverə yönləndirir (DNS əsaslı).
+- **Azure Front Door:** Qlobal miqyasda ən sürətli və təhlükəsiz yolu seçərək istifadəçini tətbiqə bağlayır.
+
+### Xülasə: Marşrut Seçimi Prioriteti
+
+Azure-da birdən çox marşrut qaydası toqquşarsa, bu ardıcıllıq gözlənilir:
+
+1. **User-Defined Route (UDR):** Ən yüksək prioritetə malikdir (sənin yazdığın qayda).
+2. **BGP Route:** Dinamik öyrənilən yollar.
+3. **System Route:** Azure-un standart yolları (ən aşağı prioritet).
