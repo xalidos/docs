@@ -177,10 +177,185 @@ Azure-da trafikin hansı istiqamətdə gedəcəyinə qərar verən bir neçə a�
 - **Azure Traffic Manager:** İstifadəçini coğrafi olaraq ona ən yaxın olan Regiondakı serverə yönləndirir (DNS əsaslı).
 - **Azure Front Door:** Qlobal miqyasda ən sürətli və təhlükəsiz yolu seçərək istifadəçini tətbiqə bağlayır.
 
-### Xülasə: Marşrut Seçimi Prioriteti
+## Virtual Network (VNet)
 
-Azure-da birdən çox marşrut qaydası toqquşarsa, bu ardıcıllıq gözlənilir:
+### 1. Virtual Network (VNet) Nədir?
 
-1. **User-Defined Route (UDR):** Ən yüksək prioritetə malikdir (sənin yazdığın qayda).
-2. **BGP Route:** Dinamik öyrənilən yollar.
-3. **System Route:** Azure-un standart yolları (ən aşağı prioritet).
+Azure Virtual Network, Azure-dakı resursların (məsələn, Virtual Maşınlar - VM) bir-biri ilə, internetlə və lokal (on-premises) şəbəkələrlə təhlükəsiz şəkildə əlaqə saxlamasını təmin edən özəl şəbəkədir.
+
+### 2. Əsas Komponentlər
+
+VNet-i başa düşmək üçün bu üç anlayışı yadda saxlamalısan:
+
+- **Address Space (Ünvan Sahəsi):** Şəbəkəniz üçün təyin etdiyiniz IP ünvan diapazonu (məsələn, `10.0.0.0/16`).
+- **Subnets (Alt şəbəkələr):** VNet-i daha kiçik hissələrə bölməkdir. Məsələn, Web serverlər üçün bir subnet, Database üçün başqa bir subnet yaradırsınız. Bu, təhlükəsizliyi idarə etməyi asanlaşdırır.
+- **Public vs Private Endpoints:** Resursun internetə açıq olub-olmayacağını müəyyən edir.
+
+### 3. VNet-in Əsas Üstünlükləri
+
+İmtahanda çox vaxt bu xüsusiyyətlər soruşulur:
+
+| **Xüsusiyyət**              | **İzahı**                                                                                                              |
+| :-------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
+| **İzolyasiya**              | Hər bir VNet digərlərindən tamamilə izolyasiya olunub (ayrılıb).                                                       |
+| **Internet Communications** | VNet daxilindəki resurslar standart olaraq internetə çıxa bilir, amma internetdən onlara giriş bağlı olur.             |
+| **VNet Peering**            | İki ayrı VNet-i bir-birinə bağlamaq üçün istifadə olunur. Trafik Azure-un daxili şəbəkəsi ilə gedir, internetə çıxmır. |
+| **Hybrid Connectivity**     | Lokal ofis şəbəkənizi Azure VNet-ə bağlaya bilərsiniz (VPN Gateway və ya ExpressRoute vasitəsilə).                     |
+
+### 4. Təhlükəsizlik: Network Security Groups (NSG)
+
+VNet daxilində trafiki idarə etmək üçün **NSG**-lərdən istifadə olunur. Bunu "virtual firewall" kimi düşünə bilərsən. NSG-lər müəyyən IP ünvanlarından gələn və ya gedən trafiki "Allow" (İcazə ver) və ya "Deny" (Rədd et) qaydaları ilə tənzimləyir.
+
+### İmtahan üçün Kiçik "Qızıl" Qaydalar:
+
+1. **VNet pulsuzdur**, lakin onun daxilində istifadə etdiyiniz bəzi xidmətlər (məsələn, VNet Peering və ya VPN Gateway) ödənişli ola bilər.
+2. **VNet Region-a bağlıdır.** Yəni bir VNet yalnız bir regionda mövcud ola bilər (məsələn, East US). Amma fərqli regionlardakı VNet-ləri "Global Peering" ilə bağlamaq olar.
+
+## Load Balancers
+
+Bunu bir bankdakı növbə aparatına bənzədə bilərsən: Müştərilər gəlir, aparat isə onları boş olan kassalara yönləndirir ki, bir kassa həddindən artıq yüklənməsin, digəri isə boş qalmasın.
+
+### 1. Niyə Load Balancer İstifadə Edirik?
+
+- **Yüksək Əlçatanlıq (High Availability):** Əgər bir VM sıradan çıxarsa, Load Balancer bunu anlayır və trafiki avtomatik olaraq işlək vəziyyətdə olan digər VM-lərə göndərir.
+- **Ölçəklənə bilmə (Scalability):** İstifadəçi sayı artdıqda yeni VM-lər əlavə edə bilərsiniz və Load Balancer onları dərhal işə cəlb edir.
+- **Effektivlik:** Heç bir serverin "yorulmamasını" təmin edir.
+
+### 2. Azure-da Əsas Yük Balanslaşdırıcı Tipləri
+
+AZ-900 səviyyəsində bu iki xidməti fərqləndirməyi bacarmalısan:
+
+| **Xidmət**                    | **Səviyyə (Layer)**       | **Əsas Xüsusiyyəti**                                                                                                            |
+| :---------------------------- | :------------------------ | :------------------------------------------------------------------------------------------------------------------------------ |
+| **Azure Load Balancer**       | **Layer 4** (Transport)   | Yalnız IP ünvanı və Port əsasında (TCP/UDP) trafiki yönləndirir. Çox sürətlidir.                                                |
+| **Azure Application Gateway** | **Layer 7** (Application) | Trafikin daxilinə (URL yoluna) baxa bilir. Məsələn: `/images` sorğusunu bir serverə, `/video` sorğusunu başqa serverə göndərir. |
+
+### 3. Load Balancer-in İşləmə Mexanizmi
+
+Bir Load Balancer yaradarkən bu 3 elementi bilməlisən:
+
+1. **Frontend IP:** İstifadəçilərin müraciət etdiyi tək bir giriş nöqtəsi (məsələn, saytın IP-si).
+2. **Backend Pool:** Trafikin yönləndiriləcəyi VM-lərin siyahısı.
+3. **Health Probes (Sağlamlıq Yoxlanışı):** Load Balancer vaxtaşırı serverlərə "Sən sağsan?" deyə sorğu göndərir. Cavab verməyən serverə trafik göndərməyi dayandırır.
+
+### 4. Public vs Internal Load Balancer
+
+- **Public Load Balancer:** İnternetdən gələn trafiki qəbul edir və daxili şəbəkədəki VM-lərə paylayır.
+- **Internal (Private) Load Balancer:** Yalnız daxili şəbəkədə istifadə olunur. Məsələn, Web-serverlərdən gələn sorğuları Database serverləri arasında bölüşdürmək üçün.
+
+### İmtahan üçün İpucu:
+
+Əgər sualda **"URL-based routing"** və ya **"WAF" (Web Application Firewall)** sözləri keçirsə, söhbət **Application Gateway**-dən gedir. Əgər sadəcə aşağı gecikmə müddəti (low latency) və IP/Port əsaslı paylanma soruşulursa, cavab **Azure Load Balancer**-dir.
+
+## VPN Gateway
+
+Sadə desək, **Azure VPN Gateway**, Azure Virtual Network (VNet) ilə sizin lokal şəbəkəniz (məsələn, ofisiniz və ya eviniz) arasında internet üzərindən **şifrələnmiş (encrypted)** trafik göndərmək üçün istifadə olunan xüsusi bir virtual şəbəkə şlüzüdür.
+
+### 1. Əsas Funksiyası
+
+VPN Gateway trafiki internet vasitəsilə göndərir, lakin bu trafik **"tunnel"** daxilində şifrələndiyi üçün kənar şəxslər tərəfindən oxuna bilmir. Bu, təhlükəsizliyi təmin edir.
+
+### 2. Bağlantı Növləri
+
+İmtahanda bu üç növ bağlantını fərqləndirmək çox vacibdir:
+
+- **Site-to-Site (S2S):** Bütün ofis şəbəkəsini Azure-a bağlayır. Bu, ofisdəki bir VPN cihazı ilə Azure-dakı VPN Gateway arasında qurulur.
+- **Point-to-Site (P2S):** Tək bir kompüterin (məsələn, uzaqdan işləyən işçinin noutbuku) Azure-a bağlanmasıdır. Hər kompüterdə ayrıca qoşulma konfiqurasiyası olur.
+- **VNet-to-VNet:** İki fərqli Azure Virtual Network-ü bir-birinə bağlamaq üçün istifadə olunur (VNet Peering-ə alternativdir, lakin daha yavaşdır).
+
+![Image](/images/image-2.png)
+
+### 3. VPN Gateway vs ExpressRoute
+
+Bu, AZ-900 imtahanının "tələ" suallarından biridir. Aralarındakı fərqi mütləq yadda saxla:
+
+| **Xüsusiyyət**    | **VPN Gateway**               | **ExpressRoute**                       |
+| :---------------- | :---------------------------- | :------------------------------------- |
+| **Bağlantı Yolu** | **Public Internet** üzərindən | **Özəl (Private)** xətt üzərindən      |
+| **Təhlükəsizlik** | Şifrələnmiş (Encrypted)       | Şifrələnməyib (çünki internetə çıxmır) |
+| **Sürət**         | Daha yavaş                    | Çox yüksək və stabil                   |
+| **Qiymət**        | Ucuz                          | Bahalı                                 |
+
+### 4. Vacib Detallar
+
+- Hər bir Virtual Network-də yalnız **bir dənə** VPN Gateway (Gateway Subnet daxilində) ola bilər.
+- VPN Gateway yaratmaq bir az vaxt aparır (adətən 20-45 dəqiqə).
+- Məlumat ötürülməsi (egress data transfer) həcminə görə ödəniş tələb olunur.
+
+### İmtahan üçün Qızıl Qayda:
+
+Əgər sualda **"encrypted traffic over the public internet"** (internet üzərindən şifrələnmiş trafik) ifadəsini görsən, söhbət **VPN Gateway**-dən gedir. Əgər **"private connection, bypasses the internet"** (özəl bağlantı, internetdən yan keçir) deyirsə, bu **ExpressRoute**-dur.
+
+## Azure VPN Gateway
+
+Bu, **ictimai internet** üzərindən "tünel" açaraq məlumat daşıyır.
+
+- **Necə işləyir:** Məlumatlar internet üzərindən keçdiyi üçün onlar **IPsec/IKE** protokolları ilə şifrələnir.
+- **Üstünlükləri:** Tez quraşdırılır, ucuzdur, xüsusi fiziki kabel çəkməyə ehtiyac yoxdur.
+- **Mənfi cəhətləri:** İnternet sürətindən asılıdır. Gecikmələr (latency) ola bilər, çünki trafik digər internet istifadəçiləri ilə eyni xətti paylaşır.
+
+### 2. Azure ExpressRoute
+
+Bu, interneti tamamilə dövrədən çıxarır və sizinlə Azure arasında **özəl (private)** bir bağlantı qurur.
+
+- **Necə işləyir:** Bir servis provayderi vasitəsilə birbaşa Azure-un daxili şəbəkəsinə qoşulursunuz.
+- **Üstünlükləri:** Çox yüksək sürət (100 Gbps-ə qədər), stabil bağlantı və minimum gecikmə. İnternetdən keçmədiyi üçün daha etibarlıdır.
+- **Mənfi cəhətləri:** Bahalıdır və fiziki infrastruktur tələb etdiyi üçün quraşdırılması vaxt alır.
+
+![Image](/images/image-4.png)
+
+### Müqayisə Cədvəli (İmtahan üçün vacib)
+
+| **Xüsusiyyət**             | **VPN Gateway**                      | **ExpressRoute**                          |
+| :------------------------- | :----------------------------------- | :---------------------------------------- |
+| **Bağlantı növü**          | Public Internet (İnternet üzərindən) | Private (Özəl xətt)                       |
+| **Təhlükəsizlik**          | Şifrələnmiş (Encrypted)              | Şifrələnməmiş (çünki xətt özəldir)\*      |
+| **Sürət / Bant genişliyi** | Aşağı/Orta (maks 10 Gbps)            | Çox yüksək (maks 100 Gbps)                |
+| **Etibarlılıq**            | İnternet kəsilərsə, bağlantı itir    | Çox yüksək və stabil (SLA daha yüksəkdir) |
+| **Xərc**                   | Aşağı (istifadəyə görə ödəniş)       | Yüksək (aylıq sabit ödəniş)               |
+
+> **Qeyd:** ExpressRoute trafikini şifrələmir (çünki artıq təhlükəsiz özəl xətdədir), lakin ehtiyac olarsa, ExpressRoute üzərindən də VPN quraraq şifrələmə əlavə etmək olar.
+
+### İmtahanda hansını seçməli?
+
+- Əgər sualda **"low cost"** (aşağı xərc) və ya **"small office"** (kiçik ofis) deyirsə: **VPN Gateway**.
+- Əgər sualda **"mission-critical"**, **"high speed"** (yüksək sürət) və ya **"bypasses the public internet"** (internetdən yan keçir) deyirsə: **ExpressRoute**.
+
+## Content Delivery Networks
+
+### 1. CDN Necə İşləyir?
+
+Təsəvvür edin ki, sizin əsas serveriniz (Origin) **ABŞ**-dadır. **Bakıdan** bir istifadəçi sizin sayta daxil olub bir şəkil yükləmək istəyir.
+
+1. CDN olmasa, o şəkil Atlantik okeanını keçib ABŞ-dan gəlməlidir (bu, vaxt aparır - _latency_).
+2. CDN olsa, Azure həmin şəkli Bakıya ən yaxın olan **Edge Server**-də (məsələn, Türkiyədə və ya elə Bakının özündə olan bir qovşaqda) saxlayır.
+3. İstifadəçi sorğu göndərəndə, şəkil ən yaxın serverdən gəlir.
+
+### 2. CDN-in Əsas Üstünlükləri
+
+İmtahanda CDN-in nə üçün istifadə olunduğunu soruşduqda bu üç məqamı axtar:
+
+- **Gecikmənin azaldılması (Reduced Latency):** Məlumat daha qısa məsafə qət etdiyi üçün saytlar daha sürətli açılır.
+- **Bant genişliyinin qənaəti (Bandwidth Savings):** Əsas serverə (Origin) düşən yük azalır, çünki trafikin böyük hissəsini "Edge" serverlər qarşılayır.
+- **Yaxşı istifadəçi təcrübəsi:** Video yayımı (streaming) və ya böyük faylların yüklənməsi zamanı donmaların qarşısını alır.
+
+### 3. CDN Hansı Məzmunu Saxlayır?
+
+CDN adətən **Statik Məzmunu** (Static Content) keşləyir:
+
+- Şəkillər (JPG, PNG)
+- Video faylları
+- Stil faylları (CSS)
+- JavaScript faylları
+
+![Download](/images/download-1.png)
+
+### 4. Vacib Terminlər
+
+- **Origin Server:** Məzmunun əsl mənbəyi (Azure Web App, Storage Account və ya hər hansı bir server).
+- **Edge Node (və ya Point of Presence - PoP):** Dünyanın müxtəlif yerlərində yerləşən, məzmunu keşləyən server mərkəzləri.
+- **Caching:** Məlumatın müvəqqəti olaraq yaxınlıqdakı serverdə surətinin saxlanılması prosesi.
+
+### İmtahan üçün Qızıl Qayda:
+
+Əgər sualda **"Minimize latency for global users"** (qlobal istifadəçilər üçün gecikməni minimuma endirmək) və ya **"Deliver high-bandwidth content"** (yüksək bant genişliyi tələb edən məzmunu çatdırmaq) ifadələrini görsən, cavab mütləq **Azure CDN**-dir.
