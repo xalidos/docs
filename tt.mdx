@@ -1,0 +1,258 @@
+---
+title: "Süni İntellekt iş yükləri və mülahizələri (Describe Artificial Intelligence workloads and considerations)"
+---
+
+**Süni İntellekt (AI - Artificial Intelligence)**, kompüterlərin insanı simulyasiya edəcək şəkildə düşünməsi və hərəkət etməsidir. AI, ətraf mühitdən məlumat alan və öyrəndiklərinə əsaslanaraq cavab verən bir texnologiyadır. AI-ın məqsədi, insan davranışını təqlid edə bilən bir maşın yaratmaqdır.
+
+AI sadəcə öyrənməkdən ibarət deyil — o, həmçinin biliklərin təmsil olunması (knowledge representation), mühakimə yürütmə (reasoning) və mücərrəd düşünmədir (abstract thinking). **Maşın Öyrənməsi (ML - Machine Learning)**, kompüterlərə lazım olan hər şeyi öyrətmək əvəzinə, onların öz-özünə öyrənməsini təmin edən yanaşmanı mənimsəyən AI-ın alt qrupudur. ML, müasir AI-ın təməlidir. ML, məlumatlardakı qanunauyğunluqları (patterns) və strukturları müəyyənləşdirməyə və onlardan məna çıxarmağa fokuslanır.
+
+<Frame>
+  ![Image](/images/image-7.png)
+</Frame>
+
+ML, keçmiş təcrübələrdən öyrənən proqram təminatından istifadə edərək maşınların mühakimə yürütməsi və qərar qəbul etməsi ilə bağlıdır. ML, kompüterlərin insanlar üçün yerinə yetirilməsi çətin olan, təkrar olunan və dəqiq müəyyən edilmiş tapşırıqları ardıcıl şəkildə icra etməsinə şərait yaradır. Son bir neçə ildə maşın öyrənməsi alqoritmləri sübut etdi ki, kompüterlər maşınlar üçün həddindən artıq mürəkkəb olan tapşırıqları öyrənə bilirlər; bu da ML-in geniş spektrli ssenarilərdə və sənayelərdə tətbiq oluna biləcəyini nümayiş etdirir.
+
+AI artıq bu gün istifadə etdiyiniz proqram təminatlarına daxil edilir, bəzən biz bunun fərqinə belə varmırıq. Məsələn, **Microsoft PowerPoint** proqramında slaydlar üçün mövzu və düzən təklifləri verən "Design Ideas" funksiyası var, **Microsoft Word** isə aydınlığı artırmaq üçün cümlələri yenidən yazmağı təklif edir.
+
+Bu fəsil, Süni İntellekt və maşın öyrənməsinin müxtəlif ssenarilərdə və sənayelərdə etik şəkildə necə istifadə oluna biləcəyinə dair ümumi bir baxışdır.
+
+Bu hissə **Skill 1.1** (Ümumi AI iş yüklərinin xüsusiyyətlərini müəyyən etmək) mövzusunu əhatə edir. Mintlify-da yeni bir alt başlıq və ya bölmə kimi yerləşdirə bilərsiniz.
+
+---
+
+## Bacarıq 1.1: Ümumi AI iş yüklərinin xüsusiyyətlərini müəyyən etmək (Identify features of common AI workloads)
+
+Süni İntellekt, insan davranışlarını və qabiliyyətlərini təqlid edən proqram təminatıdır. Bu gün proqram təminatları həm maşınların, həm də insanların etməli olduğu hərəkətləri avtomatik müəyyən etmək və proqnozlaşdırmaq üçün AI-dan istifadə edə bilər.
+
+Microsoft Azure, öz intellektual həllərinizi yaratmaq üçün istifadə edə biləcəyiniz Süni İntellekt və Maşın Öyrənməsi xidmətləri toplusunu təqdim edir. **Microsoft Azure AI Fundamentals** sertifikatı, sizin AI və ML konsepsiyaları haqqında giriş səviyyəsində biliyə və müvafiq Microsoft Azure xidmətləri haqqında məlumata malik olmağınızı tələb edir.
+
+Bu bölmədə aşağıdakıları necə edəcəyinizi öyrənəcəksiniz:
+
+- AI və ML üçün Azure xidmətlərini təsvir etmək
+- Azure Machine Learning-i anlamaq
+- Azure Cognitive Services-i anlamaq
+- Azure Bot Service-i təsvir etmək
+- Ümumi AI iş yüklərini müəyyən etmək
+
+### AI və ML üçün Azure xidmətlərini təsvir etmək (Describe Azure services for AI and ML)
+
+Azure-da AI və ML üçün geniş və sürətlə böyüyən xidmətlər seriyası mövcuddur. AI-900 imtahanının əsas diqqət mərkəzində olan üç əsas xidmət var:
+
+1. **Cognitive Services (Koqnitiv Xidmətlər):** Tətbiqlərinizdə asanlıqla istifadə edə biləcəyiniz hazır (prebuilt) xidmətlər toplusu.
+2. **Azure Bot Service:** Çatbotlar və intellektual agentlər yaratmağa və yaymağa kömək edən xidmət.
+3. **Azure Machine Learning:** Öz fərdi (custom) AI həllərinizi yaratmağa imkan verən geniş çeşidli alətlər və xidmətlər toplusu.
+
+Bu kitabda biz bu üç xidmətin bəzi xüsusiyyətlərini və imkanlarını araşdıracağıq. Bununla belə, bu xidmətlər təcrid olunmuş şəkildə işləmir; onlar həllər təqdim etmək üçün aşağıdakı kimi bir çox digər Azure xidmətlərindən istifadə edirlər:
+
+- Storage (Yaddaş/Anbar)
+- Compute (Hesablama resursları)
+- Web Apps (Veb tətbiqlər)
+- HD Insights
+- Data Factory
+- Cosmos DB
+- Azure Functions
+- Azure Kubernetes Service (AKS)
+
+### Nümunə ML arxitekturası (Example ML architecture)
+
+Azure xidmətlərinin **Azure Machine Learning**-i necə dəstəklədiyini izah etmək üçün, istifadəçilərinə tövsiyələr (recommendations) təqdim etmək istəyən bir şirkət ssenarisini nəzərdən keçirək. Fərdiləşdirilmiş hədəf tövsiyələri təqdim etməklə istifadəçilərin məhsulları daha çox alması ehtimalı artacaq və istifadəçi məmnuniyyəti yüksələcəkdir.
+
+Şəkil 1-1 tövsiyə sistemini dəstəkləmək üçün nümunəvi ML arxitekturasını göstərir.
+
+<Frame>
+  ![Image](/images/image-8.png)
+</Frame>
+
+### Azure Machine Learning-i anlamaq (Understand Azure Machine Learning)
+
+**Azure Machine Learning (Azure ML)**, Azure AI-ın təməlidir. Azure Machine Learning vasitəsilə siz proqnozlar (predictions) və çıxarışlar (inferences) etmək üçün AI modelləri qura və öyrədə bilərsiniz.
+
+Maşın öyrənməsi modelini öyrətmək üçün külli miqdarda məlumat və hesablama resursları (computing resources) tələb olunur. Azure, məlumatların hazırlanması və sonradan analiz edilməsi üçün bir çox xidmət təqdim edir. Azure ML, maşın öyrənməsi modellərinin öyrədilməsi, yayılması (deployment) və idarə edilməsi üçün nəzərdə tutulmuş bir platformadır. Maşın öyrənməsi mövzusunu 2-ci fəsildə daha ətraflı əhatə edəcəyik.
+
+### Maşın öyrənməsi model tipləri (Machine learning model types)
+
+Maşın öyrənməsi, məlumatlardakı qanunauyğunluqları müəyyən etmək və hərəkətə keçmək üçün alqoritmlərdən istifadə edir. Alqoritmlərin nəticələrindən yaradılan maşın öyrənməsi modellərinin növləri aşağıdakılardır:
+
+- **Anomaliyaların Müəyyən Edilməsi (Anomaly Detection):** Qeyri-adi hadisələri tapır.
+- **Təsnifat (Classification):** Şəkilləri təsnif edir və ya bir neçə kateqoriya arasından seçim edərək proqnoz verir.
+- **Klasterləşdirmə (Clustering - K-Means Clustering daxil olmaqla):** Məlumatlardakı strukturları və gizli qrupları kəşf edir.
+- **Reqressiya (Regression):** Rəqəmsal dəyərləri proqnozlaşdırır.
+
+> **QEYD: MODEL TİPLƏRİ** Bu model tipləri arasındakı fərqləri anlamaq, bu imtahan üçün təməl bilikdir.
+
+Hər bir model tipi üçün aşağıdakıları başa düşməyiniz lazımdır:
+
+1. Necə işləyirlər (How they work)
+2. Nə edirlər (What they do)
+3. Nə üçün istifadə oluna bilərlər (What they can be used for)
+4. İstehsal etdikləri metrikalar (The metrics they produce)
+
+Bu məqamlara kitabın növbəti hissələrində toxunacağıq.
+
+Bu bölmədə Microsoft tərəfindən əvvəlcədən öyrədilmiş və istifadəyə hazır olan **Azure Cognitive Services** (Koqnitiv Xidmətlər) haqqında məlumat verilir. Bu xidmətlər proqram təminatı tərtibatçıları üçün AI tətbiqini sürətləndirən ən vacib alətlərdən biridir.
+
+---
+
+### Azure Cognitive Services-i anlamaq (Understand Azure Cognitive Services)
+
+**Cognitive Services**, tərtibatçıların AI həlləri qurmaq üçün istifadə edə biləcəyi hazır (prebuilt) AI xidmətləri toplusudur. Cognitive Services ümumi AI tələblərinə cavab verir və sizə daha az təcrübə ilə tətbiqlərinizə AI funksiyalarını daha sürətli əlavə etməyə imkan verir.
+
+Cognitive Services, Microsoft tərəfindən nəhəng həcmdə məlumatlarla öyrədilmiş maşın öyrənməsi modelləridir. Eyni analizləri yerinə yetirmək üçün öz fərdi AI modellərinizi qura bilsəniz də, Cognitive Services sizə təsvirlərin emalı və mətnlərin analizi ilə bağlı bir çox AI tələblərini asanlıqla qarşılamağa imkan verir. Bununla belə, Cognitive Services AI tələblərinin yalnız bir hissəsini əhatə edir. Daha mürəkkəb və spesifik ehtiyacları qarşılamaq üçün öz maşın öyrənməsi modellərinizi yarada bilərsiniz.
+
+Cognitive Services aşağıdakı imkanlar üçün bir sıra **REST API** şəklində əlçatandır:
+
+- **Computer Vision (Kompüter görməsi):** Şəkillər və videolar daxil olmaqla.
+- **Decision (Qərar vermə):** Anomaly Detector (Anomaliya detektoru) daxil olmaqla.
+- **Language (Dil):** Mətn analizi və Language Understanding (Dilin başa düşülməsi) daxil olmaqla.
+- **Speech (Nitq):** Tərcümə daxil olmaqla.
+- **Intelligent search (Ağıllı axtarış):** Knowledge mining (biliklərin çıxarılması/mədəni) daxil olmaqla.
+
+Cognitive Services geniş və sürətlə böyüyən xüsusiyyətlər və imkanlar sırasına malikdir. **Azure AI Fundamentals** imtahanı bu imkanlardan ikisinə fokuslanır:
+
+1. Təsvirlərin emalı (Image processing)
+2. Təbii Dilin Emalı (NLP - Natural Language Processing)
+
+Cognitive Services-in istifadəsinə dair ən yaxşı nümunə, bu iki imkandan istifadə edən pulsuz **Seeing AI** tətbiqidir. Görmə qabiliyyəti məhdud olan insanlar üçün hazırlanmış bu tətbiq fiziki mühiti səsli təcrübəyə çevirir, üzləri tapır, obyektləri müəyyənləşdirir və sənədləri oxuyur.
+
+Şəkil 1-2 App Store-da nümunə ekran görüntüləri və xüsusiyyətlərinə dair ümumi baxışla birlikdə Seeing AI tətbiqini göstərir.
+
+<Frame>
+  <img
+    src="/images/image-9.png"
+    alt="Image"
+    title="Image"
+  />
+</Frame>
+
+Biz 3-cü və 4-cü fəsillərdə **Azure Cognitive Services**-in (Azure Koqnitiv Xidmətlərinin) kompüter görməsi (**Computer Vision**) və Təbii Dilin Emalı (**Natural Language Processing**) xidmətlərinə nəzər yetirəcəyik.
+
+### Azure Bot Service-i təsvir etmək (Describe the Azure Bot Service)
+
+**Azure Bot Service**, botların hazırlanması, yayılması (deployment) və idarə edilməsi üçün bulud əsaslı bir platformadır. Azure Bot Xidmətləri, **Conversational AI (danışıq əsaslı AI)** kimi tanınan imkanları təmin edir.
+
+Conversational AI, kompüterin istifadəçi və ya müştəri ilə söhbəti simulyasiya etdiyi sahədir. Bu texnologiya sadə çatbotlardan kənara çıxaraq, intellektual agentlərə və Cortana kimi virtual köməkçilərə qədər genişlənmişdir.
+
+Azure AI Fundamentals imtahanına daxil olan iki əsas danışıq xidməti vardır:
+
+- **QnA Maker:** Mövcud dəstək (support) və digər sənədlərdən istifadə edərək bot qurmaq üçün bir alətdir.
+- **Azure Bot Service:** Botları qurmaq, test etmək, yaymaq və idarə etmək üçün alətlər toplusudur.
+
+Həm QnA Maker, həm də Azure Bot Service, Koqnitiv Xidmətlər daxilindəki **Language Understanding (LUIS)** xidmətindən istifadə edir. Botlar haqqında 5-ci fəsildə daha ətraflı məlumat verəcəyik.
+
+### Ümumi AI iş yüklərini müəyyən etmək (Identify common AI workloads)
+
+Süni intellektin bir çox istifadə ssenarisi var. Burada bəzi ümumi AI iş yüklərinə baxacaq, onların xüsusiyyətlərini təsvir edəcək və istifadəsi üçün nümunələr təqdim edəcəyik.
+
+> **İMTAHAN ÜÇÜN İPUCU (EXAM TIP)** İmtahanda sizdən verilən nümunəyə əsasən düzgün AI iş yükünü seçmək və ya müəyyən bir iş yükü üçün nümunə tapmaq tələb olunacaq. Hər bir iş yükünün istifadə ssenarilərini (use cases) başa düşdüyünüzdən əmin olmalısınız.
+
+#### Proqnozlaşdırma (Prediction)
+
+Proqnozlaşdırma və ya "forecasting", kompüterin keçmiş məlumatlarınızdakı (historical data) qanunauyğunluqları müəyyən etdiyi və maşın öyrənməsi vasitəsilə bu qanunauyğunluqları nəticələrlə əlaqələndirdiyi sahədir. Daha sonra bu proqnoz modelindən yeni məlumatlar üçün nəticəni təxmin etmək məqsədilə istifadə edə bilərsiniz.
+
+Proqnozların növlərinə aşağıdakılar daxildir:
+
+- **İkili proqnoz (Binary prediction):** Sualın iki mümkün nəticəsi var — bəli/xeyr və ya doğru/yalan.
+- **Çoxsaylı nəticə proqnozu (Multiple outcome prediction):** Sual iki və ya daha çox nəticədən ibarət siyahıdan cavablandırıla bilər.
+- **Rəqəmsal proqnoz (Numerical prediction):** Sual konkret diapazonla məhdudlaşmayan kəsilməz bir rəqəmlə cavablandırılır.
+
+Proqnoz modelləri çox fərqli ssenarilərdə istifadə edilə bilər. Məsələn, maliyyə xidmətlərində kredit müraciətlərini və ya riskləri qiymətləndirərkən bu modellərə rast gəlinir. Siz müştəri itkisi dərəcəsini (churn rate), daxil olacaq dəstək zənglərinin sayını və ya bir fürsətin satışa çevrilib-çevrilməyəcəyini proqnozlaşdırmaq üçün bu modellərdən istifadə edə bilərsiniz.
+
+Aşağıdakı suallar proqnozlaşdırma vasitəsilə cavablandırıla bilər:
+
+- Bu müştəri üçün 10,000 dollar məbləğində kredit limiti təsdiqlənəcəkmi? (Bəli/Xeyr)
+- Bu uçuş gecikəcəkmi? (Bəli/Xeyr)
+- Bu uçuş vaxtında olacaq, bir az gecikəcək, yoxsa çox gecikəcək? (Çoxsaylı nəticə)
+- Bu uçuş neçə dəqiqə gecikəcək? (Rəqəmsal proqnoz)
+
+Bu bölmədə iki vacib AI iş yükü — **Anomaly Detection** (Anomaliyaların müəyyən edilməsi) və **Computer Vision** (Kompüter görməsi) haqqında ətraflı məlumat verilir. Mintlify sənədləşməniz üçün tərcümə aşağıdakı kimidir:
+
+### Anomaliyaların müəyyən edilməsi (Anomaly detection)
+
+Anomaliyaların müəyyən edilməsi, zaman daxilində məlumatları analiz edir və adətən real vaxt rejimli məlumat axınlarında (data streams) baş verən qeyri-adi dəyişiklikləri tapır.
+
+"Kənar göstəricilərin müəyyən edilməsi" (outlier detection) kimi də tanınan bu üsul, potensial problemi göstərə biləcək eniş və sıçrayışları (dips and spikes) tapa bilir. Məlumat nöqtələri böyük məlumat həcmi daxilində gizləndiyi üçün, ümumi (aqreqat) məlumatları analiz edərkən belə problemləri aşkar etmək çətindir.
+
+Anomaliyaların müəyyən edilməsi trend dəyişikliklərini identifikasiya edə bilir. Adətən, anomaliya sıxılıb qalmış klapan (valve), ödəniş fırıldaqçılığı, yataqda (bearing) vibrasiya səviyyəsinin dəyişməsi və ya mətndəki səhvlər kimi problemlərə işarə edir.
+
+Bu texnologiya, problemin kritik həddə çatmasından və ya biznes əməliyyatlarına mənfi təsir göstərməsindən əvvəl qabaqlayıcı tədbirlərin (pre-emptive action) görülməsinə imkan verir.
+
+> **QEYD: ANOMALİYALARIN MÜƏYYƏN EDİLMƏSİ** Anomaliyaların müəyyən edilməsi bir xətanın nə vaxt baş verəcəyini **proqnozlaşdırmır**; bunun üçün siz **proqnozlaşdırma (prediction)** modelindən istifadə etməlisiniz.
+
+Anomaliyaların müəyyən edilməsi üçün bir neçə alqoritm istifadə oluna bilər. **Azure Anomaly Detector** xidməti məlumatlara əsasən ən yaxşı alqoritmi özü seçir və bu da tək bir API çağırışı ilə xidmətdən istifadəni asanlaşdırır. Anomaly Detector həmçinin **Docker** konteynerində işləyə bilər, buna görə də o, birbaşa cihazların özündə (at the edge) quraşdırıla bilər.
+
+Anomaliyaların müəyyən edilməsinin bəzi istifadə nümunələri:
+
+- **IoT cihazlarının monitorinqi:** Anomaliyaları tapmaq üçün cihazlardan gələn telemetriyanı real vaxtda yoxlamaq.
+- **Elektrik sistemlərində nasazlıqların aşkarlanması:** Elektrik təchizatındakı sıçrayış və enişlərin müəyyən edilməsi.
+- **Kompüter şəbəkəsinin trafik hücumları:** Şəbəkə daxilində və kənarında qeyri-adi fəaliyyətlərin aşkar edilməsi.
+- **Maliyyə sistemi fırıldaqçılığı:** Ödəniş nümunələrindən potensial fırıldaqçı ödənişlərin müəyyən edilməsi.
+- **Xəstəxana infeksiyaları:** Müəyyən bir infeksiyadan ölüm dərəcəsinin digər səbəblərdən daha yüksək olduğunu tanımaq.
+- **Kütlənin müşahidəsi:** Mürəkkəb vəziyyətlərdə kütlə davranışının dəyişməsini müəyyən etmək.
+
+### Kompüter görməsi (Computer vision)
+
+Kompüter görməsi hərəkətsiz şəkillərin və video axınlarının emalıdır. Kompüter görməsi şəkli şərh edə bilər və şəkil haqqında təfərrüatlı məlumatı kompüter tərəfindən oxuna bilən formada təqdim edə bilər.
+
+Kompüter görməsi şəkildə xüsusi bir obyektin olub-olmadığını müəyyən edə bilər (**object detection**) və şəkildən rənglər və ya mətn kimi detalları çıxara bilər.
+
+Kompüter görməsi bunları edə bilər:
+
+- Şəkli təsvir etmək
+- Şəkli kateqoriyalara ayırmaq
+- Şəkli etiketləmək (tagging)
+- Obyektləri aşkar etmək
+- Üzləri aşkar etmək
+- Brendləri və məhsulları tanımaq
+- Məşhur insanları tanımaq
+- Görməli yerləri (landmarks) tanımaq
+- Mətni çıxarmaq (OCR)
+
+Kompüter görməsinin bir çox potensial istifadə sahəsi var:
+
+- **Mətn və ştrix-kodların oxunması:** Hər gün mətnləri və ştrix-kodları oxumaq və tanımaq insan üçün asan iş deyil.
+- **Məhsul yığımı:** İstehsalçılar məhsul və komponentlərin yığılmasının standartlara ciddi şəkildə riayət etməsini təmin edə bilərlər. Məsələn, əczaçılıq istehsalçıları qablaşdırmanın düzgünlüyünü təmin etmək üçün butulkalara 360 dərəcə baxa bilərlər. Onlar qapaq möhürü, mövqeyi və etiketlər kimi kritik xüsusiyyətləri yoxlaya bilərlər.
+- **Pərakəndə mağazalarda növbə uzunluğunun monitorinqi:** Satıcılar daha çox kassir heyətinə ehtiyac olub-olmadığını müəyyən edə bilərlər.
+- **Sağlamlıq skanlarında anormallıqların aşkar edilməsi:** Kompüter görməsi skanları süzgəcdən keçirə bilər və bu da az sayda olan yüksək ixtisaslı diaqnostika heyətini daha mürəkkəb skan edilmiş şəkilləri analiz etmək üçün azad edir.
+
+### Təbii Dilin Emalı (Natural Language Processing - NLP)
+
+**Təbii Dilin Emalı (NLP)**, mətnin kompüter tərəfindən istifadə edilə biləcək formada məlumat əldə etmək üçün analiz edilməsidir.
+
+NLP həm şifahi, həm də yazılı mətni şərh edir. NLP mətni analiz edərək istifadə olunan dili müəyyən edə, ifadə olunan hissləri (sentiment) təyin edə, əsas söz birləşmələrini (key phrases) çıxara, habelə əsas subyektləri (entities) və hərəkətləri identifikasiya edə bilər.
+
+NLP bir çox ssenarilərdə istifadə edilə bilər:
+
+- **Qərarların dəstəklənməsi:** Strukturlaşdırılmamış və sürətlə dəyişən məlumatlardan qərar qəbul etməkdə istifadəçilərə kömək etmək.
+- **Botlar və intellektual agentlər:** Cavab formalaşdırmaq üçün istifadəçinin sualını (dəqiq sözlər və ya ifadələr üzrə öyrdilmədən belə) başa düşmək.
+- **Komandaların hərəkətlərə çevrilməsi:** İstifadəçinin sorğusundakı niyyəti (intent) başa düşmək və tələb olunan hərəkəti yerinə yetirmək.
+- **SPAM aşkarlanması:** E-poçtları mövzu və mətn hissəsindəki sözlərə əsasən təsnif etmək.
+- **Xəbərlərin monitorinqi:** Müxtəlif mənbələrdən istifadəçi üçün aktual olan xəbərləri seçib çıxarmaq.
+- **Qrammatika yoxlayıcıları:** Söz və ya ifadələri işarələmək və təkmilləşdirmə təklifləri vermək.
+
+### Biliklərin Çıxarılması (Knowledge mining)
+
+**Biliklərin çıxarılması**, strukturlaşdırılmış və strukturlaşdırılmamış məlumat mənbələrindən əsas fikirlərin əldə edilməsi prosesidir.
+
+Biliklərin çıxarılması böyük həcmli məlumatlardan məna və əlaqələri çıxarmaq üçün Azure Cognitive Search daxil olmaqla AI xidmətlərinin birləşməsindən istifadə edir. Bu məlumatlar sənədlərdə, verilənlər bazalarında, strukturlaşdırılmış və ya strukturlaşdırılmamış mənbələrdə saxlanıla bilər. Biliklərin çıxarılması məlumatlarınızdakı gizli qalan məqamları üzə çıxarır.
+
+Microsoft, müxtəlif məlumat mənbələrini qəbul etmək (ingest), zənginləşdirmək (enrich), indeksləmək və nəticələri araşdırmaq üçün istifadəçi interfeysi təmin edən **Knowledge Mining Solution Accelerator** alətini təklif edir.
+
+### Danışıq Əsaslı Süni İntellekt (Conversational AI)
+
+**Conversational AI**, insanlarla söhbətdə iştirak edə bilən AI agentlərinin yaradılması prosesidir. İnsanlar Conversational AI ilə ən çox vebsaytlarda və digər sistemlərdəki çatbotlar vasitəsilə qarşılaşırlar.
+
+AI agentləri (botlar) insan istifadəçilərlə söhbətlərə (dialoqlara) daxil olur. Botlar insan daxiletməsini başa düşmək, insanın yerinə yetirmək istədiyi hərəkətləri və bu hərəkətlərin hansı obyekt (entity) üzərində icra olunacağını müəyyən etmək üçün NLP-dən istifadə edirlər. Botlar əməliyyatı tamamlamaq üçün tələb olunan məlumatları insandan soruşa bilərlər.
+
+Qarşılaşa biləcəyiniz üç ümumi bot növü var:
+
+1. **Webchat** (Veb çat)
+2. **Telefon səs menyuları** (IVR)
+3. **Fərdi rəqəmsal köməkçilər** (Personal Digital Assistants)
+
+Botlardan bir çox ssenarilərdə istifadə edə bilərsiniz:
+
+- **Müştəri dəstəyi:** Ümumi sualları cavablandırmaq və lazım gəldikdə canlı operatora yönləndirmək.
+- **Tez-tez verilən suallar (FAQs):** Veb və ya tətbiq üzərindən istifadəçilərə interaktiv sual-cavab xidməti təqdim etmək.
+- **Onlayn sifariş:** Müştəri sifarişlərini dəstəkləmək və məhsul və ya çatdırılma haqqında sualları cavablandırmaq.
+- **Səyahət rezervasiyası:** Müştəriyə tələblərinə uyğun uçuş və yaşayış yeri tapmaqda və onun adından rezervasiya etməkdə kömək etmək.
+- **Tibbi triaj:** Xəstənin simptomlarını yoxlayarkən istifadəçini istiqamətləndirmək.

@@ -15,7 +15,9 @@
         "groups": [
           {
             "group": "Məlumat",
-            "pages": ["index"]
+            "pages": [
+              "index"
+            ]
           }
         ]
       },
@@ -25,10 +27,26 @@
           {
             "group": "Hissə 1",
             "pages": [
-                "az900/introduction",
-                "az900/chapter1",
-                "az900/chapter2",
-                "az900/chapter3"
+              "az900/introduction",
+              "az900/chapter1",
+              "az900/chapter2",
+              "az900/chapter3"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "AI-900",
+        "groups": [
+          {
+            "group": "Chapter 1",
+            "pages": [
+              {
+                "group": "Süni İntellekt iş yükləri və mülahizələr",
+                "pages": [
+                  "tt"
+                ]
+              }
             ]
           }
         ]
