@@ -11,31 +11,6 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Ana səhifə",
-        "groups": [
-          {
-            "group": "Məlumat",
-            "pages": [
-              "index"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "AZ-900",
-        "groups": [
-          {
-            "group": "Hissə 1",
-            "pages": [
-              "az900/introduction",
-              "az900/chapter1",
-              "az900/chapter2",
-              "az900/chapter3"
-            ]
-          }
-        ]
-      },
-      {
         "tab": "AI-900",
         "groups": [
           {
